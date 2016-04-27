@@ -1,17 +1,20 @@
-var AppDispatcher = require('../dispatcher/dispatcher.js');
+var AppDispatcher = require('../dispatcher/dispatcher');
 var Store = require('flux/utils').Store;
 
 var UserStore = new Store(AppDispatcher);
 
-var _currentUser, _authErrors;
+var _currentUser;
+var _authErrors;
 
 UserStore.current_user = function () {
-    return _currentUser;
-}
+  if (_currentUser) {
+  	return $.extend({}, _currentUser);
+  }
+};
 
 UserStore.errors = function () {
   return _authErrors;
-}
+};
 
 UserStore.__onDispatch = function (payload) {
   switch (payload.actionType) {

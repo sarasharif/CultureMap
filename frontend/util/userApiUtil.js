@@ -4,11 +4,24 @@ module.exports = {
 
   fetchCurrentUser: function () {
     $.ajax({
-      url: "api/user",
+      url: "api/session",
       type: "GET",
       success: function () {
-
         ServerActions.receiveCurrentUser();
+      }
+    });
+  },
+
+  signup: function (user) {
+    $.ajax({
+      url: "api/user",
+      type: "POST",
+      data: {user: user},
+      success: function () {
+        ServerActions.receiveCurrentUser();
+      },
+      error: function (error) {
+        ServerActions.handleError();
       }
     });
   },
@@ -18,11 +31,11 @@ module.exports = {
       url: "api/session",
       type: "POST",
       data: {user: user},
-      success: function (user) {
+      success: function () {
         ServerActions.receiveCurrentUser(user);
       },
       error: function (error) {
-        conole.log("WRONG");
+        ServerActions.handleError();
       }
     });
   },

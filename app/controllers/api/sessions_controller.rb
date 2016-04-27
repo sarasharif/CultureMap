@@ -6,7 +6,7 @@ class Api::SessionsController < ApplicationController
       login(@user)
       render "api/users/show"
     else
-      @errors = ["Error. Sign in failed. Please try again"]
+      @errors = ["invalid"]
       render "api/shared/error", status: 401
     end
   end
@@ -16,7 +16,7 @@ class Api::SessionsController < ApplicationController
       @user = current_user
       render "api/users/show"
     else
-      @errors = ["no clue what's going on here"]
+      @errors = nil
       render "api/shared/error", status: 404
     end
   end
