@@ -53,12 +53,12 @@
 	var IndexRoute = ReactRouter.IndexRoute;
 	var hashHistory = ReactRouter.hashHistory;
 	
-	var CurrentUserState = __webpack_require__(252);
+	var CurrentUserState = __webpack_require__(225);
 	
-	var LoginForm = __webpack_require__(225);
+	var LoginForm = __webpack_require__(252);
 	
-	var userApiUtil = __webpack_require__(226);
-	var userStore = __webpack_require__(233);
+	var userApiUtil = __webpack_require__(249);
+	var userStore = __webpack_require__(226);
 	
 	var App = React.createClass({
 	  displayName: 'App',
@@ -25464,213 +25464,87 @@
 /* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(1);
-	var ClientActions = __webpack_require__(251);
-	var CurrentUserState = __webpack_require__(252);
-	var LinkedStateMixin = __webpack_require__(253);
+	var UserStore = __webpack_require__(226);
+	var UserClientActions = __webpack_require__(248);
 	
-	var LoginForm = React.createClass({
-	  displayName: 'LoginForm',
-	
-	
-	  mixins: [LinkedStateMixin, CurrentUserState],
+	var CurrentUserStateMixin = {
 	
 	  getInitialState: function () {
-	    return { form: "login" };
+	    return {
+	      currentUser: UserStore.current_user(),
+	      authErrors: UserStore.errors()
+	    };
 	  },
 	
-	  setForm: function (e) {
-	    this.setState({ form: e.currentTarget.value });
-	  },
-	
-	  greeting: function () {
-	    if (!this.state.currentUser) {
-	      return;
+	  componentDidMount: function () {
+	    UserStore.addListener(this.updateUser);
+	    if (typeof this.state.currentUser === 'undefined') {
+	      UserClientActions.fetchCurrentUser();
 	    }
-	    return React.createElement(
-	      'div',
-	      null,
-	      this.state.currentUser.username,
-	      React.createElement('input', { type: 'submit', value: 'logout', onClick: this.logout })
-	    );
 	  },
 	
-	  logout: function (event) {
-	    event.preventDefault();
-	    ClientActions.logout();
-	  },
-	
-	  errors: function () {
-	    if (!this.state.authErrors) {
-	      return;
-	    }
-	    var self = this;
-	    return React.createElement(
-	      'ul',
-	      null,
-	      Object.keys(this.state.authErrors).map(function (key, i) {
-	        return React.createElement(
-	          'li',
-	          { key: i },
-	          self.state.authErrors[key]
-	        );
-	      })
-	    );
-	  },
-	
-	  handleSubmit: function (event) {
-	    event.preventDefault();
-	    ClientActions[this.state.form]({
-	      username: this.state.username,
-	      password: this.state.password
+	  updateUser: function () {
+	    this.setState({
+	      currentUser: UserStore.current_user(),
+	      authErrors: UserStore.errors()
 	    });
-	  },
-	
-	  form: function () {
-	    if (this.state.currentUser) {
-	      return;
-	    }
-	    return React.createElement(
-	      'form',
-	      { onSubmit: this.handleSubmit },
-	      React.createElement(
-	        'section',
-	        null,
-	        React.createElement('input', { type: 'text', placeholder: 'username', valueLink: this.linkState("username") }),
-	        React.createElement('input', { type: 'password', placeholder: 'password', valueLink: this.linkState("password") })
-	      ),
-	      React.createElement(
-	        'section',
-	        null,
-	        React.createElement(
-	          'label',
-	          null,
-	          ' Login',
-	          React.createElement('input', { type: 'Radio', name: 'action', value: 'login', onChange: this.setForm })
-	        ),
-	        React.createElement(
-	          'label',
-	          null,
-	          ' Sign Up',
-	          React.createElement('input', { type: 'Radio', name: 'action', value: 'signup', onChange: this.setForm })
-	        )
-	      ),
-	      React.createElement('input', { type: 'submit', value: 'Press Me' })
-	    );
-	  },
-	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      { id: 'login-form' },
-	      this.greeting(),
-	      this.errors(),
-	      this.form()
-	    );
 	  }
-	});
+	};
 	
-	module.exports = LoginForm;
+	module.exports = CurrentUserStateMixin;
 
 /***/ },
 /* 226 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var ServerActions = __webpack_require__(227);
+	var AppDispatcher = __webpack_require__(227);
+	var Store = __webpack_require__(231).Store;
 	
-	module.exports = {
+	var UserStore = new Store(AppDispatcher);
 	
-	  fetchCurrentUser: function () {
-	    $.ajax({
-	      url: "api/session",
-	      type: "GET",
-	      success: function () {
-	        ServerActions.receiveCurrentUser();
-	      }
-	    });
-	  },
+	var _currentUser;
+	var _authErrors;
 	
-	  signup: function (user) {
-	    $.ajax({
-	      url: "api/user",
-	      type: "POST",
-	      data: { user: user },
-	      success: function () {
-	        ServerActions.receiveCurrentUser();
-	      },
-	      error: function (error) {
-	        ServerActions.handleError();
-	      }
-	    });
-	  },
-	
-	  login: function (user) {
-	    $.ajax({
-	      url: "api/session",
-	      type: "POST",
-	      data: { user: user },
-	      success: function () {
-	        ServerActions.receiveCurrentUser(user);
-	      },
-	      error: function (error) {
-	        ServerActions.handleError();
-	      }
-	    });
-	  },
-	
-	  logout: function () {
-	    $.ajax({
-	      url: "api/session",
-	      type: "DELETE",
-	      success: function () {
-	        ServerActions.logoutCurrentUser();
-	      }
-	    });
-	  }
-	
+	UserStore.current_user = function () {
+	  return _currentUser;
 	};
+	// if (_currentUser) {
+	//   return $.extend({}, _currentUser);
+	// }
+	
+	UserStore.errors = function () {
+	  return _authErrors;
+	};
+	
+	UserStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case "LOGIN":
+	      _currentUser = payload.user;
+	      _authErrors = [];
+	      break;
+	    case "LOGOUT":
+	      _currentUser = null;
+	      _authErrors = [];
+	      break;
+	    case "ERROR":
+	      _authErrors = payload.errors;
+	      break;
+	  }
+	  UserStore.__emitChange();
+	};
+	
+	module.exports = UserStore;
 
 /***/ },
 /* 227 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var AppDispatcher = __webpack_require__(228);
-	var UserConstants = __webpack_require__(232);
-	
-	module.exports = {
-	
-	  receiveCurrentUser: function (user) {
-	    AppDispatcher.dispatch({
-	      actionType: UserConstants.LOGIN,
-	      user: user
-	    });
-	  },
-	
-	  logoutCurrentUser: function () {
-	    AppDispatcher.dispatch({
-	      actionType: UserConstants.LOGOUT
-	    });
-	  },
-	
-	  handleError: function (error) {
-	    AppDispatcher.dispatch({
-	      actionType: UserConstants.ERROR,
-	      errors: error
-	    });
-	  }
-	
-	};
-
-/***/ },
-/* 228 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Dispatcher = __webpack_require__(229).Dispatcher;
+	var Dispatcher = __webpack_require__(228).Dispatcher;
 	
 	module.exports = new Dispatcher();
 
 /***/ },
-/* 229 */
+/* 228 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -25682,11 +25556,11 @@
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 */
 	
-	module.exports.Dispatcher = __webpack_require__(230);
+	module.exports.Dispatcher = __webpack_require__(229);
 
 
 /***/ },
-/* 230 */
+/* 229 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -25708,7 +25582,7 @@
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var invariant = __webpack_require__(231);
+	var invariant = __webpack_require__(230);
 	
 	var _prefix = 'ID_';
 	
@@ -25923,7 +25797,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 231 */
+/* 230 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -25978,58 +25852,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 232 */
-/***/ function(module, exports) {
-
-	module.exports = {
-	  LOGIN: "LOGIN",
-	  LOGOUT: "LOGOUT",
-	  ERROR: "ERROR"
-	};
-
-/***/ },
-/* 233 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var AppDispatcher = __webpack_require__(228);
-	var Store = __webpack_require__(234).Store;
-	
-	var UserStore = new Store(AppDispatcher);
-	
-	var _currentUser;
-	var _authErrors;
-	
-	UserStore.current_user = function () {
-	  if (_currentUser) {
-	    return $.extend({}, _currentUser);
-	  }
-	};
-	
-	UserStore.errors = function () {
-	  return _authErrors;
-	};
-	
-	UserStore.__onDispatch = function (payload) {
-	  switch (payload.actionType) {
-	    case "LOGIN":
-	      _currentUser = payload.user;
-	      _authErrors = [];
-	      break;
-	    case "LOGOUT":
-	      _currentUser = null;
-	      _authErrors = [];
-	      break;
-	    case "ERROR":
-	      _authErrors = payload.errors;
-	      break;
-	  }
-	  UserStore.__emitChange();
-	};
-	
-	module.exports = UserStore;
-
-/***/ },
-/* 234 */
+/* 231 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -26041,15 +25864,15 @@
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 */
 	
-	module.exports.Container = __webpack_require__(235);
-	module.exports.MapStore = __webpack_require__(238);
-	module.exports.Mixin = __webpack_require__(250);
-	module.exports.ReduceStore = __webpack_require__(239);
-	module.exports.Store = __webpack_require__(240);
+	module.exports.Container = __webpack_require__(232);
+	module.exports.MapStore = __webpack_require__(235);
+	module.exports.Mixin = __webpack_require__(247);
+	module.exports.ReduceStore = __webpack_require__(236);
+	module.exports.Store = __webpack_require__(237);
 
 
 /***/ },
-/* 235 */
+/* 232 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -26071,10 +25894,10 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var FluxStoreGroup = __webpack_require__(236);
+	var FluxStoreGroup = __webpack_require__(233);
 	
-	var invariant = __webpack_require__(231);
-	var shallowEqual = __webpack_require__(237);
+	var invariant = __webpack_require__(230);
+	var shallowEqual = __webpack_require__(234);
 	
 	var DEFAULT_OPTIONS = {
 	  pure: true,
@@ -26232,7 +26055,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 236 */
+/* 233 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -26251,7 +26074,7 @@
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var invariant = __webpack_require__(231);
+	var invariant = __webpack_require__(230);
 	
 	/**
 	 * FluxStoreGroup allows you to execute a callback on every dispatch after
@@ -26313,7 +26136,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 237 */
+/* 234 */
 /***/ function(module, exports) {
 
 	/**
@@ -26368,7 +26191,7 @@
 	module.exports = shallowEqual;
 
 /***/ },
-/* 238 */
+/* 235 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -26389,10 +26212,10 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var FluxReduceStore = __webpack_require__(239);
-	var Immutable = __webpack_require__(249);
+	var FluxReduceStore = __webpack_require__(236);
+	var Immutable = __webpack_require__(246);
 	
-	var invariant = __webpack_require__(231);
+	var invariant = __webpack_require__(230);
 	
 	/**
 	 * This is a simple store. It allows caching key value pairs. An implementation
@@ -26518,7 +26341,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 239 */
+/* 236 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -26539,10 +26362,10 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var FluxStore = __webpack_require__(240);
+	var FluxStore = __webpack_require__(237);
 	
-	var abstractMethod = __webpack_require__(248);
-	var invariant = __webpack_require__(231);
+	var abstractMethod = __webpack_require__(245);
+	var invariant = __webpack_require__(230);
 	
 	var FluxReduceStore = (function (_FluxStore) {
 	  _inherits(FluxReduceStore, _FluxStore);
@@ -26625,7 +26448,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 240 */
+/* 237 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -26644,11 +26467,11 @@
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var _require = __webpack_require__(241);
+	var _require = __webpack_require__(238);
 	
 	var EventEmitter = _require.EventEmitter;
 	
-	var invariant = __webpack_require__(231);
+	var invariant = __webpack_require__(230);
 	
 	/**
 	 * This class should be extended by the stores in your application, like so:
@@ -26808,7 +26631,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 241 */
+/* 238 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -26821,14 +26644,14 @@
 	 */
 	
 	var fbemitter = {
-	  EventEmitter: __webpack_require__(242)
+	  EventEmitter: __webpack_require__(239)
 	};
 	
 	module.exports = fbemitter;
 
 
 /***/ },
-/* 242 */
+/* 239 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -26847,11 +26670,11 @@
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var EmitterSubscription = __webpack_require__(243);
-	var EventSubscriptionVendor = __webpack_require__(245);
+	var EmitterSubscription = __webpack_require__(240);
+	var EventSubscriptionVendor = __webpack_require__(242);
 	
-	var emptyFunction = __webpack_require__(247);
-	var invariant = __webpack_require__(246);
+	var emptyFunction = __webpack_require__(244);
+	var invariant = __webpack_require__(243);
 	
 	/**
 	 * @class BaseEventEmitter
@@ -27025,7 +26848,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 243 */
+/* 240 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -27046,7 +26869,7 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var EventSubscription = __webpack_require__(244);
+	var EventSubscription = __webpack_require__(241);
 	
 	/**
 	 * EmitterSubscription represents a subscription with listener and context data.
@@ -27078,7 +26901,7 @@
 	module.exports = EmitterSubscription;
 
 /***/ },
-/* 244 */
+/* 241 */
 /***/ function(module, exports) {
 
 	/**
@@ -27132,7 +26955,7 @@
 	module.exports = EventSubscription;
 
 /***/ },
-/* 245 */
+/* 242 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -27151,7 +26974,7 @@
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var invariant = __webpack_require__(246);
+	var invariant = __webpack_require__(243);
 	
 	/**
 	 * EventSubscriptionVendor stores a set of EventSubscriptions that are
@@ -27241,7 +27064,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 246 */
+/* 243 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -27296,7 +27119,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 247 */
+/* 244 */
 /***/ function(module, exports) {
 
 	/**
@@ -27338,7 +27161,7 @@
 	module.exports = emptyFunction;
 
 /***/ },
-/* 248 */
+/* 245 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -27355,7 +27178,7 @@
 	
 	'use strict';
 	
-	var invariant = __webpack_require__(231);
+	var invariant = __webpack_require__(230);
 	
 	function abstractMethod(className, methodName) {
 	   true ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Subclasses of %s must override %s() with their own implementation.', className, methodName) : invariant(false) : undefined;
@@ -27365,7 +27188,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 249 */
+/* 246 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -32349,7 +32172,7 @@
 	}));
 
 /***/ },
-/* 250 */
+/* 247 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -32366,9 +32189,9 @@
 	
 	'use strict';
 	
-	var FluxStoreGroup = __webpack_require__(236);
+	var FluxStoreGroup = __webpack_require__(233);
 	
-	var invariant = __webpack_require__(231);
+	var invariant = __webpack_require__(230);
 	
 	/**
 	 * `FluxContainer` should be preferred over this mixin, but it requires using
@@ -32472,10 +32295,10 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 251 */
+/* 248 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var ApiUtil = __webpack_require__(226);
+	var ApiUtil = __webpack_require__(249);
 	
 	module.exports = {
 	
@@ -32498,37 +32321,220 @@
 	};
 
 /***/ },
+/* 249 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var ServerActions = __webpack_require__(250);
+	
+	module.exports = {
+	
+	  fetchCurrentUser: function () {
+	    $.ajax({
+	      url: "api/session",
+	      type: "GET",
+	      success: function () {
+	        ServerActions.receiveCurrentUser();
+	      }
+	    });
+	  },
+	
+	  signup: function (user) {
+	    $.ajax({
+	      url: "api/user",
+	      type: "POST",
+	      data: { user: user },
+	      success: function () {
+	        ServerActions.receiveCurrentUser(user);
+	      },
+	      error: function (error) {
+	        ServerActions.handleError();
+	      }
+	    });
+	  },
+	
+	  login: function (user) {
+	    $.ajax({
+	      url: "api/session",
+	      type: "POST",
+	      data: { user: user },
+	      success: function () {
+	        ServerActions.receiveCurrentUser(user);
+	      },
+	      error: function (error) {
+	        ServerActions.handleError();
+	      }
+	    });
+	  },
+	
+	  logout: function () {
+	    $.ajax({
+	      url: "api/session",
+	      type: "DELETE",
+	      success: function () {
+	        ServerActions.logoutCurrentUser();
+	      }
+	    });
+	  }
+	
+	};
+
+/***/ },
+/* 250 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var AppDispatcher = __webpack_require__(227);
+	var UserConstants = __webpack_require__(251);
+	
+	module.exports = {
+	
+	  receiveCurrentUser: function (user) {
+	    AppDispatcher.dispatch({
+	      actionType: UserConstants.LOGIN,
+	      user: user
+	    });
+	  },
+	
+	  logoutCurrentUser: function () {
+	    AppDispatcher.dispatch({
+	      actionType: UserConstants.LOGOUT
+	    });
+	  },
+	
+	  handleError: function (error) {
+	    AppDispatcher.dispatch({
+	      actionType: UserConstants.ERROR,
+	      errors: error
+	    });
+	  }
+	
+	};
+
+/***/ },
+/* 251 */
+/***/ function(module, exports) {
+
+	module.exports = {
+	  LOGIN: "LOGIN",
+	  LOGOUT: "LOGOUT",
+	  ERROR: "ERROR"
+	};
+
+/***/ },
 /* 252 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var UserStore = __webpack_require__(233);
-	var UserClientActions = __webpack_require__(251);
+	var React = __webpack_require__(1);
+	var ClientActions = __webpack_require__(248);
+	var CurrentUserState = __webpack_require__(225);
+	var LinkedStateMixin = __webpack_require__(253);
 	
-	var CurrentUserStateMixin = {
+	var LoginForm = React.createClass({
+	  displayName: 'LoginForm',
+	
+	
+	  mixins: [LinkedStateMixin, CurrentUserState],
 	
 	  getInitialState: function () {
-	    return {
-	      currentUser: UserStore.current_user(),
-	      authErrors: UserStore.errors()
-	    };
+	    return { form: "login" };
 	  },
 	
-	  componentDidMount: function () {
-	    UserStore.addListener(this.updateUser);
-	    if (typeof UserStore.current_user() === 'undefined') {
-	      UserClientActions.fetchCurrentUser();
+	  setForm: function (event) {
+	    this.setState({ form: event.currentTarget.value });
+	  },
+	
+	  greeting: function () {
+	    if (this.state.currentUser) {
+	      return React.createElement(
+	        'div',
+	        null,
+	        'Welcome to cultureMap, ',
+	        this.state.currentUser.username,
+	        '! ',
+	        React.createElement('br', null),
+	        'NOW PLAY THE GAME!!!',
+	        React.createElement('br', null),
+	        React.createElement('input', { type: 'submit', value: 'logout', onClick: this.logout })
+	      );
 	    }
 	  },
 	
-	  updateUser: function () {
-	    return {
-	      currentUser: UserStore.current_user(),
-	      authErrors: UserStore.errors()
-	    };
-	  }
-	};
+	  logout: function (event) {
+	    event.preventDefault();
+	    ClientActions.logout();
+	  },
 	
-	module.exports = CurrentUserStateMixin;
+	  errors: function () {
+	    if (this.state.authErrors) {
+	      return React.createElement(
+	        'div',
+	        null,
+	        'You Has Error'
+	      );
+	
+	      // var self = this;
+	      // <ul>
+	      //   {
+	      //     Object.keys(this.state.authErrors).map(function(key, i){
+	      //       return (<li key={i}>{self.state.authErrors[key]}</li>);
+	      //     })
+	      //   }
+	      // </ul>
+	    }
+	  },
+	
+	  handleSubmit: function (event) {
+	    event.preventDefault();
+	    ClientActions[this.state.form]({
+	      username: this.state.username,
+	      password: this.state.password
+	    });
+	  },
+	
+	  form: function () {
+	    if (this.state.currentUser) {
+	      return;
+	    }
+	    return React.createElement(
+	      'form',
+	      { onSubmit: this.handleSubmit },
+	      React.createElement(
+	        'section',
+	        null,
+	        React.createElement('input', { type: 'text', placeholder: 'username', valueLink: this.linkState("username") }),
+	        React.createElement('input', { type: 'password', placeholder: 'password', valueLink: this.linkState("password") })
+	      ),
+	      React.createElement(
+	        'section',
+	        null,
+	        React.createElement(
+	          'label',
+	          null,
+	          ' Login',
+	          React.createElement('input', { type: 'Radio', name: 'action', value: 'login', onChange: this.setForm })
+	        ),
+	        React.createElement(
+	          'label',
+	          null,
+	          ' Sign Up',
+	          React.createElement('input', { type: 'Radio', name: 'action', value: 'signup', onChange: this.setForm })
+	        )
+	      ),
+	      React.createElement('input', { type: 'submit', value: 'Press Me' })
+	    );
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { id: 'login-form' },
+	      this.greeting(),
+	      this.errors(),
+	      this.form()
+	    );
+	  }
+	});
+	
+	module.exports = LoginForm;
 
 /***/ },
 /* 253 */

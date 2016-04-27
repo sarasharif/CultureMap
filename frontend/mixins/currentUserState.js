@@ -12,16 +12,16 @@ var CurrentUserStateMixin = {
 
   componentDidMount: function() {
     UserStore.addListener(this.updateUser);
-		if (typeof UserStore.current_user() === 'undefined') {
+		if (typeof this.state.currentUser === 'undefined') {
 			UserClientActions.fetchCurrentUser();
 		}
   },
 
   updateUser: function () {
-    return {
+    this.setState({
 			currentUser: UserStore.current_user(),
 			authErrors: UserStore.errors()
-		};
+		});
   }
 };
 

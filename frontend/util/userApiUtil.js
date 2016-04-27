@@ -18,7 +18,7 @@ module.exports = {
       type: "POST",
       data: {user: user},
       success: function () {
-        ServerActions.receiveCurrentUser();
+        ServerActions.receiveCurrentUser(user);
       },
       error: function (error) {
         ServerActions.handleError();

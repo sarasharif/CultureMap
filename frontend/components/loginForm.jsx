@@ -11,20 +11,20 @@ var LoginForm = React.createClass({
     return { form: "login" };
   },
 
-  setForm: function(e) {
-    this.setState({form: e.currentTarget.value});
+  setForm: function(event) {
+    this.setState({form: event.currentTarget.value});
   },
 
   greeting: function () {
-    if (!this.state.currentUser) {
-      return;
+    if ( this.state.currentUser ) {
+      return (
+        <div>
+  				Welcome to cultureMap, {this.state.currentUser.username}! <br/>
+          NOW PLAY THE GAME!!!<br/>
+  				<input type="submit" value="logout" onClick={this.logout} />
+  			</div>
+      )
     }
-    return (
-      <div>
-				{this.state.currentUser.username}
-				<input type="submit" value="logout" onClick={this.logout} />
-			</div>
-    )
   },
 
   logout: function(event) {
@@ -33,19 +33,18 @@ var LoginForm = React.createClass({
   },
 
   errors: function () {
-    if (!this.state.authErrors) {
-      return;
+    if (this.state.authErrors) {
+      return ( <div>You Has Error</div> );
+
+      // var self = this;
+        // <ul>
+        //   {
+        //     Object.keys(this.state.authErrors).map(function(key, i){
+        //       return (<li key={i}>{self.state.authErrors[key]}</li>);
+        //     })
+        //   }
+        // </ul>
     }
-    var self = this;
-    return (
-      <ul>
-        {
-          Object.keys(this.state.authErrors).map(function(key, i){
-            return (<li key={i}>{self.state.authErrors[key]}</li>);
-          })
-        }
-      </ul>
-    );
   },
 
   handleSubmit: function (event) {

@@ -20,7 +20,7 @@ var App = React.createClass({
     return (
       <div>
         <header><h1>play CultureMap here!</h1></header>
-        <LoginForm/>
+        <LoginForm />
         {this.props.children}
       </div>
     );

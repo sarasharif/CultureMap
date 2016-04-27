@@ -12,6 +12,7 @@ module.exports = {
 
   login: function (user) {
     ApiUtil.login(user);
+
   },
 
   logout: function () {
