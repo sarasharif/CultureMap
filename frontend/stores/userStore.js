@@ -4,14 +4,11 @@ var Store = require('flux/utils').Store;
 var UserStore = new Store(AppDispatcher);
 
 var _currentUser;
-var _authErrors;
+var _authErrors = [];
 
 UserStore.current_user = function () {
   return _currentUser;
 };
-// if (_currentUser) {
-//   return $.extend({}, _currentUser);
-// }
 
 UserStore.errors = function () {
   return _authErrors;
@@ -28,7 +25,7 @@ UserStore.__onDispatch = function (payload) {
       _authErrors = [];
       break;
     case "ERROR":
-      _authErrors = payload.errors
+      _authErrors = JSON.parse(payload.errors.responseText).errors;
       break;
   }
   UserStore.__emitChange();

@@ -25503,14 +25503,11 @@
 	var UserStore = new Store(AppDispatcher);
 	
 	var _currentUser;
-	var _authErrors;
+	var _authErrors = [];
 	
 	UserStore.current_user = function () {
 	  return _currentUser;
 	};
-	// if (_currentUser) {
-	//   return $.extend({}, _currentUser);
-	// }
 	
 	UserStore.errors = function () {
 	  return _authErrors;
@@ -25527,7 +25524,7 @@
 	      _authErrors = [];
 	      break;
 	    case "ERROR":
-	      _authErrors = payload.errors;
+	      _authErrors = JSON.parse(payload.errors.responseText).errors;
 	      break;
 	  }
 	  UserStore.__emitChange();
@@ -32332,8 +32329,12 @@
 	    $.ajax({
 	      url: "api/session",
 	      type: "GET",
-	      success: function () {
-	        ServerActions.receiveCurrentUser();
+	      success: function (object) {
+	        if (Object.keys(object)[0] !== "errors") {
+	          ServerActions.receiveCurrentUser(object);
+	        } else {
+	          ServerActions.handleError(object);
+	        }
 	      }
 	    });
 	  },
@@ -32347,7 +32348,7 @@
 	        ServerActions.receiveCurrentUser(user);
 	      },
 	      error: function (error) {
-	        ServerActions.handleError();
+	        ServerActions.handleError(error);
 	      }
 	    });
 	  },
@@ -32361,7 +32362,7 @@
 	        ServerActions.receiveCurrentUser(user);
 	      },
 	      error: function (error) {
-	        ServerActions.handleError();
+	        ServerActions.handleError(error);
 	      }
 	    });
 	  },
@@ -32465,20 +32466,18 @@
 	
 	  errors: function () {
 	    if (this.state.authErrors) {
+	      var self = this;
 	      return React.createElement(
-	        'div',
+	        'ul',
 	        null,
-	        'You Has Error'
+	        Object.keys(this.state.authErrors).map(function (key, i) {
+	          return React.createElement(
+	            'li',
+	            { key: i },
+	            self.state.authErrors[key]
+	          );
+	        })
 	      );
-	
-	      // var self = this;
-	      // <ul>
-	      //   {
-	      //     Object.keys(this.state.authErrors).map(function(key, i){
-	      //       return (<li key={i}>{self.state.authErrors[key]}</li>);
-	      //     })
-	      //   }
-	      // </ul>
 	    }
 	  },
 	

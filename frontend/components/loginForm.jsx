@@ -34,16 +34,16 @@ var LoginForm = React.createClass({
 
   errors: function () {
     if (this.state.authErrors) {
-      return ( <div>You Has Error</div> );
-
-      // var self = this;
-        // <ul>
-        //   {
-        //     Object.keys(this.state.authErrors).map(function(key, i){
-        //       return (<li key={i}>{self.state.authErrors[key]}</li>);
-        //     })
-        //   }
-        // </ul>
+      var self = this;
+      return (
+        <ul>
+          {
+            Object.keys(this.state.authErrors).map(function(key, i){
+              return (<li key={i}>{self.state.authErrors[key]}</li>);
+            })
+          }
+        </ul>
+      )
     }
   },
 
@@ -83,11 +83,11 @@ var LoginForm = React.createClass({
 
   render: function () {
     return (
-    <div id="login-form">
-      {this.greeting()}
-      {this.errors()}
-      {this.form()}
-    </div>
+      <div id="login-form">
+        {this.greeting()}
+        {this.errors()}
+        {this.form()}
+      </div>
     );
   }
 });

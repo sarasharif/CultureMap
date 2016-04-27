@@ -6,18 +6,20 @@ class Api::SessionsController < ApplicationController
       login(@user)
       render "api/users/show"
     else
-      @errors = ["invalid"]
+      @errors = ["Incorrect password/username"]
       render "api/shared/error", status: 401
     end
   end
 
   def show
+    # @user = current_user
     if current_user
+    # if @user
       @user = current_user
       render "api/users/show"
     else
-      @errors = nil
-      render "api/shared/error", status: 404
+      @errors = ["You're not logged in"]
+      render "api/shared/error"
     end
   end
 

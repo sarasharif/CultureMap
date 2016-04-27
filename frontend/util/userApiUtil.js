@@ -6,9 +6,13 @@ module.exports = {
     $.ajax({
       url: "api/session",
       type: "GET",
-      success: function () {
-        ServerActions.receiveCurrentUser();
-      }
+      success: function (object) {
+        if (Object.keys(object)[0] !== "errors") {
+          ServerActions.receiveCurrentUser(object);
+        } else {
+          ServerActions.handleError(object);
+        }
+      },
     });
   },
 
@@ -21,7 +25,7 @@ module.exports = {
         ServerActions.receiveCurrentUser(user);
       },
       error: function (error) {
-        ServerActions.handleError();
+        ServerActions.handleError(error);
       }
     });
   },
@@ -35,7 +39,7 @@ module.exports = {
         ServerActions.receiveCurrentUser(user);
       },
       error: function (error) {
-        ServerActions.handleError();
+        ServerActions.handleError(error);
       }
     });
   },
