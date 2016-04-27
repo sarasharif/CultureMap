@@ -4,10 +4,20 @@ class Api::SessionsController < ApplicationController
     @user = User.find_by_credentials(params[:user][:username], params[:user][:password])
     if @user
       login(@user)
-      # I don't want to take you anywhere new, You were fine where you were
-      # send back json don't change anything besides user buttons
+      render "api/users/show"
     else
       @errors = ["Error. Sign in failed. Please try again"]
+      render "api/shared/error", status: 401
+    end
+  end
+
+  def show
+    if current_user
+      @user = current_user
+      render "api/users/show"
+    else
+      @errors = ["no clue what's going on here"]
+      render "api/shared/error", status: 404
     end
   end
 
@@ -15,21 +25,12 @@ class Api::SessionsController < ApplicationController
     @user = current_user
     if @user
       logout
-      # go to splash page
+      render "api/users/show"
     else
-      @errors = ["Oops. That's silly. You're silly."]
-      # render shared error page
+      @errors = ["Oops. That's silly. You're silly. So Silly."]
+      render "api/shared/error", status: 404
     end
   end
 
-  def show
-    if current_user
-      @user = current_user
-      # render things
-    else
-      @errors = ["no clue what's going on here"]
-      # RENDER MORE ERRORS
-    end
-  end
-  
+
 end
