@@ -12,7 +12,7 @@ session_token   | string    | not null, indexed, unique
 column name | data type | details
 ------------|-----------|-----------------------
 id          | integer   | not null, primary key
-unesco_no   | integer   | not null
+unesco_id_no| integer   | not null
 unesco_url  | string    | not null
 title_en    | string    | not null
 title_fr    | string    | not null
@@ -22,15 +22,15 @@ state_n_en  | string    | not null
 state_n_fr  | string    | not null
 lat         | float     | not null
 long        | float     | not null
-state       | string    | not null
-region      | string    | not null
+state       | string    |
+region      | string    |
 
 ## games
 column name | data type | details
 ------------|-----------|-----------------------
 id          | integer   | not null, primary key
 player_id   | integer   | not null, foreign key (references users), indexed
-category    | string    | not null
+category    | string    | not null (DO LATER)      
 guess1_id   | integer   | not null, foreign key (references guesses), indexed
 guess2_id   | integer   | not null, foreign key (references guesses), indexed
 guess3_id   | integer   | not null, foreign key (references guesses), indexed

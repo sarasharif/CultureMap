@@ -1,6 +1,6 @@
 ### Phase 2: Sites Model, API, and basic APIUtil (1.5 days)
 
-- [ ] create `Site` model
+- [ ] create `UnescoSite` model
 - [ ] seed the database with a small amount of test data
 - [ ] CRUD API for sites (`SitesController`)
 - [ ] ajax request for street view for sites
