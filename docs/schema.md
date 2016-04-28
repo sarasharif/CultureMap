@@ -31,20 +31,17 @@ column name | data type | details
 id          | integer   | not null, primary key
 player_id   | integer   | not null, foreign key (references users), indexed
 category    | string    | not null (DO LATER)      
-guess1_id   | integer   | not null, foreign key (references guesses), indexed
-guess2_id   | integer   | not null, foreign key (references guesses), indexed
-guess3_id   | integer   | not null, foreign key (references guesses), indexed
-guess4_id   | integer   | not null, foreign key (references guesses), indexed
-guess5_id   | integer   | not null, foreign key (references guesses), indexed
-points      | integer   | fn(guess[1..5_id.points)
+score       | integer   | fn(guess[1..5_id.points)
 
 ## guesses
 column name | data type | details
 ------------|-----------|-----------------------
 id          | integer   | not null, primary key
-site_id     | integer   | not null, foreign key (references unesco_sites), indexed
-lat_guess   | float     |
-long_guess  | float     |
+game_id     | integer   | not null, foreign key
+round_num   | integer   | not null
+site_id     | integer   | foreign key (references unesco_sites), indexed
+lat_guess   | float     | user input from map component
+long_guess  | float     | user input from map component
 points      | integer   | fn(lat_guess, long_guess, site_id.lat, site_id.long)
 
 ## favorites (BONUS)

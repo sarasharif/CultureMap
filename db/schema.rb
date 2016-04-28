@@ -11,10 +11,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160427224047) do
+ActiveRecord::Schema.define(version: 20160428002924) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "games", force: :cascade do |t|
+    t.integer  "player_id",  null: false
+    t.string   "category"
+    t.integer  "score"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "games", ["player_id"], name: "index_games_on_player_id", using: :btree
+
+  create_table "guesses", force: :cascade do |t|
+    t.integer  "game_id",    null: false
+    t.integer  "round_num",  null: false
+    t.integer  "site_id",    null: false
+    t.float    "lat_guess"
+    t.float    "long_guess"
+    t.integer  "points"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "unesco_sites", force: :cascade do |t|
     t.integer  "id_no",      null: false

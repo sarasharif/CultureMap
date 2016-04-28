@@ -6,6 +6,11 @@ class User < ActiveRecord::Base
 
   attr_reader :password
 
+  has_many :games
+  has_many :guesses,
+    through: :games,
+    source: :guesses
+
   after_initialize :ensure_session_token
   # before_validation :ensure_session_token_uniqueness
 
