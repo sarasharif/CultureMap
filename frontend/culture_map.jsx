@@ -9,27 +9,17 @@ var hashHistory = ReactRouter.hashHistory;
 
 var CurrentUserState = require('./mixins/currentUserState');
 
-var LoginForm = require('./components/loginForm');
-
-var userApiUtil = require('./util/userApiUtil.js');
-var userStore = require('./stores/userStore.js');
-
-var App = React.createClass({
-  mixins: [CurrentUserState],
-  render: function () {
-    return (
-      <div>
-        <header><h1>play CultureMap here!</h1></header>
-        <LoginForm />
-        {this.props.children}
-      </div>
-    );
-  }
-});
+var App = require('./components/application');
+var Game = require('./components/game');
+var Register = require('./components/register');
+var Profile = require('./components/profile');
 
 var Router = (
   <Router history={hashHistory}>
     <Route path="/" component={App}>
+      <Route path="play" component={Game}></Route>
+      <Route path="register" component={Register}></Route>
+      <Route path="me" component={Profile}></Route>
     </Route>
   </Router>
 );

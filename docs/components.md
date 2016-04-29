@@ -1,13 +1,15 @@
 ## Component Hierarchy
 
 * `App`
-  * `CategoriesFilter`
+  * `Game`
     * `CategoriesIndex`
-  * `GameForm`
-  * `GuessForm`
-  * `GuessResult`
-    * `GuessForm`
-    * `SummaryForm`
-  * `SummaryResult`
-  * `FavoritesIndex`
+    * `StreetView`
+    * `Map`
+    * `Result`
+    * `Summary`
+  * `Register`
+    * `Signin`
+    * `Signup`
+  * `Profile`
     * `Favorite`
+    * `Scores`

@@ -1,8 +1,6 @@
 ## Routes
 
 * `/`
-  * `category_name/`
-    * `play/`
-  * `me/`
-    * `games`
-    * `settings`
+  * `play`
+  * `register`
+  * `me`

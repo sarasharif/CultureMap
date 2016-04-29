@@ -55,38 +55,21 @@
 	
 	var CurrentUserState = __webpack_require__(225);
 	
-	var LoginForm = __webpack_require__(252);
-	
-	var userApiUtil = __webpack_require__(249);
-	var userStore = __webpack_require__(226);
-	
-	var App = React.createClass({
-	  displayName: 'App',
-	
-	  mixins: [CurrentUserState],
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(
-	        'header',
-	        null,
-	        React.createElement(
-	          'h1',
-	          null,
-	          'play CultureMap here!'
-	        )
-	      ),
-	      React.createElement(LoginForm, null),
-	      this.props.children
-	    );
-	  }
-	});
+	var App = __webpack_require__(258);
+	var Game = __webpack_require__(259);
+	var Register = __webpack_require__(260);
+	var Profile = __webpack_require__(261);
 	
 	var Router = React.createElement(
 	  Router,
 	  { history: hashHistory },
-	  React.createElement(Route, { path: '/', component: App })
+	  React.createElement(
+	    Route,
+	    { path: '/', component: App },
+	    React.createElement(Route, { path: 'play', component: Game }),
+	    React.createElement(Route, { path: 'register', component: Register }),
+	    React.createElement(Route, { path: 'me', component: Profile })
+	  )
 	);
 	
 	document.addEventListener("DOMContentLoaded", function () {
@@ -25477,10 +25460,14 @@
 	  },
 	
 	  componentDidMount: function () {
-	    UserStore.addListener(this.updateUser);
+	    this.listener = UserStore.addListener(this.updateUser);
 	    if (typeof this.state.currentUser === 'undefined') {
 	      UserClientActions.fetchCurrentUser();
 	    }
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.listener.remove();
 	  },
 	
 	  updateUser: function () {
@@ -32453,15 +32440,9 @@
 	        '! ',
 	        React.createElement('br', null),
 	        'NOW PLAY THE GAME!!!',
-	        React.createElement('br', null),
-	        React.createElement('input', { type: 'submit', value: 'logout', onClick: this.logout })
+	        React.createElement('br', null)
 	      );
 	    }
-	  },
-	
-	  logout: function (event) {
-	    event.preventDefault();
-	    ClientActions.logout();
 	  },
 	
 	  errors: function () {
@@ -32762,6 +32743,244 @@
 	};
 	
 	module.exports = ReactStateSetters;
+
+/***/ },
+/* 257 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// USE ME (API KEY)
+	// AIzaSyD0uYEJt5myjVIWmTJICUK6vOP-nndsXw8
+	
+	var React = __webpack_require__(1);
+	var ClientActions = __webpack_require__(248);
+	var CurrentUserState = __webpack_require__(225);
+	var LinkedStateMixin = __webpack_require__(253);
+	
+	var StreetView = React.createClass({
+	  displayName: 'StreetView',
+	
+	
+	  mixins: [LinkedStateMixin, CurrentUserState],
+	
+	  // methods: pano_changed, position_changed, pov_changed, links_changed, visible_changed
+	  //  StreetViewPanorama object provides interface to a viewer
+	  // display within a separate DOM element (often <div>)
+	  // PASS THE ELEMENT WITHIN THE STREETVIEWPANORAMA's CONSTRUCTOR
+	  // this constructor sets location and POV using StreetViewOptions parameter.
+	  // You can call setPosition() and setPov() on object AFTER construction
+	
+	  // getInitialState: function() {
+	  // return {   };
+	  // },
+	  // componentDidMount: function() {
+	  // },
+	  // componentWillUnmount: function() {
+	  // },
+	  componentDidMount: function () {
+	    var streetViewDOMNode = document.getElementById('street-view');
+	    var streetViewOptions = {
+	      position: { lat: 40.96525, lng: -5.6645 },
+	      addressControl: false };
+	    var pano = new google.maps.StreetViewPanorama(streetViewDOMNode, streetViewOptions);
+	  },
+	
+	  render: function () {
+	    return React.createElement('div', { id: 'street-view' });
+	  }
+	
+	});
+	
+	module.exports = StreetView;
+
+/***/ },
+/* 258 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ReactRouter = __webpack_require__(166);
+	var ClientActions = __webpack_require__(248);
+	var CurrentUserState = __webpack_require__(225);
+	var LinkedStateMixin = __webpack_require__(253);
+	var Link = ReactRouter.Link;
+	
+	var NavBar = __webpack_require__(262);
+	
+	var App = React.createClass({
+	  displayName: 'App',
+	
+	
+	  mixins: [CurrentUserState],
+	
+	  whenloggedin: function () {
+	    if (this.state.currentUser) {
+	      return React.createElement(
+	        Link,
+	        { to: '/play' },
+	        'LETS GO EXPLORING'
+	      );
+	    }
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(NavBar, null),
+	      React.createElement(
+	        'header',
+	        null,
+	        React.createElement(
+	          'h1',
+	          null,
+	          'play CultureMap here!'
+	        )
+	      ),
+	      this.props.children,
+	      this.whenloggedin()
+	    );
+	  }
+	});
+	
+	module.exports = App;
+
+/***/ },
+/* 259 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ClientActions = __webpack_require__(248);
+	var CurrentUserState = __webpack_require__(225);
+	var LinkedStateMixin = __webpack_require__(253);
+	
+	var StreetView = __webpack_require__(257);
+	
+	var Game = React.createClass({
+	  displayName: 'Game',
+	
+	
+	  mixins: [LinkedStateMixin, CurrentUserState],
+	
+	  render: function () {
+	    if (this.state.currentUser) {
+	      return React.createElement(
+	        'div',
+	        null,
+	        React.createElement(StreetView, null)
+	      );
+	    } else {
+	      return null;
+	    }
+	  }
+	
+	});
+	
+	module.exports = Game;
+
+/***/ },
+/* 260 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ReactRouter = __webpack_require__(166);
+	var CurrentUserState = __webpack_require__(225);
+	var LinkedStateMixin = __webpack_require__(253);
+	var LoginForm = __webpack_require__(252);
+	
+	var Register = React.createClass({
+	  displayName: 'Register',
+	
+	
+	  render: function () {
+	    return React.createElement(LoginForm, null);
+	  }
+	});
+	
+	module.exports = Register;
+
+/***/ },
+/* 261 */
+/***/ function(module, exports) {
+
+
+
+/***/ },
+/* 262 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ReactRouter = __webpack_require__(166);
+	var CurrentUserState = __webpack_require__(225);
+	var LinkedStateMixin = __webpack_require__(253);
+	var ClientActions = __webpack_require__(248);
+	var Link = ReactRouter.Link;
+	
+	var NavBar = React.createClass({
+	  displayName: 'NavBar',
+	
+	
+	  mixins: [CurrentUserState],
+	
+	  toprightlink1: function () {
+	    if (this.state.currentUser) {
+	      return React.createElement(
+	        'button',
+	        { type: 'submit', onClick: this.logout },
+	        'LOGOUT'
+	      );
+	    } else {
+	      return React.createElement(
+	        Link,
+	        { to: '/register' },
+	        'LOGIN'
+	      );
+	    }
+	  },
+	
+	  toprightlink2: function () {
+	    if (this.state.currentUser) {
+	      return React.createElement(
+	        Link,
+	        { to: '/me' },
+	        'YourProfile'
+	      );
+	    } else {
+	      return React.createElement(
+	        Link,
+	        { to: '/register' },
+	        'SIGNUP'
+	      );
+	    }
+	  },
+	
+	  logout: function (event) {
+	    event.preventDefault();
+	    ClientActions.logout();
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        Link,
+	        { to: '/' },
+	        'cultureMap'
+	      ),
+	      React.createElement(
+	        'div',
+	        { 'class': 'toprightlink1' },
+	        this.toprightlink1()
+	      ),
+	      React.createElement(
+	        'div',
+	        { 'class': 'toprightlink2' },
+	        this.toprightlink2()
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = NavBar;
 
 /***/ }
 /******/ ]);

@@ -11,10 +11,14 @@ var CurrentUserStateMixin = {
   },
 
   componentDidMount: function() {
-    UserStore.addListener(this.updateUser);
+    this.listener = UserStore.addListener(this.updateUser);
 		if (typeof this.state.currentUser === 'undefined') {
 			UserClientActions.fetchCurrentUser();
 		}
+  },
+
+  componentWillUnmount: function() {
+    this.listener.remove();
   },
 
   updateUser: function () {

@@ -21,16 +21,11 @@ var LoginForm = React.createClass({
         <div>
   				Welcome to cultureMap, {this.state.currentUser.username}! <br/>
           NOW PLAY THE GAME!!!<br/>
-  				<input type="submit" value="logout" onClick={this.logout} />
   			</div>
       )
     }
   },
 
-  logout: function(event) {
-    event.preventDefault();
-    ClientActions.logout();
-  },
 
   errors: function () {
     if (this.state.authErrors) {
