@@ -32776,11 +32776,16 @@
 	  // },
 	  // componentWillUnmount: function() {
 	  // },
+	
 	  componentDidMount: function () {
 	    var streetViewDOMNode = document.getElementById('street-view');
 	    var streetViewOptions = {
 	      position: { lat: 40.96525, lng: -5.6645 },
-	      addressControl: false };
+	      addressControl: false,
+	      zoomControlOptions: {
+	        position: google.maps.ControlPosition.BOTTOM_LEFT
+	      }
+	    };
 	    var pano = new google.maps.StreetViewPanorama(streetViewDOMNode, streetViewOptions);
 	  },
 	
@@ -32853,6 +32858,7 @@
 	var LinkedStateMixin = __webpack_require__(253);
 	
 	var StreetView = __webpack_require__(257);
+	var MapGuess = __webpack_require__(263);
 	
 	var Game = React.createClass({
 	  displayName: 'Game',
@@ -32864,8 +32870,9 @@
 	    if (this.state.currentUser) {
 	      return React.createElement(
 	        'div',
-	        null,
-	        React.createElement(StreetView, null)
+	        { className: 'gamediv' },
+	        React.createElement(StreetView, null),
+	        React.createElement(MapGuess, null)
 	      );
 	    } else {
 	      return null;
@@ -32981,6 +32988,50 @@
 	});
 	
 	module.exports = NavBar;
+
+/***/ },
+/* 263 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// USE ME (API KEY)
+	// AIzaSyD0uYEJt5myjVIWmTJICUK6vOP-nndsXw8
+	
+	var React = __webpack_require__(1);
+	var ClientActions = __webpack_require__(248);
+	var CurrentUserState = __webpack_require__(225);
+	var LinkedStateMixin = __webpack_require__(253);
+	
+	var MapGuess = React.createClass({
+	  displayName: 'MapGuess',
+	
+	
+	  mixins: [LinkedStateMixin, CurrentUserState],
+	
+	  componentDidMount: function () {
+	    var mapDOMNode = document.getElementById('map-guess');
+	    var mapOptions = {
+	      center: { lat: 0, lng: 0 },
+	      zoom: 0
+	    };
+	    var map = new google.maps.Map(mapDOMNode, mapOptions);
+	  },
+	
+	  // makeGuess: function () {
+	  // },
+	
+	  render: function () {
+	    return(
+	      // <form onSubmit={this.makeguess()}>
+	      React.createElement('div', { id: 'map-guess' })
+	      // <input type="submit" value="MAKEGUESS"/>
+	      // </form>
+	
+	    );
+	  }
+	
+	});
+	
+	module.exports = MapGuess;
 
 /***/ }
 /******/ ]);

@@ -14,7 +14,22 @@
  *= require_self
  */
 
+  .gamediv {
+    position: relative;
+  }
+
  #street-view {
    height: 75vh;
    width: auto;
+ }
+
+
+ #map-guess {
+   height: 33vh;
+   width: 33vw;
+   z-index: 3;
+   position: absolute;
+   bottom: 0px;
+   right: 0px;
+
  }

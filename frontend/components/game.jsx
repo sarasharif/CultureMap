@@ -4,6 +4,7 @@ var CurrentUserState = require("../mixins/currentUserState");
 var LinkedStateMixin = require('react-addons-linked-state-mixin');
 
 var StreetView = require('./streetView');
+var MapGuess = require('./mapGuess');
 
 var Game = React.createClass({
 
@@ -11,8 +12,9 @@ var Game = React.createClass({
 
   render: function() {
     if ( this.state.currentUser ) {
-      return (<div>
+      return (<div className="gamediv">
         <StreetView />
+        <MapGuess />
       </div>);
     } else {
       return null;

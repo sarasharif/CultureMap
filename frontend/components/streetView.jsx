@@ -24,11 +24,16 @@ var StreetView = React.createClass({
   // },
   // componentWillUnmount: function() {
   // },
+
   componentDidMount: function() {
     var streetViewDOMNode = document.getElementById('street-view');
     var streetViewOptions = {
       position: {lat: 40.96525, lng: -5.6645},
-      addressControl: false };
+      addressControl: false,
+      zoomControlOptions: {
+        position: google.maps.ControlPosition.BOTTOM_LEFT
+      }
+    };
     var pano = new google.maps.StreetViewPanorama(streetViewDOMNode, streetViewOptions);
   },
 
