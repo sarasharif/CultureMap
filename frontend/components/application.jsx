@@ -22,7 +22,8 @@ var App = React.createClass({
     return (
       <div>
         <NavBar />
-        <header><h1>play CultureMap here!</h1></header>
+        <div id="background"></div>
+        <header><h1>Let's Explore the World!</h1></header>
         {this.props.children}
         {this.whenloggedin()}
       </div>

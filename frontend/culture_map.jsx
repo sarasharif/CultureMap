@@ -11,14 +11,16 @@ var CurrentUserState = require('./mixins/currentUserState');
 
 var App = require('./components/application');
 var Game = require('./components/game');
-var Register = require('./components/register');
+var Login = require('./components/login');
+var Signup = require('./components/signup');
 var Profile = require('./components/profile');
 
 var Router = (
   <Router history={hashHistory}>
     <Route path="/" component={App}>
       <Route path="play" component={Game}></Route>
-      <Route path="register" component={Register}></Route>
+      <Route path="login" component={Login}></Route>
+      <Route path="signup" component={Signup}></Route>
       <Route path="me" component={Profile}></Route>
     </Route>
   </Router>

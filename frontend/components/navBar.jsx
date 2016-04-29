@@ -9,20 +9,36 @@ var NavBar = React.createClass({
 
   mixins: [CurrentUserState],
 
-  toprightlink1: function () {
+  navlink1: function () {
     if (this.state.currentUser) {
       return (<button type="submit" onClick={this.logout}>LOGOUT</button>);
     } else {
-      return (<Link to="/register">LOGIN</Link>);
+      return (<Link to="/login">LOGIN</Link>);
     }
   },
 
-  toprightlink2: function () {
+  navlink2: function () {
     if (this.state.currentUser) {
       return (<Link to="/me">YourProfile</Link>);
     } else {
-      return (<Link to="/register">SIGNUP</Link>);
+      return (<Link to="/signup">SIGNUP</Link>);
     }
+  },
+
+  guestlink: function () {
+    if (this.state.currentUser) {
+      return;
+    } else {
+      return (<button type="submit" onClick={this.handleGuestLogin}>GUEST</button>);
+    }
+  },
+
+  handleGuestLogin: function (event) {
+    event.preventDefault();
+    ClientActions.login({
+      username: "Guest",
+      password: "asdfasdf"
+    });
   },
 
   logout: function(event) {
@@ -32,11 +48,13 @@ var NavBar = React.createClass({
 
   render: function () {
     return (
-      <div>
-        <Link to="/">cultureMap</Link>
-        <div class="toprightlink1">{this.toprightlink1()}</div>
-        <div class="toprightlink2">{this.toprightlink2()}</div>
-      </div>
+        <div>
+          <div><img src={"logo.png"} /></div>
+          <Link to="/">cultureMap</Link>
+          <div>{this.navlink1()}</div>
+          <div>{this.navlink2()}</div>
+          <div>{this.guestlink()}</div>
+        </div>
     );
   }
 });

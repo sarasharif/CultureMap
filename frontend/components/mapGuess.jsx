@@ -14,20 +14,34 @@ var MapGuess = React.createClass({
     var mapDOMNode = document.getElementById('map-guess');
     var mapOptions = {
       center: {lat: 0, lng: 0},
-      zoom: 0
+      zoom: 0,
+      disableDefaultUI: true
     };
     var map = new google.maps.Map(mapDOMNode, mapOptions);
+
+    var userMarker = new google.maps.Marker({
+      position: {lat: 0, lng: 0},
+      map: map,
+      draggable: true,
+      label: "?",
+      animation: google.maps.Animation.DROP,
+      title:"HI!"
+    })
   },
 
-  // makeGuess: function () {
-  // },
+  makeGuess: function () {
+
+  },
+
 
   render: function () {
     return (
-      // <form onSubmit={this.makeguess()}>
-        <div id='map-guess'></div>
-        // <input type="submit" value="MAKEGUESS"/>
-      // </form>
+
+        <form id='guess-form' onSubmit={this.makeGuess}>
+          <div id='map-guess'></div>
+          <input id='guess-submit' type="submit" value="MAKEGUESS"></input>
+        </form>
+
     );
   }
 

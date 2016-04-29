@@ -7,6 +7,14 @@ var LoginForm = React.createClass({
 
   mixins: [LinkedStateMixin, CurrentUserState],
 
+  getInitialState: function() {
+    return { form: "signup" };
+  },
+
+  setForm: function(event) {
+    this.setState({form: event.currentTarget.value});
+  },
+
   greeting: function () {
     if ( this.state.currentUser ) {
       return (
@@ -17,7 +25,6 @@ var LoginForm = React.createClass({
       )
     }
   },
-
 
   errors: function () {
     if (this.state.authErrors) {
@@ -36,7 +43,7 @@ var LoginForm = React.createClass({
 
   handleSubmit: function (event) {
     event.preventDefault();
-    ClientActions.login({
+    ClientActions.signup({
       username: this.state.username,
       password: this.state.password
     });
@@ -53,7 +60,7 @@ var LoginForm = React.createClass({
           <input type="password" placeholder="password" valueLink={this.linkState("password")}></input>
         </section>
 
-        <input type="submit" value="log in"></input>
+        <input type="submit" value="Sign Up"></input>
 
       </form>
     )

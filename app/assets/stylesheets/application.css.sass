@@ -14,22 +14,35 @@
  *= require_self
  */
 
-  .gamediv {
-    position: relative;
-  }
+@import url(https://fonts.googleapis.com/css?family=Lato:400,700,400italic)
+@import "bootstrap-sprockets"
+@import "bootstrap"
 
- #street-view {
-   height: 75vh;
-   width: auto;
- }
+*
+  font-family: 'Lato', sans-serif
 
 
- #map-guess {
-   height: 33vh;
-   width: 33vw;
-   z-index: 3;
-   position: absolute;
-   bottom: 0px;
-   right: 0px;
+.gamediv
+  position: relative
 
- }
+#street-view
+  height: 75vh
+  width: auto
+
+body
+  background-color: white
+  background-image: url('splash.gif')
+  background-repeat: no-repeat
+  background-size: cover
+
+#map-guess
+  height: 33vh
+  width: 33vw
+  z-index: 3
+  position: absolute
+  bottom: 0px
+  right: 0px
+
+
+#guess-submit
+  z-index: 4

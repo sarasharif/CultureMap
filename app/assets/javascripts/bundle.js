@@ -55,10 +55,11 @@
 	
 	var CurrentUserState = __webpack_require__(225);
 	
-	var App = __webpack_require__(258);
-	var Game = __webpack_require__(259);
-	var Register = __webpack_require__(260);
-	var Profile = __webpack_require__(261);
+	var App = __webpack_require__(252);
+	var Game = __webpack_require__(258);
+	var Login = __webpack_require__(264);
+	var Signup = __webpack_require__(265);
+	var Profile = __webpack_require__(263);
 	
 	var Router = React.createElement(
 	  Router,
@@ -67,7 +68,8 @@
 	    Route,
 	    { path: '/', component: App },
 	    React.createElement(Route, { path: 'play', component: Game }),
-	    React.createElement(Route, { path: 'register', component: Register }),
+	    React.createElement(Route, { path: 'login', component: Login }),
+	    React.createElement(Route, { path: 'signup', component: Signup }),
 	    React.createElement(Route, { path: 'me', component: Profile })
 	  )
 	);
@@ -32412,109 +32414,52 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
+	var ReactRouter = __webpack_require__(166);
 	var ClientActions = __webpack_require__(248);
 	var CurrentUserState = __webpack_require__(225);
 	var LinkedStateMixin = __webpack_require__(253);
+	var Link = ReactRouter.Link;
 	
-	var LoginForm = React.createClass({
-	  displayName: 'LoginForm',
+	var NavBar = __webpack_require__(257);
+	
+	var App = React.createClass({
+	  displayName: 'App',
 	
 	
-	  mixins: [LinkedStateMixin, CurrentUserState],
+	  mixins: [CurrentUserState],
 	
-	  getInitialState: function () {
-	    return { form: "login" };
-	  },
-	
-	  setForm: function (event) {
-	    this.setState({ form: event.currentTarget.value });
-	  },
-	
-	  greeting: function () {
+	  whenloggedin: function () {
 	    if (this.state.currentUser) {
 	      return React.createElement(
-	        'div',
-	        null,
-	        'Welcome to cultureMap, ',
-	        this.state.currentUser.username,
-	        '! ',
-	        React.createElement('br', null),
-	        'NOW PLAY THE GAME!!!',
-	        React.createElement('br', null)
+	        Link,
+	        { to: '/play' },
+	        'LETS GO EXPLORING'
 	      );
 	    }
-	  },
-	
-	  errors: function () {
-	    if (this.state.authErrors) {
-	      var self = this;
-	      return React.createElement(
-	        'ul',
-	        null,
-	        Object.keys(this.state.authErrors).map(function (key, i) {
-	          return React.createElement(
-	            'li',
-	            { key: i },
-	            self.state.authErrors[key]
-	          );
-	        })
-	      );
-	    }
-	  },
-	
-	  handleSubmit: function (event) {
-	    event.preventDefault();
-	    ClientActions[this.state.form]({
-	      username: this.state.username,
-	      password: this.state.password
-	    });
-	  },
-	
-	  form: function () {
-	    if (this.state.currentUser) {
-	      return;
-	    }
-	    return React.createElement(
-	      'form',
-	      { onSubmit: this.handleSubmit },
-	      React.createElement(
-	        'section',
-	        null,
-	        React.createElement('input', { type: 'text', placeholder: 'username', valueLink: this.linkState("username") }),
-	        React.createElement('input', { type: 'password', placeholder: 'password', valueLink: this.linkState("password") })
-	      ),
-	      React.createElement(
-	        'section',
-	        null,
-	        React.createElement(
-	          'label',
-	          null,
-	          ' Login',
-	          React.createElement('input', { type: 'Radio', name: 'action', value: 'login', onChange: this.setForm })
-	        ),
-	        React.createElement(
-	          'label',
-	          null,
-	          ' Sign Up',
-	          React.createElement('input', { type: 'Radio', name: 'action', value: 'signup', onChange: this.setForm })
-	        )
-	      ),
-	      React.createElement('input', { type: 'submit', value: 'Press Me' })
-	    );
 	  },
 	
 	  render: function () {
 	    return React.createElement(
 	      'div',
-	      { id: 'login-form' },
-	      this.greeting(),
-	      this.errors(),
-	      this.form()
+	      null,
+	      React.createElement(NavBar, null),
+	      React.createElement('div', { id: 'background' }),
+	      React.createElement(
+	        'header',
+	        null,
+	        React.createElement(
+	          'h1',
+	          null,
+	          'Let\'s Explore the World!'
+	        )
+	      ),
+	      this.props.children,
+	      this.whenloggedin()
 	    );
 	  }
 	});
 	
-	module.exports = LoginForm;
+	module.exports = App;
 
 /***/ },
 /* 253 */
@@ -32748,6 +32693,150 @@
 /* 257 */
 /***/ function(module, exports, __webpack_require__) {
 
+	var React = __webpack_require__(1);
+	var ReactRouter = __webpack_require__(166);
+	var CurrentUserState = __webpack_require__(225);
+	var LinkedStateMixin = __webpack_require__(253);
+	var ClientActions = __webpack_require__(248);
+	var Link = ReactRouter.Link;
+	
+	var NavBar = React.createClass({
+	  displayName: 'NavBar',
+	
+	
+	  mixins: [CurrentUserState],
+	
+	  navlink1: function () {
+	    if (this.state.currentUser) {
+	      return React.createElement(
+	        'button',
+	        { type: 'submit', onClick: this.logout },
+	        'LOGOUT'
+	      );
+	    } else {
+	      return React.createElement(
+	        Link,
+	        { to: '/login' },
+	        'LOGIN'
+	      );
+	    }
+	  },
+	
+	  navlink2: function () {
+	    if (this.state.currentUser) {
+	      return React.createElement(
+	        Link,
+	        { to: '/me' },
+	        'YourProfile'
+	      );
+	    } else {
+	      return React.createElement(
+	        Link,
+	        { to: '/signup' },
+	        'SIGNUP'
+	      );
+	    }
+	  },
+	
+	  guestlink: function () {
+	    if (this.state.currentUser) {
+	      return;
+	    } else {
+	      return React.createElement(
+	        'button',
+	        { type: 'submit', onClick: this.handleGuestLogin },
+	        'GUEST'
+	      );
+	    }
+	  },
+	
+	  handleGuestLogin: function (event) {
+	    event.preventDefault();
+	    ClientActions.login({
+	      username: "Guest",
+	      password: "asdfasdf"
+	    });
+	  },
+	
+	  logout: function (event) {
+	    event.preventDefault();
+	    ClientActions.logout();
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'div',
+	        null,
+	        React.createElement('img', { src: "logo.png" })
+	      ),
+	      React.createElement(
+	        Link,
+	        { to: '/' },
+	        'cultureMap'
+	      ),
+	      React.createElement(
+	        'div',
+	        null,
+	        this.navlink1()
+	      ),
+	      React.createElement(
+	        'div',
+	        null,
+	        this.navlink2()
+	      ),
+	      React.createElement(
+	        'div',
+	        null,
+	        this.guestlink()
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = NavBar;
+
+/***/ },
+/* 258 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ClientActions = __webpack_require__(248);
+	var CurrentUserState = __webpack_require__(225);
+	var LinkedStateMixin = __webpack_require__(253);
+	
+	var StreetView = __webpack_require__(259);
+	var MapGuess = __webpack_require__(260);
+	
+	var Game = React.createClass({
+	  displayName: 'Game',
+	
+	
+	  mixins: [LinkedStateMixin, CurrentUserState],
+	
+	  render: function () {
+	    if (this.state.currentUser) {
+	      return React.createElement(
+	        'div',
+	        { className: 'gamediv' },
+	        React.createElement(StreetView, null),
+	        React.createElement(MapGuess, null)
+	      );
+	    } else {
+	      return null;
+	    }
+	  }
+	
+	});
+	
+	module.exports = Game;
+
+/***/ },
+/* 259 */
+/***/ function(module, exports, __webpack_require__) {
+
 	// USE ME (API KEY)
 	// AIzaSyD0uYEJt5myjVIWmTJICUK6vOP-nndsXw8
 	
@@ -32798,199 +32887,7 @@
 	module.exports = StreetView;
 
 /***/ },
-/* 258 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var ReactRouter = __webpack_require__(166);
-	var ClientActions = __webpack_require__(248);
-	var CurrentUserState = __webpack_require__(225);
-	var LinkedStateMixin = __webpack_require__(253);
-	var Link = ReactRouter.Link;
-	
-	var NavBar = __webpack_require__(262);
-	
-	var App = React.createClass({
-	  displayName: 'App',
-	
-	
-	  mixins: [CurrentUserState],
-	
-	  whenloggedin: function () {
-	    if (this.state.currentUser) {
-	      return React.createElement(
-	        Link,
-	        { to: '/play' },
-	        'LETS GO EXPLORING'
-	      );
-	    }
-	  },
-	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(NavBar, null),
-	      React.createElement(
-	        'header',
-	        null,
-	        React.createElement(
-	          'h1',
-	          null,
-	          'play CultureMap here!'
-	        )
-	      ),
-	      this.props.children,
-	      this.whenloggedin()
-	    );
-	  }
-	});
-	
-	module.exports = App;
-
-/***/ },
-/* 259 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var ClientActions = __webpack_require__(248);
-	var CurrentUserState = __webpack_require__(225);
-	var LinkedStateMixin = __webpack_require__(253);
-	
-	var StreetView = __webpack_require__(257);
-	var MapGuess = __webpack_require__(263);
-	
-	var Game = React.createClass({
-	  displayName: 'Game',
-	
-	
-	  mixins: [LinkedStateMixin, CurrentUserState],
-	
-	  render: function () {
-	    if (this.state.currentUser) {
-	      return React.createElement(
-	        'div',
-	        { className: 'gamediv' },
-	        React.createElement(StreetView, null),
-	        React.createElement(MapGuess, null)
-	      );
-	    } else {
-	      return null;
-	    }
-	  }
-	
-	});
-	
-	module.exports = Game;
-
-/***/ },
 /* 260 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var ReactRouter = __webpack_require__(166);
-	var CurrentUserState = __webpack_require__(225);
-	var LinkedStateMixin = __webpack_require__(253);
-	var LoginForm = __webpack_require__(252);
-	
-	var Register = React.createClass({
-	  displayName: 'Register',
-	
-	
-	  render: function () {
-	    return React.createElement(LoginForm, null);
-	  }
-	});
-	
-	module.exports = Register;
-
-/***/ },
-/* 261 */
-/***/ function(module, exports) {
-
-
-
-/***/ },
-/* 262 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var ReactRouter = __webpack_require__(166);
-	var CurrentUserState = __webpack_require__(225);
-	var LinkedStateMixin = __webpack_require__(253);
-	var ClientActions = __webpack_require__(248);
-	var Link = ReactRouter.Link;
-	
-	var NavBar = React.createClass({
-	  displayName: 'NavBar',
-	
-	
-	  mixins: [CurrentUserState],
-	
-	  toprightlink1: function () {
-	    if (this.state.currentUser) {
-	      return React.createElement(
-	        'button',
-	        { type: 'submit', onClick: this.logout },
-	        'LOGOUT'
-	      );
-	    } else {
-	      return React.createElement(
-	        Link,
-	        { to: '/register' },
-	        'LOGIN'
-	      );
-	    }
-	  },
-	
-	  toprightlink2: function () {
-	    if (this.state.currentUser) {
-	      return React.createElement(
-	        Link,
-	        { to: '/me' },
-	        'YourProfile'
-	      );
-	    } else {
-	      return React.createElement(
-	        Link,
-	        { to: '/register' },
-	        'SIGNUP'
-	      );
-	    }
-	  },
-	
-	  logout: function (event) {
-	    event.preventDefault();
-	    ClientActions.logout();
-	  },
-	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(
-	        Link,
-	        { to: '/' },
-	        'cultureMap'
-	      ),
-	      React.createElement(
-	        'div',
-	        { 'class': 'toprightlink1' },
-	        this.toprightlink1()
-	      ),
-	      React.createElement(
-	        'div',
-	        { 'class': 'toprightlink2' },
-	        this.toprightlink2()
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = NavBar;
-
-/***/ },
-/* 263 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// USE ME (API KEY)
@@ -33011,27 +32908,262 @@
 	    var mapDOMNode = document.getElementById('map-guess');
 	    var mapOptions = {
 	      center: { lat: 0, lng: 0 },
-	      zoom: 0
+	      zoom: 0,
+	      disableDefaultUI: true
 	    };
 	    var map = new google.maps.Map(mapDOMNode, mapOptions);
+	
+	    var userMarker = new google.maps.Marker({
+	      position: { lat: 0, lng: 0 },
+	      map: map,
+	      draggable: true,
+	      label: "?",
+	      animation: google.maps.Animation.DROP,
+	      title: "HI!"
+	    });
 	  },
 	
-	  // makeGuess: function () {
-	  // },
+	  makeGuess: function () {},
 	
 	  render: function () {
-	    return(
-	      // <form onSubmit={this.makeguess()}>
-	      React.createElement('div', { id: 'map-guess' })
-	      // <input type="submit" value="MAKEGUESS"/>
-	      // </form>
-	
+	    return React.createElement(
+	      'form',
+	      { id: 'guess-form', onSubmit: this.makeGuess },
+	      React.createElement('div', { id: 'map-guess' }),
+	      React.createElement('input', { id: 'guess-submit', type: 'submit', value: 'MAKEGUESS' })
 	    );
 	  }
 	
 	});
 	
 	module.exports = MapGuess;
+
+/***/ },
+/* 261 */,
+/* 262 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ClientActions = __webpack_require__(248);
+	var CurrentUserState = __webpack_require__(225);
+	var LinkedStateMixin = __webpack_require__(253);
+	
+	var LoginForm = React.createClass({
+	  displayName: 'LoginForm',
+	
+	
+	  mixins: [LinkedStateMixin, CurrentUserState],
+	
+	  greeting: function () {
+	    if (this.state.currentUser) {
+	      return React.createElement(
+	        'div',
+	        null,
+	        'Welcome to cultureMap, ',
+	        this.state.currentUser.username,
+	        '! ',
+	        React.createElement('br', null),
+	        'NOW PLAY THE GAME!!!',
+	        React.createElement('br', null)
+	      );
+	    }
+	  },
+	
+	  errors: function () {
+	    if (this.state.authErrors) {
+	      var self = this;
+	      return React.createElement(
+	        'ul',
+	        null,
+	        Object.keys(this.state.authErrors).map(function (key, i) {
+	          return React.createElement(
+	            'li',
+	            { key: i },
+	            self.state.authErrors[key]
+	          );
+	        })
+	      );
+	    }
+	  },
+	
+	  handleSubmit: function (event) {
+	    event.preventDefault();
+	    ClientActions.login({
+	      username: this.state.username,
+	      password: this.state.password
+	    });
+	  },
+	
+	  form: function () {
+	    if (this.state.currentUser) {
+	      return;
+	    }
+	    return React.createElement(
+	      'form',
+	      { onSubmit: this.handleSubmit },
+	      React.createElement(
+	        'section',
+	        null,
+	        React.createElement('input', { type: 'text', placeholder: 'username', valueLink: this.linkState("username") }),
+	        React.createElement('input', { type: 'password', placeholder: 'password', valueLink: this.linkState("password") })
+	      ),
+	      React.createElement('input', { type: 'submit', value: 'log in' })
+	    );
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { id: 'login-form' },
+	      this.greeting(),
+	      this.errors(),
+	      this.form()
+	    );
+	  }
+	});
+	
+	module.exports = LoginForm;
+
+/***/ },
+/* 263 */
+/***/ function(module, exports) {
+
+
+
+/***/ },
+/* 264 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ReactRouter = __webpack_require__(166);
+	var CurrentUserState = __webpack_require__(225);
+	var LinkedStateMixin = __webpack_require__(253);
+	var LoginForm = __webpack_require__(262);
+	
+	var Register = React.createClass({
+	  displayName: 'Register',
+	
+	
+	  render: function () {
+	    return React.createElement(LoginForm, null);
+	  }
+	});
+	
+	module.exports = Register;
+
+/***/ },
+/* 265 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ReactRouter = __webpack_require__(166);
+	var CurrentUserState = __webpack_require__(225);
+	var LinkedStateMixin = __webpack_require__(253);
+	var SignupForm = __webpack_require__(266);
+	
+	var Register = React.createClass({
+	  displayName: 'Register',
+	
+	
+	  render: function () {
+	    return React.createElement(SignupForm, null);
+	  }
+	});
+	
+	module.exports = Register;
+
+/***/ },
+/* 266 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ClientActions = __webpack_require__(248);
+	var CurrentUserState = __webpack_require__(225);
+	var LinkedStateMixin = __webpack_require__(253);
+	
+	var LoginForm = React.createClass({
+	  displayName: 'LoginForm',
+	
+	
+	  mixins: [LinkedStateMixin, CurrentUserState],
+	
+	  getInitialState: function () {
+	    return { form: "signup" };
+	  },
+	
+	  setForm: function (event) {
+	    this.setState({ form: event.currentTarget.value });
+	  },
+	
+	  greeting: function () {
+	    if (this.state.currentUser) {
+	      return React.createElement(
+	        'div',
+	        null,
+	        'Welcome to cultureMap, ',
+	        this.state.currentUser.username,
+	        '! ',
+	        React.createElement('br', null),
+	        'NOW PLAY THE GAME!!!',
+	        React.createElement('br', null)
+	      );
+	    }
+	  },
+	
+	  errors: function () {
+	    if (this.state.authErrors) {
+	      var self = this;
+	      return React.createElement(
+	        'ul',
+	        null,
+	        Object.keys(this.state.authErrors).map(function (key, i) {
+	          return React.createElement(
+	            'li',
+	            { key: i },
+	            self.state.authErrors[key]
+	          );
+	        })
+	      );
+	    }
+	  },
+	
+	  handleSubmit: function (event) {
+	    event.preventDefault();
+	    ClientActions.signup({
+	      username: this.state.username,
+	      password: this.state.password
+	    });
+	  },
+	
+	  form: function () {
+	    if (this.state.currentUser) {
+	      return;
+	    }
+	    return React.createElement(
+	      'form',
+	      { onSubmit: this.handleSubmit },
+	      React.createElement(
+	        'section',
+	        null,
+	        React.createElement('input', { type: 'text', placeholder: 'username', valueLink: this.linkState("username") }),
+	        React.createElement('input', { type: 'password', placeholder: 'password', valueLink: this.linkState("password") })
+	      ),
+	      React.createElement('input', { type: 'submit', value: 'Sign Up' })
+	    );
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { id: 'login-form' },
+	      this.greeting(),
+	      this.errors(),
+	      this.form()
+	    );
+	  }
+	});
+	
+	module.exports = LoginForm;
 
 /***/ }
 /******/ ]);
