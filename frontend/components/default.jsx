@@ -38,7 +38,7 @@ var Default = React.createClass({
     return (
       <div>
         <header><h1 className="display-1">Lets Explore the World!</h1></header>
-        {this.whenloggedin()};
+        {this.whenloggedin()}
       </div>
     );
   }

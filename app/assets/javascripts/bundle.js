@@ -33491,8 +33491,7 @@
 	          'Lets Explore the World!'
 	        )
 	      ),
-	      this.whenloggedin(),
-	      ';'
+	      this.whenloggedin()
 	    );
 	  }
 	
