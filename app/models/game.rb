@@ -9,9 +9,6 @@ class Game < ActiveRecord::Base
 
   has_many :guesses
 
-  # OMG I have completely forgotten how to ruby.
-  # I should probably use inject in here
-  # UGHHHHHHHHHHHH
   def score=()
     guesses = self.guesses
     score = 0

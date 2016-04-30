@@ -1,9 +1,7 @@
 class Api::GamesController < ApplicationController
 
   def create
-
-    @game = Game.create!({player_id: params[:playerId].to_i})
-
+    @game = Game.create!({player_id: (params[:playerId].to_i)})
     render json: @game
   end
 

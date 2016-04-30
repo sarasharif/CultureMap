@@ -6,11 +6,9 @@ var ApiUtil = {
       url: "api/games",
       type: "POST",
       data: {playerId: data},
-      success: function (game) {
-        ServerActions.receiveGame(game);
-
-        ServerActions.receiveSite1();
-
+      success: function (gamepackage) {
+        ServerActions.receiveGame(gamepackage.slice());
+        ServerActions.receiveGuesses(gamepackage.slice(1));
       }
     });
   },

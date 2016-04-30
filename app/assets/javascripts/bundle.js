@@ -32992,10 +32992,9 @@
 	      url: "api/games",
 	      type: "POST",
 	      data: { playerId: data },
-	      success: function (game) {
-	        ServerActions.receiveGame(game);
-	
-	        ServerActions.receiveSite1();
+	      success: function (gamepackage) {
+	        ServerActions.receiveGame(gamepackage.slice());
+	        ServerActions.receiveGuesses(gamepackage.slice(1));
 	      }
 	    });
 	  },
@@ -33191,9 +33190,11 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
+	var ReactRouter = __webpack_require__(166);
 	var ClientActions = __webpack_require__(250);
 	var CurrentUserState = __webpack_require__(227);
 	var LinkedStateMixin = __webpack_require__(255);
+	var hashHistory = ReactRouter.hashHistory;
 	
 	var LoginForm = React.createClass({
 	  displayName: 'LoginForm',
@@ -33239,6 +33240,7 @@
 	      username: this.state.username,
 	      password: this.state.password
 	    });
+	    hashHistory.push('/');
 	  },
 	
 	  form: function () {
@@ -33262,7 +33264,6 @@
 	    return React.createElement(
 	      'div',
 	      { id: 'login-form' },
-	      this.greeting(),
 	      this.errors(),
 	      this.form()
 	    );
@@ -33300,7 +33301,8 @@
 	var ClientActions = __webpack_require__(250);
 	var CurrentUserState = __webpack_require__(227);
 	var LinkedStateMixin = __webpack_require__(255);
-	
+	var ReactRouter = __webpack_require__(166);
+	var hashHistory = ReactRouter.hashHistory;
 	var LoginForm = React.createClass({
 	  displayName: 'LoginForm',
 	
@@ -33353,6 +33355,7 @@
 	      username: this.state.username,
 	      password: this.state.password
 	    });
+	    hashHistory.push('/');
 	  },
 	
 	  form: function () {
