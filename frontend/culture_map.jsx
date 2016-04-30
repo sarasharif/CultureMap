@@ -14,13 +14,20 @@ var Game = require('./components/game');
 var Login = require('./components/login');
 var Signup = require('./components/signup');
 var Profile = require('./components/profile');
+var Splash = require('./components/splash');
+var Categories = require('./components/categories');
+var Default = require('./components/default');
 
 var Router = (
   <Router history={hashHistory}>
     <Route path="/" component={App}>
+      <Route component={Splash}>
+        <IndexRoute component={Default} />
+        <Route path="login" component={Login}></Route>
+        <Route path="signup" component={Signup}></Route>
+        <Route path="categories" component={Categories}></Route>
+      </Route>
       <Route path="play" component={Game}></Route>
-      <Route path="login" component={Login}></Route>
-      <Route path="signup" component={Signup}></Route>
       <Route path="me" component={Profile}></Route>
     </Route>
   </Router>

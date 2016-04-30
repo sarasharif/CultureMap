@@ -11,7 +11,7 @@ var NavBar = React.createClass({
 
   navlink1: function () {
     if (this.state.currentUser) {
-      return (<button type="submit" onClick={this.logout}>LOGOUT</button>);
+      return (<a className="btn btn-info-outline" type="submit" onClick={this.logout}>LOGOUT</a>);
     } else {
       return (<Link to="/login">LOGIN</Link>);
     }
@@ -19,27 +19,13 @@ var NavBar = React.createClass({
 
   navlink2: function () {
     if (this.state.currentUser) {
-      return (<Link to="/me">YourProfile</Link>);
+      return (<Link to="/me">PROFILE</Link>);
     } else {
       return (<Link to="/signup">SIGNUP</Link>);
     }
   },
 
-  guestlink: function () {
-    if (this.state.currentUser) {
-      return;
-    } else {
-      return (<button type="submit" onClick={this.handleGuestLogin}>GUEST</button>);
-    }
-  },
 
-  handleGuestLogin: function (event) {
-    event.preventDefault();
-    ClientActions.login({
-      username: "Guest",
-      password: "asdfasdf"
-    });
-  },
 
   logout: function(event) {
     event.preventDefault();
@@ -48,13 +34,13 @@ var NavBar = React.createClass({
 
   render: function () {
     return (
-        <div>
-          <div><img src={"logo.png"} /></div>
-          <Link to="/">cultureMap</Link>
-          <div>{this.navlink1()}</div>
-          <div>{this.navlink2()}</div>
-          <div>{this.guestlink()}</div>
-        </div>
+      <nav className="navbar navbar-dark bg-inverse">
+        <ul className="nav navbar-nav">
+          <li className="btn btn-info-outline"><Link to="/">cultureMap</Link></li>
+          <li className="btn btn-info-outline">{this.navlink1()}</li>
+          <li className="btn btn-info-outline">{this.navlink2()}</li>
+        </ul>
+      </nav>
     );
   }
 });

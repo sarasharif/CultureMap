@@ -14,23 +14,21 @@ var LoginForm = React.createClass({
   				Welcome to cultureMap, {this.state.currentUser.username}! <br/>
           NOW PLAY THE GAME!!!<br/>
   			</div>
-      )
+      );
     }
   },
-
 
   errors: function () {
     if (this.state.authErrors) {
       var self = this;
       return (
         <ul>
-          {
-            Object.keys(this.state.authErrors).map(function(key, i){
+          { Object.keys(this.state.authErrors).map(function(key, i) {
               return (<li key={i}>{self.state.authErrors[key]}</li>);
             })
           }
         </ul>
-      )
+      );
     }
   },
 
@@ -53,10 +51,10 @@ var LoginForm = React.createClass({
           <input type="password" placeholder="password" valueLink={this.linkState("password")}></input>
         </section>
 
-        <input type="submit" value="log in"></input>
+        <input className="btn btn-success" type="submit" value="log in"></input>
 
       </form>
-    )
+    );
   },
 
   render: function () {
@@ -69,6 +67,5 @@ var LoginForm = React.createClass({
     );
   }
 });
-
 
 module.exports = LoginForm;

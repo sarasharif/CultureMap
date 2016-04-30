@@ -7,18 +7,19 @@ var Link = ReactRouter.Link;
 
 var NavBar = require('./navBar');
 
-var App = React.createClass({
+
+var Splash = React.createClass({
 
   mixins: [CurrentUserState],
 
   render: function () {
     return (
       <div>
-        <NavBar />
+        <div id="background"></div>
         {this.props.children}
       </div>
     );
   }
 });
 
-module.exports = App;
+module.exports = Splash;

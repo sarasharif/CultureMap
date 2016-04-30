@@ -1,0 +1,2 @@
+module Api::GuessesHelper
+end

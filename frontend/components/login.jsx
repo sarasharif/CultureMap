@@ -7,7 +7,6 @@ var LoginForm = require('./loginForm');
 
 var Register = React.createClass({
 
-
   render: function () {
     return (
       <LoginForm />

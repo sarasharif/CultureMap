@@ -7,7 +7,6 @@ var SignupForm = require('./signupForm');
 
 var Register = React.createClass({
 
-
   render: function () {
     return (
       <SignupForm />

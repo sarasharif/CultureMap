@@ -2,39 +2,44 @@
 // AIzaSyD0uYEJt5myjVIWmTJICUK6vOP-nndsXw8
 
 var React = require('react');
-var ClientActions = require('../actions/userClientActions');
+var ClientActions = require('../actions/clientActions');
 var CurrentUserState = require("../mixins/currentUserState");
-var LinkedStateMixin = require('react-addons-linked-state-mixin');
+
+var GuessStore = require('../stores/guessStore.js');
 
 var StreetView = React.createClass({
 
-  mixins: [LinkedStateMixin, CurrentUserState],
+  mixins: [CurrentUserState],
 
-  // methods: pano_changed, position_changed, pov_changed, links_changed, visible_changed
-  //  StreetViewPanorama object provides interface to a viewer
-  // display within a separate DOM element (often <div>)
-  // PASS THE ELEMENT WITHIN THE STREETVIEWPANORAMA's CONSTRUCTOR
-  // this constructor sets location and POV using StreetViewOptions parameter.
-  // You can call setPosition() and setPov() on object AFTER construction
-
-  // getInitialState: function() {
-    // return {   };
-  // },
-  // componentDidMount: function() {
-  // },
-  // componentWillUnmount: function() {
-  // },
+  getInitialState: function() {
+    var siteId = this.props.siteId;
+    var unesco_site = GuessStore.find(siteId);
+    return {unesco_site: unesco_site};
+  },
 
   componentDidMount: function() {
+    this.siteListener = GuessStore.addListener(this.renderStreetView());
+    ClientActions.fetchSite();
+  },
+
+  componentWillUnmount: function() {
+    this.siteListener.remove();
+  },
+
+  renderStreetView: function (lat,long) {
+
     var streetViewDOMNode = document.getElementById('street-view');
     var streetViewOptions = {
-      position: {lat: 40.96525, lng: -5.6645},
+      position: {lat: this.props.lat, lng: this.props.long},
       addressControl: false,
       zoomControlOptions: {
-        position: google.maps.ControlPosition.BOTTOM_LEFT
-      }
+        position: google.maps.ControlPosition.TOP_LEFT
+      },
+      panControlOptions: {
+        position: google.maps.ControlPosition.TOP_LEFT
+      },
     };
-    var pano = new google.maps.StreetViewPanorama(streetViewDOMNode, streetViewOptions);
+  var pano = new google.maps.StreetViewPanorama(streetViewDOMNode, streetViewOptions);
   },
 
   render: function () {
@@ -42,7 +47,6 @@ var StreetView = React.createClass({
         <div id='street-view'></div>
     );
   }
-
 });
 
 
