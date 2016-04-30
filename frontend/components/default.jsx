@@ -24,6 +24,7 @@ var Default = React.createClass({
     var userId = 1;
     // hashHistory.push("/play");
     ClientActions.createGame(userId);
+    hashHistory.push("play");
   },
 
   whenloggedin: function () {

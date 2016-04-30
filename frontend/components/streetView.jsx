@@ -1,6 +1,3 @@
-// USE ME (API KEY)
-// AIzaSyD0uYEJt5myjVIWmTJICUK6vOP-nndsXw8
-
 var React = require('react');
 var ClientActions = require('../actions/clientActions');
 var CurrentUserState = require("../mixins/currentUserState");
@@ -12,25 +9,27 @@ var StreetView = React.createClass({
   mixins: [CurrentUserState],
 
   getInitialState: function() {
-    var siteId = this.props.siteId;
-    var unesco_site = GuessStore.find(siteId);
-    return {unesco_site: unesco_site};
+    var viewToRender = GuessStore.current_guess();
+    return {lat: viewToRender.lat, long: viewToRender.long};
   },
 
   componentDidMount: function() {
     this.siteListener = GuessStore.addListener(this.renderStreetView());
-    ClientActions.fetchSite();
+    var viewToRender = GuessStore.current_guess();
+    this.setState({lat: viewToRender.lat, long: viewToRender.long});
   },
 
   componentWillUnmount: function() {
     this.siteListener.remove();
   },
 
-  renderStreetView: function (lat,long) {
-
+  renderStreetView: function () {
+    var viewToRender = GuessStore.current_guess();
+    // HARD CODED COORDINATES IN HERE;
+    viewToRender = {lat:44.89204, long:-0.15734 };
     var streetViewDOMNode = document.getElementById('street-view');
     var streetViewOptions = {
-      position: {lat: this.props.lat, lng: this.props.long},
+      position: {lat: viewToRender.lat, lng: viewToRender.long},
       addressControl: false,
       zoomControlOptions: {
         position: google.maps.ControlPosition.TOP_LEFT

@@ -4,17 +4,24 @@ var AppDispatcher = require('../dispatcher/dispatcher');
 var GuessStore = new Store(AppDispatcher);
 
 var guess = {};
+var _guesses = {};
+var _guessToRender = {};
 
-GuessStore.find = function (siteId) {
-  return guess;
+GuessStore.current_guess = function () {
+  return _guessToRender;
 },
 
 GuessStore.__onDispatch = function (payload) {
   switch(payload.actionType) {
     case "SITE_RECEIVED":
       guess = payload;
-      GuessStore.__emitChange();
       break;
+    case "EMPTY_GUESSES_RECEIVED":
+      for (var i = 0; i < 5; i++) {
+        _guesses[i] = payload.guesses[0][i];
+      }
+      _guessToRender = _guesses[0];
+    break;
   }
   GuessStore.__emitChange();
 };

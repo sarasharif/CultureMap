@@ -32872,27 +32872,28 @@
 	  mixins: [CurrentUserState],
 	
 	  getInitialState: function () {
-	    return { gameId: null };
+	    // return {gameId: null};
 	  },
 	
 	  componentDidMount: function () {
-	    this.listener = GameStore.addListener(this._onChange);
+	    // this.listener = GameStore.addListener(this._onChange);
+	
 	  },
 	
 	  _onChange: function () {
-	    this.setState({ gameId: GameStore.grabId() });
-	    console.log("We created a game");
+	    // this.setState({gameId: GameStore.grabId()});
+	    // console.log("We created a game");
 	    // go through flux and create guesses
 	  },
 	
 	  render: function () {
-	    var siteId = this.state.siteId;
+	    // var siteId = this.state.siteId;
 	
 	    if (this.state.currentUser) {
 	      return React.createElement(
 	        'div',
 	        { className: 'gamediv' },
-	        React.createElement(StreetView, { siteId: siteId }),
+	        React.createElement(StreetView, null),
 	        React.createElement(MapGuess, null)
 	      );
 	    } else {
@@ -32908,9 +32909,6 @@
 /* 261 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// USE ME (API KEY)
-	// AIzaSyD0uYEJt5myjVIWmTJICUK6vOP-nndsXw8
-	
 	var React = __webpack_require__(1);
 	var ClientActions = __webpack_require__(262);
 	var CurrentUserState = __webpack_require__(227);
@@ -32924,25 +32922,27 @@
 	  mixins: [CurrentUserState],
 	
 	  getInitialState: function () {
-	    var siteId = this.props.siteId;
-	    var unesco_site = GuessStore.find(siteId);
-	    return { unesco_site: unesco_site };
+	    var viewToRender = GuessStore.current_guess();
+	    return { lat: viewToRender.lat, long: viewToRender.long };
 	  },
 	
 	  componentDidMount: function () {
 	    this.siteListener = GuessStore.addListener(this.renderStreetView());
-	    ClientActions.fetchSite();
+	    var viewToRender = GuessStore.current_guess();
+	    this.setState({ lat: viewToRender.lat, long: viewToRender.long });
 	  },
 	
 	  componentWillUnmount: function () {
 	    this.siteListener.remove();
 	  },
 	
-	  renderStreetView: function (lat, long) {
-	
+	  renderStreetView: function () {
+	    var viewToRender = GuessStore.current_guess();
+	    // HARD CODED COORDINATES IN HERE;
+	    viewToRender = { lat: 44.89204, long: -0.15734 };
 	    var streetViewDOMNode = document.getElementById('street-view');
 	    var streetViewOptions = {
-	      position: { lat: this.props.lat, lng: this.props.long },
+	      position: { lat: viewToRender.lat, lng: viewToRender.long },
 	      addressControl: false,
 	      zoomControlOptions: {
 	        position: google.maps.ControlPosition.TOP_LEFT
@@ -32993,8 +32993,8 @@
 	      type: "POST",
 	      data: { playerId: data },
 	      success: function (gamepackage) {
-	        ServerActions.receiveGame(gamepackage.slice());
-	        ServerActions.receiveGuesses(gamepackage.slice(1));
+	        // ServerActions.receiveGame(gamepackage[0]);
+	        ServerActions.receiveEmptyGuesses(gamepackage.slice(1));
 	      }
 	    });
 	  },
@@ -33020,10 +33020,18 @@
 	var GameConstants = __webpack_require__(266);
 	
 	var ServerActions = {
+	
 	  receiveGame: function (game) {
 	    AppDispatcher.dispatch({
 	      actionType: GameConstants.GAME_RECEIVED,
 	      game: game
+	    });
+	  },
+	
+	  receiveEmptyGuesses: function (emptyGuesses) {
+	    AppDispatcher.dispatch({
+	      actionType: GuessConstants.EMPTY_GUESSES_RECEIVED,
+	      guesses: emptyGuesses
 	    });
 	  },
 	
@@ -33042,6 +33050,8 @@
 /***/ function(module, exports) {
 
 	module.exports = {
+	
+	  EMPTY_GUESSES_RECEIVED: "EMPTY_GUESSES_RECEIVED",
 	
 	  SITE_RECEIVED: "SITE_RECEIVED"
 	
@@ -33068,14 +33078,21 @@
 	var GuessStore = new Store(AppDispatcher);
 	
 	var guess = {};
+	var _guesses = {};
+	var _guessToRender = {};
 	
-	GuessStore.find = function (siteId) {
-	  return guess;
+	GuessStore.current_guess = function () {
+	  return _guessToRender;
 	}, GuessStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
 	    case "SITE_RECEIVED":
 	      guess = payload;
-	      GuessStore.__emitChange();
+	      break;
+	    case "EMPTY_GUESSES_RECEIVED":
+	      for (var i = 0; i < 5; i++) {
+	        _guesses[i] = payload.guesses[0][i];
+	      }
+	      _guessToRender = _guesses[0];
 	      break;
 	  }
 	  GuessStore.__emitChange();
@@ -33093,13 +33110,12 @@
 	var React = __webpack_require__(1);
 	var ClientActions = __webpack_require__(250);
 	var CurrentUserState = __webpack_require__(227);
-	var LinkedStateMixin = __webpack_require__(255);
 	
 	var MapGuess = React.createClass({
 	  displayName: 'MapGuess',
 	
 	
-	  mixins: [LinkedStateMixin, CurrentUserState],
+	  mixins: [CurrentUserState],
 	
 	  componentDidMount: function () {
 	    var mapDOMNode = document.getElementById('map-guess');
@@ -33109,14 +33125,15 @@
 	      disableDefaultUI: true
 	    };
 	    var map = new google.maps.Map(mapDOMNode, mapOptions);
+	  },
 	
-	    var userMarker = new google.maps.Marker({
+	  dropMarker: function (e) {
+	    var map = document.getElementById('map-guess');
+	    var marker = new google.maps.Marker({
 	      position: { lat: 0, lng: 0 },
 	      map: map,
 	      draggable: true,
-	      label: "?",
-	      animation: google.maps.Animation.DROP,
-	      title: "HI!"
+	      animation: google.maps.Animation.DROP
 	    });
 	  },
 	
@@ -33126,8 +33143,8 @@
 	    return React.createElement(
 	      'form',
 	      { id: 'guess-form', onSubmit: this.makeGuess },
-	      React.createElement('div', { id: 'map-guess' }),
-	      React.createElement('input', { id: 'guess-submit', type: 'submit', value: 'MAKEGUESS' })
+	      React.createElement('div', { id: 'map-guess', onClick: this.dropmarker }),
+	      React.createElement('input', { className: 'btn btn-success', id: 'guess-submit', type: 'submit', value: 'MAKE GUESS' })
 	    );
 	  }
 	
@@ -33463,6 +33480,7 @@
 	    var userId = 1;
 	    // hashHistory.push("/play");
 	    ClientActions.createGame(userId);
+	    hashHistory.push("play");
 	  },
 	
 	  whenloggedin: function () {

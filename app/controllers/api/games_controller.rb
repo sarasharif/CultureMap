@@ -2,7 +2,14 @@ class Api::GamesController < ApplicationController
 
   def create
     @game = Game.create!({player_id: (params[:playerId].to_i)})
-    render json: @game
+    @guesses = @game.create_5_rounds
+      @guesses.each_with_index do |guess, i|
+        guess.game_id = @game.id
+        guess.round_num = i + 1
+        guess.save!
+      end
+    @package = [@game, @guesses]
+    render json: @package
   end
 
   # update games exists only to set score to database

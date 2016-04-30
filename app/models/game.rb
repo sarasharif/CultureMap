@@ -9,6 +9,8 @@ class Game < ActiveRecord::Base
 
   has_many :guesses
 
+  attr_reader :site_id_nos
+
   def score=()
     guesses = self.guesses
     score = 0
@@ -20,5 +22,13 @@ class Game < ActiveRecord::Base
     return score
   end
 
+  def self.receive_5_site_ids
+    UnescoSite.return_5_site_ids
+  end
+
+  def create_5_rounds
+    site_ids = Game.receive_5_site_ids
+    Guess.return_5_guesses(site_ids)
+  end
 
 end

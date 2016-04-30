@@ -4,11 +4,11 @@
 var React = require('react');
 var ClientActions = require('../actions/userClientActions');
 var CurrentUserState = require("../mixins/currentUserState");
-var LinkedStateMixin = require('react-addons-linked-state-mixin');
+
 
 var MapGuess = React.createClass({
 
-  mixins: [LinkedStateMixin, CurrentUserState],
+  mixins: [CurrentUserState],
 
   componentDidMount: function() {
     var mapDOMNode = document.getElementById('map-guess');
@@ -18,15 +18,16 @@ var MapGuess = React.createClass({
       disableDefaultUI: true
     };
     var map = new google.maps.Map(mapDOMNode, mapOptions);
+  },
 
-    var userMarker = new google.maps.Marker({
+  dropMarker: function (e) {
+    var map = document.getElementById('map-guess');
+    var marker = new google.maps.Marker({
       position: {lat: 0, lng: 0},
       map: map,
       draggable: true,
-      label: "?",
       animation: google.maps.Animation.DROP,
-      title:"HI!"
-    })
+    });
   },
 
   makeGuess: function () {
@@ -38,8 +39,8 @@ var MapGuess = React.createClass({
     return (
 
         <form id='guess-form' onSubmit={this.makeGuess}>
-          <div id='map-guess'></div>
-          <input id='guess-submit' type="submit" value="MAKEGUESS"></input>
+          <div id='map-guess' onClick={this.dropmarker}></div>
+          <input className='btn btn-success' id='guess-submit' type="submit" value="MAKE GUESS"></input>
         </form>
 
     );
