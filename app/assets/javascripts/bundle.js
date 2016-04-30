@@ -32955,7 +32955,11 @@
 	  },
 	
 	  render: function () {
-	    return React.createElement('div', { id: 'street-view' });
+	    return React.createElement(
+	      'div',
+	      { id: 'street-view' },
+	      React.createElement('div', { id: 'hide_google_logo' })
+	    );
 	  }
 	});
 	

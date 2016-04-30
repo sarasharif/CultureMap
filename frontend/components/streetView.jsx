@@ -43,7 +43,7 @@ var StreetView = React.createClass({
 
   render: function () {
     return (
-        <div id='street-view'></div>
+        <div id='street-view'><div id="hide_google_logo" /></div>
     );
   }
 });
