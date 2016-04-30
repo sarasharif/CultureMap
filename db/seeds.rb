@@ -1,39 +1,22 @@
-
+require 'csv'
 
 UnescoSite.delete_all
 
-UnescoSite.create!(
-  id_no: 102,
-  title_en: "1Title in English",
-  title_fr: "1Title in French",
-  body_en: "1short message in English",
-  body_fr: "1translated into French",
-  lat: 35.81844,
-  long: 4.78684,
-  state: "Country1",
-  region: "Region1"
-)
+csv_text = File.read(Rails.root.join('lib', 'seeds', 'unesco_data.csv'))
+csv = CSV.parse(csv_text, headers: true)
+csv.each do |row|
+  t = UnescoSite.new
+  t.id_no = row['id_no'].to_i
+  t.title_en = row['name_en']
+  t.title_fr = row['name_fr']
+  t.body_en = row['body_en']
+  t.body_fr = row['body_fr']
+  t.lat = row['lat'].to_f
+  t.long = row['long'].to_f
+  t.state = row['states_name_en']
+  t.region = row['region']
+  t.save
+end
 
-UnescoSite.create!(
-  id_no: 166,
-  title_en: "2Title in English",
-  title_fr: "2Title in French",
-  body_en: "2short message in English",
-  body_fr: "2translated into French",
-  lat: -33.85666,
-  long: 151.21527,
-  state: "Country2",
-  region: "Region2"
-)
 
-UnescoSite.create!(
-  id_no: 857,
-  title_en: "3Title in English",
-  title_fr: "3Title in French",
-  body_en: "3short message in English",
-  body_fr: "3translated into French",
-  lat: 50.84668,
-  long: 4.35242,
-  state: "Country3",
-  region: "Region3"
-)
+# https://www.google.com/maps/embed/v1/streetview?key=AIzaSyD0uYEJt5myjVIWmTJICUK6vOP-nndsXw8&location=46.414382,10.013988&heading=210&pitch=10&fov=35

@@ -51,7 +51,7 @@ var LoginForm = React.createClass({
           <input type="password" placeholder="password" valueLink={this.linkState("password")}></input>
         </section>
 
-        <input className="btn btn-success" type="submit" value="log in"></input>
+        <input className="btn btn-success" type="submit" value="LOG IN"></input>
 
       </form>
     );

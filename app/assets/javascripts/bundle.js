@@ -32987,15 +32987,15 @@
 	var ServerActions = __webpack_require__(264);
 	
 	var ApiUtil = {
-	
 	  createGame: function (data) {
-	
 	    $.ajax({
 	      url: "api/games",
 	      type: "POST",
 	      data: { playerId: data },
 	      success: function (game) {
 	        ServerActions.receiveGame(game);
+	
+	        ServerActions.receiveSite1();
 	      }
 	    });
 	  },
@@ -33254,7 +33254,7 @@
 	        React.createElement('input', { type: 'text', placeholder: 'username', valueLink: this.linkState("username") }),
 	        React.createElement('input', { type: 'password', placeholder: 'password', valueLink: this.linkState("password") })
 	      ),
-	      React.createElement('input', { className: 'btn btn-success', type: 'submit', value: 'log in' })
+	      React.createElement('input', { className: 'btn btn-success', type: 'submit', value: 'LOG IN' })
 	    );
 	  },
 	
@@ -33368,7 +33368,7 @@
 	        React.createElement('input', { type: 'text', placeholder: 'username', valueLink: this.linkState("username") }),
 	        React.createElement('input', { type: 'password', placeholder: 'password', valueLink: this.linkState("password") })
 	      ),
-	      React.createElement('input', { className: 'btn btn-success', type: 'submit', value: 'Sign Up' })
+	      React.createElement('input', { className: 'btn btn-success', type: 'submit', value: 'SIGN UP' })
 	    );
 	  },
 	
@@ -33457,7 +33457,7 @@
 	  initializeGame: function () {
 	    var userId = this.state.currentUser.id;
 	    //hardcode userId to bypass not having id defined on currentUser
-	    // var userId = 1;
+	    var userId = 1;
 	    // hashHistory.push("/play");
 	    ClientActions.createGame(userId);
 	  },
@@ -33473,7 +33473,7 @@
 	      return React.createElement(
 	        'button',
 	        { className: 'btn btn-success', type: 'submit', onClick: this.handleGuestLogin },
-	        'GUEST'
+	        'GUEST DEMO'
 	      );
 	    }
 	  },

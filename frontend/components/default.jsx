@@ -21,7 +21,7 @@ var Default = React.createClass({
   initializeGame: function () {
     var userId = this.state.currentUser.id;
     //hardcode userId to bypass not having id defined on currentUser
-    // var userId = 1;
+    var userId = 1;
     // hashHistory.push("/play");
     ClientActions.createGame(userId);
   },
@@ -30,7 +30,7 @@ var Default = React.createClass({
     if ( this.state.currentUser ) {
       return (<button className="btn btn-success" onClick={this.initializeGame}>LETS GO EXPLORING</button>);
     } else {
-      return (<button className="btn btn-success" type="submit" onClick={this.handleGuestLogin}>GUEST</button>);
+      return (<button className="btn btn-success" type="submit" onClick={this.handleGuestLogin}>GUEST DEMO</button>);
     }
   },
 

@@ -1,15 +1,16 @@
 var ServerActions = require('../actions/serverActions');
 
 var ApiUtil = {
-
   createGame: function(data) {
-
     $.ajax({
       url: "api/games",
       type: "POST",
       data: {playerId: data},
       success: function (game) {
         ServerActions.receiveGame(game);
+
+        ServerActions.receiveSite1();
+
       }
     });
   },
