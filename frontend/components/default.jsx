@@ -27,7 +27,15 @@ var Default = React.createClass({
     hashHistory.push("play");
   },
 
-  whenloggedin: function () {
+  whiteText: function () {
+    if ( this.state.currentUser ) {
+      return (<header><h1 className="display-1">Lets Explore the World!</h1></header>);
+    } else {
+      return (<header><h1 className="display-1">Heritage is our legacy from the past, what we live with today, and what we pass on to future generations. Our cultural and natural heritage are both irreplaceable sources of life and inspiration.</h1></header>);
+    }
+  },
+
+  greenButton: function () {
     if ( this.state.currentUser ) {
       return (<button className="btn btn-success" onClick={this.initializeGame}>LETS GO EXPLORING</button>);
     } else {
@@ -38,8 +46,8 @@ var Default = React.createClass({
   render: function () {
     return (
       <div>
-        <header><h1 className="display-1">Lets Explore the World!</h1></header>
-        {this.whenloggedin()}
+        {this.whiteText()}
+        {this.greenButton()}
       </div>
     );
   }
