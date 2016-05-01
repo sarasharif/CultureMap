@@ -2,7 +2,7 @@
 
 [Heroku link][heroku] **NB:** This should be a link to your production site
 
-[heroku]: https://heritagehunter.herokuapp.com/
+[heroku]: https://culturemap.herokuapp.com/
 
 ## Minimum Viable Product
 
@@ -39,82 +39,65 @@ CultureMap will allow users to do the following:
 * [API endpoints][api-endpoints]
 * [DB schema][schema]
 
-[views]: ./docs/views.md
+[views]: ./docs/wireframes.md
 [components]: ./docs/components.md
 [flux-cycles]: ./docs/flux-cycles.md
 [api-endpoints]: ./docs/api-endpoints.md
 [schema]: ./docs/schema.md
 
-## Implementation Timeline
+## Implementation Timeline For Week 2
 
-### Phase 1: Backend setup and User Authentication (0.5 days)
+### Done.
 
 **Objective:** Functioning rails project with Authentication
 
 - [x] create new project
-- [x] create `User` model
 - [x] authentication
 - [x] user signup/signin pages
 - [x] blank landing page after signin
-
-### Phase 2: Sites Model, API, and basic APIUtil (1.5 days)
-
-**Objective:** Sites can be viewed but not guessed
-
 - [x] create `Site` model
-- [x] seed the database with a small amount of test data
-- [ ] CRUD API for sites (`SitesController`)
-- [ ] ajax request for street view for sites
+- [x] seed db with UN csv
 - [x] setup Webpack & Flux scaffold
 - [x] setup `APIUtil` to interact with the API
 - [x] test out API interaction in the console.
 
-### Phase 3: Flux Architecture and Router (1.5 days)
+### M/T: GamePlay BEST be done.
 
-**Objective:** Sites can be guessed using a streetview/map `form`. Results/Summary is viewable
+**Objective:** Users can initialize game, play 5 rounds, and get a score/info
 
-- [ ] setup the flux loop with skeleton files
-- [ ] setup React Router
-- implement each site component, building out the flux loop as needed.
-  - [ ] `SitesIndex`
-  - [ ] `SiteIndexItem`
-  - [ ] `SiteForm`
-  - [ ] `GuessResult`
-  - [ ] `GameSummary`
+- [ ] backend algorithms
+- [ ] Flux Loop for updating user guess data(lat, long, round_num)
+- [ ] Add "information" component
+- [ ] ajax request distance/points/map/UN data
 
-### Phase 4: Start Styling (0.5 days)
+### W/Th: Everything Profile
 
-**Objective:** Existing pages (including signup/signin) will look good.
+**Objective:** Users can access their profile! And see the sites they've been to.
 
-- [ ] create a basic style guide
-- [ ] position elements on the page
-- [ ] add basic colors & styles
+- [ ] Set up the components in path: /me
+- [ ] Flux Loop it up
+- [ ] Get requests on get requests
+- [x] setup React Router
 
-### Phase 5: Favorites (1.5 days)
+### F: Cloudinary/Bootstrap/FlexBox/AllThePrettyThings
 
-**Objective:** Rounds/sites can be favorited.
+**Objective:** Streamline the site. UX flow should be OBVIOUS.
+
+- [ ] Get your splash page image to actually work on Heroku
+- [ ] Fix that hideous navbar
+- [ ] Get feedback on my UI from others
+- [ ] Refactor HTML classes & CSS rules
+- [ ] Add modals to signup/signin form, transitions, and other styling flourishes.
+
+### Bonus: Favorites (Weekend)
+
+**Objective:** Previously guessed sites can be favorited and accessed by the user.
 
 - [ ] create `Favorites` model and join table
 - build out API, Flux loop, and components for:
-  - [ ] fetching status for sites
-  - [ ] adding status to sites
+- [ ] fetching status for sites
+- [ ] adding status to sites
 - [ ] Style new elements
-
-### Phase 6: Styling Cleanup and Seeding (1 day)
-
-**objective:** Make the site feel more cohesive and awesome.
-
-- [ ] Get feedback on my UI from others
-- [ ] Refactor HTML classes & CSS rules
-- [ ] Add modals, transitions, and other styling flourishes.
 
 ### Bonus Features (TBD)
 - [ ] infinite scroll for Category Index
-- [ ] Set reminders on notes
-
-[phase-one]: ./docs/phases/phase1.md
-[phase-two]: ./docs/phases/phase2.md
-[phase-three]: ./docs/phases/phase3.md
-[phase-four]: ./docs/phases/phase4.md
-[phase-five]: ./docs/phases/phase5.md
-[phase-six]: ./docs/phases/phase6.md
