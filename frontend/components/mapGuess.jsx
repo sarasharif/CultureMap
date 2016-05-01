@@ -1,45 +1,41 @@
-// USE ME (API KEY)
-// AIzaSyD0uYEJt5myjVIWmTJICUK6vOP-nndsXw8
-
 var React = require('react');
 var ClientActions = require('../actions/userClientActions');
 var CurrentUserState = require("../mixins/currentUserState");
 
+var mapOptions = {
+  center: {lat: 0, lng:0},
+  zoom: 0,
+  disableDefaultUI: true
+};
 
 var MapGuess = React.createClass({
 
-  mixins: [CurrentUserState],
+  getInitialState: function() {
+    return { lat_guess: 0, long_guess: 0 };
+  },
 
   componentDidMount: function() {
     var mapDOMNode = document.getElementById('map-guess');
-    var mapOptions = {
-      center: {lat: 0, lng: 0},
-      zoom: 0,
-      disableDefaultUI: true
-    };
-    var map = new google.maps.Map(mapDOMNode, mapOptions);
-  },
-
-  dropMarker: function (e) {
-    var map = document.getElementById('map-guess');
-    var marker = new google.maps.Marker({
-      position: {lat: 0, lng: 0},
-      map: map,
+    this.map = new google.maps.Map(mapDOMNode, mapOptions);
+    this.marker = new google.maps.Marker({
+      position: {lat: 0, lng:0},
+      map: this.map,
       draggable: true,
       animation: google.maps.Animation.DROP,
     });
   },
 
   makeGuess: function () {
-
+    var pos = {
+      lat_guess: this.marker.getPosition().lat(),
+      long_guess: this.marker.getPosition().lng()
+    };
   },
-
 
   render: function () {
     return (
-
         <form id='guess-form' onSubmit={this.makeGuess}>
-          <div id='map-guess' onClick={this.dropmarker}></div>
+          <div id='map-guess'></div>
           <input className='btn btn-success' id='guess-submit' type="submit" value="MAKE GUESS"></input>
         </form>
 

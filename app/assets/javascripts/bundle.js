@@ -32872,22 +32872,21 @@
 	  mixins: [CurrentUserState],
 	
 	  getInitialState: function () {
-	    // return {gameId: null};
+	    return { gameId: null };
 	  },
 	
 	  componentDidMount: function () {
-	    // this.listener = GameStore.addListener(this._onChange);
-	
+	    this.listener = GameStore.addListener(this._onChange);
 	  },
 	
 	  _onChange: function () {
-	    // this.setState({gameId: GameStore.grabId()});
-	    // console.log("We created a game");
+	    this.setState({ gameId: GameStore.grabId() });
+	    console.log("We created a game");
 	    // go through flux and create guesses
 	  },
 	
 	  render: function () {
-	    // var siteId = this.state.siteId;
+	    var siteId = this.state.siteId;
 	
 	    if (this.state.currentUser) {
 	      return React.createElement(
@@ -32958,7 +32957,11 @@
 	    return React.createElement(
 	      'div',
 	      { id: 'street-view' },
-	      React.createElement('div', { id: 'hide_google_logo' })
+	      React.createElement(
+	        'a',
+	        { target: '_blank', href: 'https://www.google.com/maps' },
+	        React.createElement('div', { id: 'hide_google_logo' })
+	      )
 	    );
 	  }
 	});
@@ -33108,46 +33111,47 @@
 /* 268 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// USE ME (API KEY)
-	// AIzaSyD0uYEJt5myjVIWmTJICUK6vOP-nndsXw8
-	
 	var React = __webpack_require__(1);
 	var ClientActions = __webpack_require__(250);
 	var CurrentUserState = __webpack_require__(227);
+	
+	var mapOptions = {
+	  center: { lat: 0, lng: 0 },
+	  zoom: 0,
+	  disableDefaultUI: true
+	};
 	
 	var MapGuess = React.createClass({
 	  displayName: 'MapGuess',
 	
 	
-	  mixins: [CurrentUserState],
+	  getInitialState: function () {
+	    return { lat_guess: 0, long_guess: 0 };
+	  },
 	
 	  componentDidMount: function () {
 	    var mapDOMNode = document.getElementById('map-guess');
-	    var mapOptions = {
-	      center: { lat: 0, lng: 0 },
-	      zoom: 0,
-	      disableDefaultUI: true
-	    };
-	    var map = new google.maps.Map(mapDOMNode, mapOptions);
-	  },
-	
-	  dropMarker: function (e) {
-	    var map = document.getElementById('map-guess');
-	    var marker = new google.maps.Marker({
+	    this.map = new google.maps.Map(mapDOMNode, mapOptions);
+	    this.marker = new google.maps.Marker({
 	      position: { lat: 0, lng: 0 },
-	      map: map,
+	      map: this.map,
 	      draggable: true,
 	      animation: google.maps.Animation.DROP
 	    });
 	  },
 	
-	  makeGuess: function () {},
+	  makeGuess: function () {
+	    var pos = {
+	      lat_guess: this.marker.getPosition().lat(),
+	      long_guess: this.marker.getPosition().lng()
+	    };
+	  },
 	
 	  render: function () {
 	    return React.createElement(
 	      'form',
 	      { id: 'guess-form', onSubmit: this.makeGuess },
-	      React.createElement('div', { id: 'map-guess', onClick: this.dropmarker }),
+	      React.createElement('div', { id: 'map-guess' }),
 	      React.createElement('input', { className: 'btn btn-success', id: 'guess-submit', type: 'submit', value: 'MAKE GUESS' })
 	    );
 	  }
