@@ -29,9 +29,9 @@ var Default = React.createClass({
 
   whiteText: function () {
     if ( this.state.currentUser ) {
-      return (<header><h1 className="display-1">Lets Explore the World!</h1></header>);
-    } else {
       return (<header><h1 className="display-1">Heritage is our legacy from the past, what we live with today, and what we pass on to future generations. Our cultural and natural heritage are both irreplaceable sources of life and inspiration.</h1></header>);
+    } else {
+      return (<header><h1 className="display-1">Lets Explore the World!</h1></header>);
     }
   },
 
@@ -46,7 +46,7 @@ var Default = React.createClass({
   render: function () {
     return (
       <div>
-        {this.whiteText()}
+        {this.whiteText()} <br/><br/>
         {this.greenButton()}
       </div>
     );
