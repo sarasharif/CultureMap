@@ -1,6 +1,5 @@
 var React = require('react');
-var ClientActions = require('../actions/userClientActions');
-var CurrentUserState = require("../mixins/currentUserState");
+var ClientActions = require('../actions/clientActions');
 
 var mapOptions = {
   center: {lat: 0, lng:0},
@@ -11,7 +10,8 @@ var mapOptions = {
 var MapGuess = React.createClass({
 
   getInitialState: function() {
-    return { lat_guess: 0, long_guess: 0 };
+    var id = this.props.id;
+    return { lat_guess: 0, long_guess: 0, id: id};
   },
 
   componentDidMount: function() {
@@ -26,10 +26,12 @@ var MapGuess = React.createClass({
   },
 
   makeGuess: function () {
-    var pos = {
+    var data = {
       lat_guess: this.marker.getPosition().lat(),
-      long_guess: this.marker.getPosition().lng()
+      long_guess: this.marker.getPosition().lng(),
+      id: this.props.id
     };
+    ClientActions.makeGuess(data);
   },
 
   render: function () {

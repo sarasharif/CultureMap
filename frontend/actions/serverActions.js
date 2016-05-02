@@ -4,7 +4,7 @@ var GameConstants = require('../constants/gameConstants.js');
 
 
 var ServerActions = {
-  
+
   receiveGame: function (game) {
     AppDispatcher.dispatch({
       actionType: GameConstants.GAME_RECEIVED,
@@ -25,6 +25,13 @@ var ServerActions = {
       site: site
     });
   },
+
+  updateGuesses: function (gamepackage) {
+    AppDispatcher.dispatch({
+      actionType: GuessConstants.GUESSES_UPDATED,
+      guesses: gamepackage
+    });
+  }
 };
 
 module.exports = ServerActions;

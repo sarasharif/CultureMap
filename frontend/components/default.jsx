@@ -19,17 +19,19 @@ var Default = React.createClass({
   },
 
   initializeGame: function () {
+
     var userId = this.state.currentUser.id;
     //hardcode userId to bypass not having id defined on currentUser
-    var userId = 1;
+    // userId = 1;
     // hashHistory.push("/play");
     ClientActions.createGame(userId);
-    hashHistory.push("play");
+
+    hashHistory.push("/play");
   },
 
   whiteText: function () {
     if ( this.state.currentUser ) {
-      return (<header><h1 className="display-1">Heritage is our legacy from the past, what we live with today, and what we pass on to future generations. Our cultural and natural heritage are both irreplaceable sources of life and inspiration.</h1></header>);
+      return (<header><h1 className="display-1">Come explore</h1></header>);
     } else {
       return (<header><h1 className="display-1">Lets Explore the World!</h1></header>);
     }

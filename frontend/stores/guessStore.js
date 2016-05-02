@@ -9,7 +9,7 @@ var _guessToRender = {};
 
 GuessStore.current_guess = function () {
   return _guessToRender;
-},
+};
 
 GuessStore.__onDispatch = function (payload) {
   switch(payload.actionType) {
@@ -18,6 +18,12 @@ GuessStore.__onDispatch = function (payload) {
       break;
     case "EMPTY_GUESSES_RECEIVED":
       for (var i = 0; i < 5; i++) {
+        _guesses[i] = payload.guesses[0][i];
+      }
+      _guessToRender = _guesses[0];
+    break;
+    case "GUESSES_UPDATED":
+      for (var idx = 0; idx < 5; idx++) {
         _guesses[i] = payload.guesses[0][i];
       }
       _guessToRender = _guesses[0];

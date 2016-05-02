@@ -1,20 +1,25 @@
 var Store = require('flux/utils').Store;
-var GuessConstants = require('../constants/guessConstants');
+var GameConstants = require('../constants/gameConstants');
 var AppDispatcher = require('../dispatcher/dispatcher');
 
 var GameStore = new Store(AppDispatcher);
 
-var GameId;
+var _gameId, _score;
 
 GameStore.grabId = function () {
-  return GameId;
+  return _gameId;
 };
 
-GameStore.__onDispatch = function(payload) {
+GameStore.grabScore = function () {
+  return _score;
+};
 
+
+GameStore.__onDispatch = function(payload) {
   switch (payload.actionType) {
-    case "GAME_RECEIVED":
-      GameId = payload.game.id;
+    case GameConstants.GAME_RECEIVED:
+      _gameId = payload.game.id;
+      _score = payload.game.score;
       break;
   }
 

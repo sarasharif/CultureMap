@@ -1,12 +1,11 @@
 var React = require('react');
 var ClientActions = require('../actions/clientActions');
-var CurrentUserState = require("../mixins/currentUserState");
 
 var GuessStore = require('../stores/guessStore.js');
+var MapGuess = require('./mapGuess');
 
 var StreetView = React.createClass({
 
-  mixins: [CurrentUserState],
 
   getInitialState: function() {
     var viewToRender = GuessStore.current_guess();
@@ -24,9 +23,10 @@ var StreetView = React.createClass({
   },
 
   renderStreetView: function () {
+
     var viewToRender = GuessStore.current_guess();
     // HARD CODED COORDINATES IN HERE;
-    viewToRender = {lat:44.89204, long:-0.15734 };
+    viewToRender = {lat:51.1788429, long:-1.8261628};
     var streetViewDOMNode = document.getElementById('street-view');
     var streetViewOptions = {
       position: {lat: viewToRender.lat, lng: viewToRender.long},
@@ -42,11 +42,13 @@ var StreetView = React.createClass({
   },
 
   render: function () {
+
     return (
         <div id='street-view'>
           <a target="_blank" href="https://www.google.com/maps">
             <div id="hide_google_logo" />
           </a>
+          <MapGuess id={GuessStore.current_guess().id}/>
         </div>
     );
   }

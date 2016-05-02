@@ -9,6 +9,10 @@ var ClientActions = {
     ApiUtil.fetchSite();
   },
 
+  makeGuess: function(data) {
+    ApiUtil.updateGuess(data);
+  }
+
 };
 
 module.exports = ClientActions;

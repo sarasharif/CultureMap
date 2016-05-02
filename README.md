@@ -65,8 +65,8 @@ CultureMap will allow users to do the following:
 
 **Objective:** Users can initialize game, play 5 rounds, and get a score/info
 
-- [ ] backend algorithms
-- [ ] Flux Loop for updating user guess data(lat, long, round_num)
+- [x] backend algorithms
+- [x] Flux Loop for updating user guess data(lat, long, round_num)
 - [ ] Add "information" component
 - [ ] ajax request distance/points/map/UN data
 
@@ -78,6 +78,7 @@ CultureMap will allow users to do the following:
 - [ ] Flux Loop it up
 - [ ] Get requests on get requests
 - [x] setup React Router
+- [ ] style a little as you go so tomorrow doesn't suck
 
 ### F: Cloudinary/Bootstrap/FlexBox/AllThePrettyThings
 
@@ -89,7 +90,7 @@ CultureMap will allow users to do the following:
 - [ ] Refactor HTML classes & CSS rules
 - [ ] Add modals to signup/signin form, transitions, and other styling flourishes.
 
-### Bonus: Favorites (Weekend)
+### Bonus: Favorites
 
 **Objective:** Previously guessed sites can be favorited and accessed by the user.
 
@@ -98,6 +99,4 @@ CultureMap will allow users to do the following:
 - [ ] fetching status for sites
 - [ ] adding status to sites
 - [ ] Style new elements
-
-### Bonus Features (TBD)
-- [ ] infinite scroll for Category Index
+- [ ] Category Index. Ha.

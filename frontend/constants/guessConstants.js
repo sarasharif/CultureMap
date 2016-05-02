@@ -4,6 +4,8 @@ module.exports = {
 
   SITE_RECEIVED: "SITE_RECEIVED",
 
+  GUESSES_UPDATED:"GUESSES_UPDATED"
+
 
 
 };

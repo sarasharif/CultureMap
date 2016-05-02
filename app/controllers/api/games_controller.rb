@@ -1,11 +1,12 @@
 class Api::GamesController < ApplicationController
 
   def create
-    @game = Game.create!({player_id: (params[:playerId].to_i)})
+    @game = Game.create!({player_id: (params[:playerId].to_i), score: 0})
     @guesses = @game.create_5_rounds
       @guesses.each_with_index do |guess, i|
         guess.game_id = @game.id
         guess.round_num = i + 1
+        guess.points = 0
         guess.save!
       end
     @package = [@game, @guesses]
@@ -14,13 +15,7 @@ class Api::GamesController < ApplicationController
 
   # update games exists only to set score to database
   def update
-    @game = Game.find(params[:id])
-
-    if @game.update(game_params)
-      render json: @game
-    else
-      render json: @game.errors.full_message, status: 422
-    end
+    #actually, I updated the game in the guess controller. IS THAT OKAY???
   end
 
   #every game that any individual user has played

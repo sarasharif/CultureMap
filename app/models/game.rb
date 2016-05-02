@@ -7,20 +7,10 @@ class Game < ActiveRecord::Base
     foreign_key: :player_id,
     primary_key: :id
 
-  has_many :guesses
+  has_many :guesses, :inverse_of => :game
 
   attr_reader :site_id_nos
 
-  def score=()
-    guesses = self.guesses
-    score = 0
-    i = 0
-      while i < guesses.length
-        score += guesses[i].points
-        i += 1
-      end
-    return score
-  end
 
   def self.receive_5_site_ids
     UnescoSite.return_5_site_ids
@@ -29,6 +19,10 @@ class Game < ActiveRecord::Base
   def create_5_rounds
     site_ids = Game.receive_5_site_ids
     Guess.return_5_guesses(site_ids)
+  end
+
+  def update_score
+    self.guesses.map{|guess| guess.points}.inject{|score, points| score + points}
   end
 
 end

@@ -7,17 +7,29 @@ var ApiUtil = {
       type: "POST",
       data: {playerId: data},
       success: function (gamepackage) {
-        // ServerActions.receiveGame(gamepackage[0]);
+        ServerActions.receiveGame(gamepackage[0]);
         ServerActions.receiveEmptyGuesses(gamepackage.slice(1));
       }
     });
   },
 
+  // I don't think I should be going to Unesco myself from the frontend
   fetchSite: function() {
     $.ajax({
       url: "api/unesco_sites/random_show",
       success: function (site) {
         ServerActions.receiveSite(site);
+      }
+    });
+  },
+
+  updateGuess: function(data) {
+    $.ajax({
+      url: "api/guesses/" + data.id,
+      type: "PATCH",
+      data: {lat_guess: data.lat, long_guess: data.long},
+      success: function (gamepackage) {
+        ServerActions.updateGuesses(gamepackage.slice(1));
       }
     });
   }
