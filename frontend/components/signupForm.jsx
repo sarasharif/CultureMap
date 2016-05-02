@@ -16,17 +16,6 @@ var LoginForm = React.createClass({
     this.setState({form: event.currentTarget.value});
   },
 
-  greeting: function () {
-    if ( this.state.currentUser ) {
-      return (
-        <div>
-  				Welcome to cultureMap, {this.state.currentUser.username}! <br/>
-          NOW PLAY THE GAME!!!<br/>
-  			</div>
-      )
-    }
-  },
-
   errors: function () {
     if (this.state.authErrors) {
       var self = this;
@@ -71,7 +60,6 @@ var LoginForm = React.createClass({
   render: function () {
     return (
       <div id="login-form">
-        {this.greeting()}
         {this.errors()}
         {this.form()}
       </div>

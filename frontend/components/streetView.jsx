@@ -9,6 +9,7 @@ var StreetView = React.createClass({
 
   getInitialState: function() {
     var viewToRender = GuessStore.current_guess();
+    // OR var viewIdToRender = this.props.gameId ???;
     return {lat: viewToRender.lat, long: viewToRender.long};
   },
 
@@ -23,9 +24,12 @@ var StreetView = React.createClass({
   },
 
   renderStreetView: function () {
+    // OR maybe it should go here instead????
+    // this.setState({lat: viewToRender.lat, long: viewToRender.long});
 
     var viewToRender = GuessStore.current_guess();
-    // HARD CODED COORDINATES IN HERE;
+    // OR viewToRender = GuessStore.find(this.props.gameId) ???
+    // OR JUST HARD CODED COORDINATES IN HERE;
     viewToRender = {lat:51.1788429, long:-1.8261628};
     var streetViewDOMNode = document.getElementById('street-view');
     var streetViewOptions = {
@@ -39,6 +43,8 @@ var StreetView = React.createClass({
       },
     };
   var pano = new google.maps.StreetViewPanorama(streetViewDOMNode, streetViewOptions);
+
+
   },
 
   render: function () {

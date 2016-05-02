@@ -10,7 +10,11 @@ var Game = React.createClass({
   mixins: [CurrentUserState],
 
   getInitialState: function () {
-    return {gameId: GameStore.grabId(), roundNum: 1, score: 0};
+    return {
+      gameId: GameStore.grabId(),
+      roundNum: 1,
+      score: 0
+    };
   },
 
   componentDidMount: function() {
@@ -24,26 +28,26 @@ var Game = React.createClass({
       roundNum: this.state.roundNum + 1,
       score: GameStore.grabScore()
     });
-
   },
 
-  render: function() {
-    var siteId = this.state.siteId;
-
+  toRender: function () {
     if ( this.state.currentUser ) {
       return (
         <div className="gamediv">
-          <div id='roundNum'> ROUND {this.state.roundNum}</div>
-          <div id='score'>SCORE {this.state.score}</div>
+          <div id='roundNum'>ROUND: {this.state.roundNum}</div>
+          <div id='score'>SCORE: {this.state.score}</div>
           <StreetView
             gameId={this.state.gameId}
-            roundNum={this.state.roundNum}/>
-      </div>);
+            roundNum={this.state.roundNum} />
+        </div>);
     } else {
       return null;
     }
-  }
+  },
 
+  render: function() {
+    return this.toRender()
+  }
 
 });
 

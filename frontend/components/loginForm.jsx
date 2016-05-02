@@ -9,17 +9,6 @@ var LoginForm = React.createClass({
 
   mixins: [LinkedStateMixin, CurrentUserState],
 
-  greeting: function () {
-    if ( this.state.currentUser ) {
-      return (
-        <div>
-  				Welcome to cultureMap, {this.state.currentUser.username}! <br/>
-          NOW PLAY THE GAME!!!<br/>
-  			</div>
-      );
-    }
-  },
-
   errors: function () {
     if (this.state.authErrors) {
       var self = this;
