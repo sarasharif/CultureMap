@@ -5,10 +5,6 @@ var ClientActions = {
     ApiUtil.createGame(userId);
   },
 
-  fetchSite: function () {
-    ApiUtil.fetchSite();
-  },
-
   makeGuess: function(data) {
     ApiUtil.updateGuess(data);
   }

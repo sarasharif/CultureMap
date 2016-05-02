@@ -1,18 +1,15 @@
 class Api::GuessesController < ApplicationController
-  def create
-
-  end
 
   def update
+
+    # put into transaction
     @guess = Guess.find(params[:id])
-    
-    points = @guess.calculate_points(params[:lat_guess], params[:long_guess])
-    @guess.update ({lat_guess: params[:lat_guess], long_guess: params[:long_guess], points: points})
-    @guess.save
+
+    @guess.update({lat_guess: params[:lat_guess], long_guess: params[:long_guess]})
+    @guess.update_points!(params[:lat_guess], params[:long_guess])
 
     @game = @guess.game
-    score = @game.update_score
-    @game.score = score
+    @game.update_score!
 
     @guesses = @game.guesses
     @package = [@game, @guesses]

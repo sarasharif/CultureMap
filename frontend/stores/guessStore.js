@@ -1,7 +1,7 @@
 var Store = require('flux/utils').Store;
 var GuessConstants = require('../constants/guessConstants');
 var AppDispatcher = require('../dispatcher/dispatcher');
-var GuessStore = new Store(AppDispatcher);
+var GuessStore = window.GuessStore = new Store(AppDispatcher);
 
 var guess = {};
 var _guesses = {};
@@ -12,17 +12,19 @@ GuessStore.current_guess = function () {
 };
 
 GuessStore.__onDispatch = function (payload) {
+
   switch(payload.actionType) {
     case "SITE_RECEIVED":
       guess = payload;
       break;
-    case "EMPTY_GUESSES_RECEIVED":
+      // TODO FIX THIS.
+    case GuessConstants.EMPTY_GUESSES_RECEIVED:
       for (var i = 0; i < 5; i++) {
         _guesses[i] = payload.guesses[0][i];
       }
       _guessToRender = _guesses[0];
     break;
-    case "GUESSES_UPDATED":
+    case GuessConstants.GUESSES_UPDATED:
       for (var idx = 0; idx < 5; idx++) {
         _guesses[i] = payload.guesses[0][i];
       }

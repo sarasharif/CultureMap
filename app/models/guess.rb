@@ -17,10 +17,11 @@ class Guess < ActiveRecord::Base
     return guesses
   end
 
-  def calculate_points(lat_guess, long_guess)
+  def update_points!(lat_guess, long_guess)
     distance = self.calculate_distance([lat_guess, long_guess],[self.lat_true, self.long_true])
     points = distance * (-0.2) + 4000
-    return points
+    self.points = points
+    self.save!
   end
 
   def calculate_distance loc1, loc2

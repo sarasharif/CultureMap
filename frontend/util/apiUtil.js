@@ -13,17 +13,8 @@ var ApiUtil = {
     });
   },
 
-  // I don't think I should be going to Unesco myself from the frontend
-  fetchSite: function() {
-    $.ajax({
-      url: "api/unesco_sites/random_show",
-      success: function (site) {
-        ServerActions.receiveSite(site);
-      }
-    });
-  },
-
   updateGuess: function(data) {
+
     $.ajax({
       url: "api/guesses/" + data.id,
       type: "PATCH",

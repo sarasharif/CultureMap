@@ -21,8 +21,9 @@ class Game < ActiveRecord::Base
     Guess.return_5_guesses(site_ids)
   end
 
-  def update_score
-    self.guesses.map{|guess| guess.points}.inject{|score, points| score + points}
+  def update_score!
+    self.score = self.guesses.map{|guess| guess.points}.inject{|score, points| score + points}
+    self.save!
   end
 
 end

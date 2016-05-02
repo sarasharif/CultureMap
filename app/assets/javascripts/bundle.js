@@ -75,11 +75,9 @@
 	      { component: Splash },
 	      React.createElement(IndexRoute, { component: Default }),
 	      React.createElement(Route, { path: 'login', component: Login }),
-	      React.createElement(Route, { path: 'signup', component: Signup }),
-	      React.createElement(Route, { path: 'categories', component: Categories })
+	      React.createElement(Route, { path: 'signup', component: Signup })
 	    ),
-	    React.createElement(Route, { path: 'play', component: Game }),
-	    React.createElement(Route, { path: 'me', component: Profile })
+	    React.createElement(Route, { path: 'play', component: Game })
 	  )
 	);
 	
@@ -87,6 +85,9 @@
 	  var root = document.getElementById("content");
 	  ReactDOM.render(Router, root);
 	});
+	
+	// <Route path="categories" component={Categories}></Route>
+	// <Route path="me" component={Profile}></Route>
 
 /***/ },
 /* 1 */
@@ -32534,8 +32535,9 @@
 	      url: "api/session",
 	      type: "POST",
 	      data: { user: user },
-	      success: function () {
-	        ServerActions.receiveCurrentUser(user);
+	      success: function (data) {
+	
+	        ServerActions.receiveCurrentUser(data);
 	      },
 	      error: function (error) {
 	        ServerActions.handleError(error);
@@ -32890,10 +32892,11 @@
 	
 	  navlink2: function () {
 	    if (this.state.currentUser) {
+	
 	      return React.createElement(
 	        Link,
 	        { to: '/me' },
-	        'PROFILE'
+	        this.state.currentUser.username.toUpperCase()
 	      );
 	    } else {
 	      return React.createElement(
@@ -32960,7 +32963,11 @@
 	  mixins: [CurrentUserState],
 	
 	  getInitialState: function () {
-	    return { gameId: GameStore.grabId(), roundNum: 1, score: 0 };
+	    return {
+	      gameId: GameStore.grabId(),
+	      roundNum: 1,
+	      score: 0
+	    };
 	  },
 	
 	  componentDidMount: function () {
@@ -32976,9 +32983,7 @@
 	    });
 	  },
 	
-	  render: function () {
-	    var siteId = this.state.siteId;
-	
+	  toRender: function () {
 	    if (this.state.currentUser) {
 	      return React.createElement(
 	        'div',
@@ -32986,13 +32991,13 @@
 	        React.createElement(
 	          'div',
 	          { id: 'roundNum' },
-	          ' ROUND ',
+	          'ROUND: ',
 	          this.state.roundNum
 	        ),
 	        React.createElement(
 	          'div',
 	          { id: 'score' },
-	          'SCORE ',
+	          'SCORE: ',
 	          this.state.score
 	        ),
 	        React.createElement(StreetView, {
@@ -33002,6 +33007,10 @@
 	    } else {
 	      return null;
 	    }
+	  },
+	
+	  render: function () {
+	    return this.toRender();
 	  }
 	
 	});
@@ -33012,6 +33021,8 @@
 /* 263 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/* globals google */
+	
 	var React = __webpack_require__(1);
 	var ClientActions = __webpack_require__(264);
 	
@@ -33023,14 +33034,15 @@
 	
 	
 	  getInitialState: function () {
-	    var viewToRender = GuessStore.current_guess();
-	    return { lat: viewToRender.lat, long: viewToRender.long };
+	    // debugger;
+	    // var viewToRender = GuessStore.current_guess();
+	    // OR var viewIdToRender = this.props.gameId ???;
+	    return { lat: 0, long: 0 };
 	  },
 	
 	  componentDidMount: function () {
-	    this.siteListener = GuessStore.addListener(this.renderStreetView());
-	    var viewToRender = GuessStore.current_guess();
-	    this.setState({ lat: viewToRender.lat, long: viewToRender.long });
+	    // debugger;
+	    this.siteListener = GuessStore.addListener(this.renderStreetView);
 	  },
 	
 	  componentWillUnmount: function () {
@@ -33038,13 +33050,14 @@
 	  },
 	
 	  renderStreetView: function () {
+	    // OR maybe it should go here instead????
+	    // this.setState({lat: viewToRender.lat, long: viewToRender.long});
 	
 	    var viewToRender = GuessStore.current_guess();
-	    // HARD CODED COORDINATES IN HERE;
-	    viewToRender = { lat: 51.1788429, long: -1.8261628 };
+	    // OR viewToRender = GuessStore.find(this.props.gameId) ???
 	    var streetViewDOMNode = document.getElementById('street-view');
 	    var streetViewOptions = {
-	      position: { lat: viewToRender.lat, lng: viewToRender.long },
+	      position: { lat: viewToRender.lat_true, lng: viewToRender.long_true },
 	      addressControl: false,
 	      zoomControlOptions: {
 	        position: google.maps.ControlPosition.TOP_LEFT
@@ -33054,6 +33067,8 @@
 	      }
 	    };
 	    var pano = new google.maps.StreetViewPanorama(streetViewDOMNode, streetViewOptions);
+	    this.setState({});
+	    // we're not changing the state at all. Just using this as a tool to guarantee a rerender
 	  },
 	
 	  render: function () {
@@ -33084,10 +33099,6 @@
 	    ApiUtil.createGame(userId);
 	  },
 	
-	  fetchSite: function () {
-	    ApiUtil.fetchSite();
-	  },
-	
 	  makeGuess: function (data) {
 	    ApiUtil.updateGuess(data);
 	  }
@@ -33115,17 +33126,8 @@
 	    });
 	  },
 	
-	  // I don't think I should be going to Unesco myself from the frontend
-	  fetchSite: function () {
-	    $.ajax({
-	      url: "api/unesco_sites/random_show",
-	      success: function (site) {
-	        ServerActions.receiveSite(site);
-	      }
-	    });
-	  },
-	
 	  updateGuess: function (data) {
+	
 	    $.ajax({
 	      url: "api/guesses/" + data.id,
 	      type: "PATCH",
@@ -33212,7 +33214,7 @@
 	var Store = __webpack_require__(235).Store;
 	var GuessConstants = __webpack_require__(267);
 	var AppDispatcher = __webpack_require__(231);
-	var GuessStore = new Store(AppDispatcher);
+	var GuessStore = window.GuessStore = new Store(AppDispatcher);
 	
 	var guess = {};
 	var _guesses = {};
@@ -33223,17 +33225,19 @@
 	};
 	
 	GuessStore.__onDispatch = function (payload) {
+	
 	  switch (payload.actionType) {
 	    case "SITE_RECEIVED":
 	      guess = payload;
 	      break;
-	    case "EMPTY_GUESSES_RECEIVED":
+	    // TODO FIX THIS.
+	    case GuessConstants.EMPTY_GUESSES_RECEIVED:
 	      for (var i = 0; i < 5; i++) {
 	        _guesses[i] = payload.guesses[0][i];
 	      }
 	      _guessToRender = _guesses[0];
 	      break;
-	    case "GUESSES_UPDATED":
+	    case GuessConstants.GUESSES_UPDATED:
 	      for (var idx = 0; idx < 5; idx++) {
 	        _guesses[i] = payload.guesses[0][i];
 	      }
@@ -33371,21 +33375,6 @@
 	
 	  mixins: [LinkedStateMixin, CurrentUserState],
 	
-	  greeting: function () {
-	    if (this.state.currentUser) {
-	      return React.createElement(
-	        'div',
-	        null,
-	        'Welcome to cultureMap, ',
-	        this.state.currentUser.username,
-	        '! ',
-	        React.createElement('br', null),
-	        'NOW PLAY THE GAME!!!',
-	        React.createElement('br', null)
-	      );
-	    }
-	  },
-	
 	  errors: function () {
 	    if (this.state.authErrors) {
 	      var self = this;
@@ -33486,21 +33475,6 @@
 	    this.setState({ form: event.currentTarget.value });
 	  },
 	
-	  greeting: function () {
-	    if (this.state.currentUser) {
-	      return React.createElement(
-	        'div',
-	        null,
-	        'Welcome to cultureMap, ',
-	        this.state.currentUser.username,
-	        '! ',
-	        React.createElement('br', null),
-	        'NOW PLAY THE GAME!!!',
-	        React.createElement('br', null)
-	      );
-	    }
-	  },
-	
 	  errors: function () {
 	    if (this.state.authErrors) {
 	      var self = this;
@@ -33548,7 +33522,6 @@
 	    return React.createElement(
 	      'div',
 	      { id: 'login-form' },
-	      this.greeting(),
 	      this.errors(),
 	      this.form()
 	    );
@@ -33629,11 +33602,7 @@
 	  initializeGame: function () {
 	
 	    var userId = this.state.currentUser.id;
-	    //hardcode userId to bypass not having id defined on currentUser
-	    // userId = 1;
-	    // hashHistory.push("/play");
 	    ClientActions.createGame(userId);
-	
 	    hashHistory.push("/play");
 	  },
 	

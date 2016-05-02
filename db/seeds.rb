@@ -1,4 +1,4 @@
-require 'csv'
+# require 'csv'
 
 UnescoSite.delete_all
 

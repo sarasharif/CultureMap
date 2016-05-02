@@ -25,10 +25,8 @@ var Router = (
         <IndexRoute component={Default} />
         <Route path="login" component={Login}></Route>
         <Route path="signup" component={Signup}></Route>
-        <Route path="categories" component={Categories}></Route>
       </Route>
       <Route path="play" component={Game}></Route>
-      <Route path="me" component={Profile}></Route>
     </Route>
   </Router>
 );
@@ -37,3 +35,6 @@ document.addEventListener("DOMContentLoaded", function () {
   var root = document.getElementById("content");
   ReactDOM.render(Router, root);
 });
+
+// <Route path="categories" component={Categories}></Route>
+// <Route path="me" component={Profile}></Route>

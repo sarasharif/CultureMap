@@ -21,11 +21,7 @@ var Default = React.createClass({
   initializeGame: function () {
 
     var userId = this.state.currentUser.id;
-    //hardcode userId to bypass not having id defined on currentUser
-    // userId = 1;
-    // hashHistory.push("/play");
     ClientActions.createGame(userId);
-
     hashHistory.push("/play");
   },
 

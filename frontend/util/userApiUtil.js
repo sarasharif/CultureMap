@@ -35,8 +35,9 @@ module.exports = {
       url: "api/session",
       type: "POST",
       data: {user: user},
-      success: function () {
-        ServerActions.receiveCurrentUser(user);
+      success: function (data) {
+  
+        ServerActions.receiveCurrentUser(data);
       },
       error: function (error) {
         ServerActions.handleError(error);

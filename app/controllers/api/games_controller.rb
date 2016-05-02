@@ -13,10 +13,6 @@ class Api::GamesController < ApplicationController
     render json: @package
   end
 
-  # update games exists only to set score to database
-  def update
-    #actually, I updated the game in the guess controller. IS THAT OKAY???
-  end
 
   #every game that any individual user has played
   def index

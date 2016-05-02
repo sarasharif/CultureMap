@@ -11,7 +11,7 @@ var NavBar = React.createClass({
 
   navlink1: function () {
     if (this.state.currentUser) {
-      return (<a className="btn btn-info-outline" type="submit" onClick={this.logout()}>LOGOUT</a>);
+      return (<a className="btn btn-info-outline" type="submit" onClick={this.logout}>LOGOUT</a>);
     } else {
       return (<Link to="/login">LOGIN</Link>);
     }
@@ -19,7 +19,8 @@ var NavBar = React.createClass({
 
   navlink2: function () {
     if (this.state.currentUser) {
-      return (<Link to="/me">{this.state.currentUser.username.toUppercase()}</Link>);
+
+      return (<Link to="/me">{this.state.currentUser.username.toUpperCase()}</Link>);
     } else {
       return (<Link to="/signup">SIGNUP</Link>);
     }
