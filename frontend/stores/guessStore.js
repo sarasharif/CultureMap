@@ -14,18 +14,8 @@ GuessStore.current_guess = function () {
 GuessStore.__onDispatch = function (payload) {
 
   switch(payload.actionType) {
-    case "SITE_RECEIVED":
-      guess = payload;
-      break;
-      // TODO FIX THIS.
-    case GuessConstants.EMPTY_GUESSES_RECEIVED:
+    case GuessConstants.GUESSES_RECEIVED:
       for (var i = 0; i < 5; i++) {
-        _guesses[i] = payload.guesses[0][i];
-      }
-      _guessToRender = _guesses[0];
-    break;
-    case GuessConstants.GUESSES_UPDATED:
-      for (var idx = 0; idx < 5; idx++) {
         _guesses[i] = payload.guesses[0][i];
       }
       _guessToRender = _guesses[0];

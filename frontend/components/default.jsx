@@ -27,9 +27,9 @@ var Default = React.createClass({
 
   whiteText: function () {
     if ( this.state.currentUser ) {
-      return (<header><h1 className="display-1">Come explore</h1></header>);
+      return (<header><h1 className="display-1">Come explore the world!</h1></header>);
     } else {
-      return (<header><h1 className="display-1">Lets Explore the World!</h1></header>);
+      return (<header><h1 className="display-1">Lets Explore our World Heritage!</h1></header>);
     }
   },
 
@@ -44,7 +44,7 @@ var Default = React.createClass({
   render: function () {
     return (
       <div>
-        {this.whiteText()} <br/><br/>
+        {this.whiteText()} <br/><br/><br/>
         {this.greenButton()}
       </div>
     );

@@ -12,26 +12,13 @@ var ServerActions = {
     });
   },
 
-  receiveEmptyGuesses: function (emptyGuesses) {
+  receiveGuesses: function (Guesses) {
     AppDispatcher.dispatch({
-      actionType: GuessConstants.EMPTY_GUESSES_RECEIVED,
-      guesses: emptyGuesses
-    });
-  },
-
-  receiveSite: function (site) {
-    AppDispatcher.dispatch({
-      actionType: GuessConstants.SITE_RECEIVED,
-      site: site
-    });
-  },
-
-  updateGuesses: function (gamepackage) {
-    AppDispatcher.dispatch({
-      actionType: GuessConstants.GUESSES_UPDATED,
-      guesses: gamepackage
+      actionType: GuessConstants.GUESSES_RECEIVED,
+      guesses: Guesses
     });
   }
+
 };
 
 module.exports = ServerActions;

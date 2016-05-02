@@ -2,7 +2,6 @@ class Api::GuessesController < ApplicationController
 
   def update
 
-    # put into transaction
     @guess = Guess.find(params[:id])
 
     @guess.update({lat_guess: params[:lat_guess], long_guess: params[:long_guess]})

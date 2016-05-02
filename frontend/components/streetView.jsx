@@ -44,14 +44,13 @@ var StreetView = React.createClass({
       },
     };
   var pano = new google.maps.StreetViewPanorama(streetViewDOMNode, streetViewOptions);
-  this.setState({});
+  // this.setState({});
   // we're not changing the state at all. Just using this as a tool to guarantee a rerender
 
 
   },
 
   render: function () {
-
     return (
         <div id='street-view'>
           <a target="_blank" href="https://www.google.com/maps">

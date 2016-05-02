@@ -33067,12 +33067,11 @@
 	      }
 	    };
 	    var pano = new google.maps.StreetViewPanorama(streetViewDOMNode, streetViewOptions);
-	    this.setState({});
+	    // this.setState({});
 	    // we're not changing the state at all. Just using this as a tool to guarantee a rerender
 	  },
 	
 	  render: function () {
-	
 	    return React.createElement(
 	      'div',
 	      { id: 'street-view' },
@@ -33121,19 +33120,19 @@
 	      data: { playerId: data },
 	      success: function (gamepackage) {
 	        ServerActions.receiveGame(gamepackage[0]);
-	        ServerActions.receiveEmptyGuesses(gamepackage.slice(1));
+	        ServerActions.receiveGuesses(gamepackage.slice(1));
 	      }
 	    });
 	  },
 	
 	  updateGuess: function (data) {
-	
 	    $.ajax({
 	      url: "api/guesses/" + data.id,
 	      type: "PATCH",
-	      data: { lat_guess: data.lat, long_guess: data.long },
+	      data: { lat_guess: data.lat_guess, long_guess: data.long_guess },
 	      success: function (gamepackage) {
-	        ServerActions.updateGuesses(gamepackage.slice(1));
+	        ServerActions.receiveGame(gamepackage[0]);
+	        ServerActions.receiveGuesses(gamepackage.slice(1));
 	      }
 	    });
 	  }
@@ -33158,26 +33157,13 @@
 	    });
 	  },
 	
-	  receiveEmptyGuesses: function (emptyGuesses) {
+	  receiveGuesses: function (Guesses) {
 	    AppDispatcher.dispatch({
-	      actionType: GuessConstants.EMPTY_GUESSES_RECEIVED,
-	      guesses: emptyGuesses
-	    });
-	  },
-	
-	  receiveSite: function (site) {
-	    AppDispatcher.dispatch({
-	      actionType: GuessConstants.SITE_RECEIVED,
-	      site: site
-	    });
-	  },
-	
-	  updateGuesses: function (gamepackage) {
-	    AppDispatcher.dispatch({
-	      actionType: GuessConstants.GUESSES_UPDATED,
-	      guesses: gamepackage
+	      actionType: GuessConstants.GUESSES_RECEIVED,
+	      guesses: Guesses
 	    });
 	  }
+	
 	};
 	
 	module.exports = ServerActions;
@@ -33188,11 +33174,7 @@
 
 	module.exports = {
 	
-	  EMPTY_GUESSES_RECEIVED: "EMPTY_GUESSES_RECEIVED",
-	
-	  SITE_RECEIVED: "SITE_RECEIVED",
-	
-	  GUESSES_UPDATED: "GUESSES_UPDATED"
+	  GUESSES_RECEIVED: "GUESSES_RECEIVED"
 	
 	};
 
@@ -33227,18 +33209,8 @@
 	GuessStore.__onDispatch = function (payload) {
 	
 	  switch (payload.actionType) {
-	    case "SITE_RECEIVED":
-	      guess = payload;
-	      break;
-	    // TODO FIX THIS.
-	    case GuessConstants.EMPTY_GUESSES_RECEIVED:
+	    case GuessConstants.GUESSES_RECEIVED:
 	      for (var i = 0; i < 5; i++) {
-	        _guesses[i] = payload.guesses[0][i];
-	      }
-	      _guessToRender = _guesses[0];
-	      break;
-	    case GuessConstants.GUESSES_UPDATED:
-	      for (var idx = 0; idx < 5; idx++) {
 	        _guesses[i] = payload.guesses[0][i];
 	      }
 	      _guessToRender = _guesses[0];
@@ -33614,7 +33586,7 @@
 	        React.createElement(
 	          'h1',
 	          { className: 'display-1' },
-	          'Come explore'
+	          'Come explore the world!'
 	        )
 	      );
 	    } else {
@@ -33624,7 +33596,7 @@
 	        React.createElement(
 	          'h1',
 	          { className: 'display-1' },
-	          'Lets Explore the World!'
+	          'Lets Explore our World Heritage!'
 	        )
 	      );
 	    }
@@ -33652,6 +33624,7 @@
 	      null,
 	      this.whiteText(),
 	      ' ',
+	      React.createElement('br', null),
 	      React.createElement('br', null),
 	      React.createElement('br', null),
 	      this.greenButton()

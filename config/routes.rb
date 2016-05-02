@@ -7,9 +7,8 @@ Rails.application.routes.draw do
     resource :user, only: [:create, :show]
     resource :session, only: [:create, :show, :destroy]
     resources :unesco_sites, only: [:show, :index]
-    resources :games, only: [:create, :show, :index]
-    resources :guesses, only: [:create, :update]
-    get 'unesco_sites/random_show'
+    resources :games, only: [:create]
+    resources :guesses, only: [:update]
 
   end
   # The priority is based upon order of creation: first created -> highest priority.
