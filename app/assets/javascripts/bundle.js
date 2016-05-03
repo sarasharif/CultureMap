@@ -25688,7 +25688,7 @@
 	
 	  getInitialState: function () {
 	    return {
-	      currentUser: UserStore.current_user(),
+	      currentUser: UserStore.currentUser(),
 	      authErrors: UserStore.errors()
 	    };
 	  },
@@ -25706,7 +25706,7 @@
 	
 	  updateUser: function () {
 	    this.setState({
-	      currentUser: UserStore.current_user(),
+	      currentUser: UserStore.currentUser(),
 	      authErrors: UserStore.errors()
 	    });
 	  }
@@ -25726,7 +25726,7 @@
 	var _currentUser;
 	var _authErrors = [];
 	
-	UserStore.current_user = function () {
+	UserStore.currentUser = function () {
 	  return _currentUser;
 	};
 	
@@ -32667,7 +32667,7 @@
 	    return React.createElement(
 	      'div',
 	      null,
-	      React.createElement(NavBar, null),
+	      React.createElement(NavBar, { currentUser: this.state.currentUser }),
 	      this.props.children
 	    );
 	  }
@@ -32909,7 +32909,6 @@
 
 	var React = __webpack_require__(1);
 	var ReactRouter = __webpack_require__(168);
-	var CurrentUserState = __webpack_require__(229);
 	var LinkedStateMixin = __webpack_require__(257);
 	var ClientActions = __webpack_require__(252);
 	var Link = ReactRouter.Link;
@@ -32918,10 +32917,8 @@
 	  displayName: 'NavBar',
 	
 	
-	  mixins: [CurrentUserState],
-	
 	  navlink1: function () {
-	    if (this.state.currentUser) {
+	    if (this.props.currentUser) {
 	      return React.createElement(
 	        'a',
 	        { className: 'btn btn-info-outline', type: 'submit', onClick: this.logout },
@@ -32937,12 +32934,12 @@
 	  },
 	
 	  navlink2: function () {
-	    if (this.state.currentUser) {
+	    if (this.props.currentUser) {
 	
 	      return React.createElement(
 	        Link,
 	        { to: '/me' },
-	        this.state.currentUser.username.toUpperCase()
+	        this.props.currentUser.username.toUpperCase()
 	      );
 	    } else {
 	      return React.createElement(
@@ -33008,9 +33005,9 @@
 	
 	  getInitialState: function () {
 	    return {
-	      gameId: null,
-	      roundNum: 1,
-	      score: 0
+	      gameId: GameStore.grabGameId(),
+	      roundNum: GameStore.currentGuess().round_num,
+	      score: GameStore.grabScore()
 	    };
 	  },
 	
@@ -33023,21 +33020,16 @@
 	  },
 	
 	  _onChange: function () {
+	
 	    this.setState({
 	      gameId: GameStore.grabGameId(),
-	      roundNum: GameStore.currentGuess().roundNum,
+	      roundNum: GameStore.currentGuess().round_num,
 	      score: GameStore.grabScore()
 	    });
 	  },
 	
 	  toRender: function () {
-	    if (typeof this.state.gameId === "null" || typeof this.state.roundNum === "undefined") {
-	      console.log("inthe null");
-	      console.log("roundnum" + this.state.roundNum);
-	      return React.createElement('div', null);
-	    } else if (this.state.gameId > 1 && this.state.roundNum < 6) {
-	      debugger;
-	      console.log("inthestreet view");
+	    if (this.state.gameId) {
 	      return React.createElement(
 	        'div',
 	        { className: 'gamediv' },
@@ -33060,8 +33052,6 @@
 	          roundNum: this.state.roundNum })
 	      );
 	    } else {
-	      console.log("in the summary");
-	      console.log("roundnum" + this.state.roundNum);
 	      return React.createElement(Summary, { score: this.state.score });
 	    }
 	  },
@@ -33080,33 +33070,49 @@
 
 	/* globals google */
 	var React = __webpack_require__(1);
+	var ReactRouter = __webpack_require__(168);
 	var ClientActions = __webpack_require__(264);
-	
+	var CurrentUserState = __webpack_require__(229);
 	var GameStore = __webpack_require__(268);
+	var UserStore = __webpack_require__(230);
 	var MapGuess = __webpack_require__(269);
 	var Result = __webpack_require__(270);
+	var hashHistory = ReactRouter.hashHistory;
 	
 	var StreetView = React.createClass({
 	  displayName: 'StreetView',
 	
 	
+	  mixins: [CurrentUserState],
+	
 	  getInitialState: function () {
-	    return { lat: 0, long: 0 };
+	    return {
+	      currentGuess: GameStore.currentGuess(),
+	      lat: 0, long: 0 };
 	  },
 	
 	  componentDidMount: function () {
+	    this.renderStreetView();
 	    this.siteListener = GameStore.addListener(this.renderStreetView);
+	    this.sessionListener = UserStore.addListener(this.pushToLogin);
 	  },
 	
 	  componentWillUnmount: function () {
 	    this.siteListener.remove();
+	    this.sessionListener.remove();
+	  },
+	
+	  pushToLogin: function () {
+	    if (!UserStore.currentUser()) {
+	      hashHistory.push("/login");
+	    }
 	  },
 	
 	  renderStreetView: function () {
-	    var viewToRender = GameStore.currentGuess();
+	    this.setState({ currentGuess: GameStore.currentGuess() });
 	    var streetViewDOMNode = document.getElementById('street-view');
 	    var streetViewOptions = {
-	      position: { lat: viewToRender.lat_true, lng: viewToRender.long_true },
+	      position: { lat: this.state.currentGuess.lat_true, lng: this.state.currentGuess.long_true },
 	      addressControl: false,
 	      zoomControlOptions: {
 	        position: google.maps.ControlPosition.TOP_LEFT
@@ -33116,18 +33122,19 @@
 	      }
 	    };
 	    var pano = new google.maps.StreetViewPanorama(streetViewDOMNode, streetViewOptions);
-	
-	    this.setState({});
-	    // we're not changing the state at all. Just using this as a tool to guarantee a rerender
 	  },
 	
 	  guessOrResult: function () {
-	    if (GameStore.currentGuess().points === 0) {
+	    console.log("deciding between guess or result for round " + this.props.roundNum);
+	    if (this.state.currentGuess.points === 0) {
+	      console.log("return mapguess for round " + this.props.roundNum);
 	      return React.createElement(MapGuess, {
-	        id: GameStore.currentGuess().id
+	        guessId: this.state.currentGuess.id
 	      });
 	    } else {
-	      return React.createElement(Result, { roundNum: GameStore.currentGuess().roundNum });
+	      debugger;
+	      console.log("return result for round " + this.props.roundNum);
+	      return React.createElement(Result, { roundNum: this.props.roundNum });
 	    }
 	  },
 	
@@ -33138,7 +33145,9 @@
 	      React.createElement(
 	        'a',
 	        { target: '_blank', href: 'https://www.google.com/maps' },
-	        React.createElement('div', { id: 'hide_google_logo' })
+	        ' ',
+	        React.createElement('div', { id: 'hide_google_logo' }),
+	        ' '
 	      ),
 	      React.createElement(
 	        'div',
@@ -33239,13 +33248,12 @@
 	var Store = __webpack_require__(235).Store;
 	var AppDispatcher = __webpack_require__(231);
 	var GameConstants = __webpack_require__(267);
-	var GameStore = new Store(AppDispatcher);
+	var GameStore = window.GameStore = new Store(AppDispatcher);
 	
 	var _gameId, _score;
 	var _guesses = {};
 	
 	GameStore.currentGuess = function () {
-	  console.log("roundnum");
 	  for (var idx = 1; idx < 6; idx++) {
 	    if (_guesses[idx] && !_guesses[idx].lat_guess) {
 	      return _guesses[idx];
@@ -33266,15 +33274,12 @@
 	    case GameConstants.PACKAGE_RECEIVED:
 	      var game = payload.data[0];
 	      _gameId = game.id;
-	      console.log(_gameId);
 	      _score = game.score;
-	      console.log(_score);
-	
 	      var guesses = payload.data[1];
 	      for (var i = 0; i < guesses.length; i++) {
 	        _guesses[guesses[i].round_num] = guesses[i];
 	      }
-	      console.log(_guesses);
+	      console.log("emitting gamestore change now");
 	      GameStore.__emitChange();
 	      break;
 	  }
@@ -33321,11 +33326,12 @@
 	    });
 	  },
 	
-	  makeGuess: function () {
+	  makeGuess: function (e) {
+	    e.preventDefault();
 	    var data = {
 	      lat_guess: this.marker.getPosition().lat(),
 	      long_guess: this.marker.getPosition().lng(),
-	      id: this.props.id
+	      id: this.props.guessId
 	    };
 	    ClientActions.makeGuess(data);
 	  },
@@ -33359,9 +33365,8 @@
 	    // if (this.props.roundNum < 5) {
 	    //   // this will add 1 to the round_num except it SHOULDN'T BECAUSE roundNUM is A PROP.
 	    // } else {
-	    //   hashHistory.push('/play');
+	    hashHistory.push('/play');
 	    // }
-	
 	  },
 	
 	  resultMap: function () {
@@ -33386,7 +33391,7 @@
 	  render: function () {
 	    return React.createElement(
 	      'form',
-	      { onSubmit: this.handleSubmit },
+	      { id: 'guess-result', onSubmit: this.handleSubmit },
 	      React.createElement(
 	        'div',
 	        null,
@@ -33423,6 +33428,7 @@
 	  },
 	
 	  render: function () {
+	    console.log("summary render now");
 	    return React.createElement(
 	      'form',
 	      { onSubmit: this.handleSubmit },
@@ -33469,6 +33475,7 @@
 	var ReactRouter = __webpack_require__(168);
 	var ClientActions = __webpack_require__(252);
 	var CurrentUserState = __webpack_require__(229);
+	var UserStore = __webpack_require__(230);
 	var LinkedStateMixin = __webpack_require__(257);
 	var hashHistory = ReactRouter.hashHistory;
 	
@@ -33495,13 +33502,26 @@
 	    }
 	  },
 	
+	  componentDidMount: function () {
+	    this.sessionListener = UserStore.addListener(this.pushToSlash);
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.sessionListener.remove();
+	  },
+	
+	  pushToSlash: function () {
+	    if (UserStore.currentUser()) {
+	      hashHistory.push("/");
+	    }
+	  },
+	
 	  handleSubmit: function (event) {
 	    event.preventDefault();
 	    ClientActions.login({
 	      username: this.state.username,
 	      password: this.state.password
 	    });
-	    hashHistory.push('/');
 	  },
 	
 	  form: function () {
@@ -33515,7 +33535,15 @@
 	        'section',
 	        null,
 	        React.createElement('input', { type: 'text', placeholder: 'username', valueLink: this.linkState("username") }),
-	        React.createElement('input', { type: 'password', placeholder: 'password', valueLink: this.linkState("password") })
+	        React.createElement('br', null),
+	        React.createElement('br', null),
+	        React.createElement('input', { type: 'password', placeholder: 'password', valueLink: this.linkState("password") }),
+	        React.createElement('br', null),
+	        React.createElement('br', null),
+	        React.createElement('br', null),
+	        React.createElement('br', null),
+	        React.createElement('br', null),
+	        React.createElement('br', null)
 	      ),
 	      React.createElement('input', { className: 'btn btn-success', type: 'submit', value: 'LOG IN' })
 	    );
@@ -33562,6 +33590,7 @@
 	var ClientActions = __webpack_require__(252);
 	var CurrentUserState = __webpack_require__(229);
 	var LinkedStateMixin = __webpack_require__(257);
+	var UserStore = __webpack_require__(230);
 	var ReactRouter = __webpack_require__(168);
 	var hashHistory = ReactRouter.hashHistory;
 	var LoginForm = React.createClass({
@@ -33569,14 +33598,6 @@
 	
 	
 	  mixins: [LinkedStateMixin, CurrentUserState],
-	
-	  getInitialState: function () {
-	    return { form: "signup" };
-	  },
-	
-	  setForm: function (event) {
-	    this.setState({ form: event.currentTarget.value });
-	  },
 	
 	  errors: function () {
 	    if (this.state.authErrors) {
@@ -33595,19 +33616,33 @@
 	    }
 	  },
 	
+	  componentDidMount: function () {
+	    this.sessionListener = UserStore.addListener(this.pushToSlash);
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.sessionListener.remove();
+	  },
+	
+	  pushToSlash: function () {
+	    if (UserStore.currentUser()) {
+	      hashHistory.push("/");
+	    }
+	  },
+	
 	  handleSubmit: function (event) {
 	    event.preventDefault();
 	    ClientActions.signup({
 	      username: this.state.username,
 	      password: this.state.password
 	    });
-	    hashHistory.push('/');
 	  },
 	
 	  form: function () {
 	    if (this.state.currentUser) {
 	      return;
 	    }
+	
 	    return React.createElement(
 	      'form',
 	      { onSubmit: this.handleSubmit },
@@ -33615,7 +33650,15 @@
 	        'section',
 	        null,
 	        React.createElement('input', { type: 'text', placeholder: 'username', valueLink: this.linkState("username") }),
-	        React.createElement('input', { type: 'password', placeholder: 'password', valueLink: this.linkState("password") })
+	        React.createElement('br', null),
+	        React.createElement('br', null),
+	        React.createElement('input', { type: 'password', placeholder: 'password', valueLink: this.linkState("password") }),
+	        React.createElement('br', null),
+	        React.createElement('br', null),
+	        React.createElement('br', null),
+	        React.createElement('br', null),
+	        React.createElement('br', null),
+	        React.createElement('br', null)
 	      ),
 	      React.createElement('input', { className: 'btn btn-success', type: 'submit', value: 'SIGN UP' })
 	    );
@@ -33662,7 +33705,7 @@
 	    return React.createElement(
 	      'div',
 	      null,
-	      React.createElement('div', { id: 'background' }),
+	      React.createElement('div', null),
 	      this.props.children
 	    );
 	  }
@@ -33685,6 +33728,7 @@
 	var UserClientActions = __webpack_require__(252);
 	var ClientActions = __webpack_require__(264);
 	var CurrentUserState = __webpack_require__(229);
+	var GameStore = __webpack_require__(268);
 	var Link = ReactRouter.Link;
 	var hashHistory = ReactRouter.hashHistory;
 	
@@ -33702,10 +33746,21 @@
 	    });
 	  },
 	
+	  componentDidMount: function () {
+	    this.listener = GameStore.addListener(this.pushToPlay);
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.listener.remove();
+	  },
+	
+	  pushToPlay: function () {
+	    hashHistory.push('/play');
+	  },
+	
 	  initializeGame: function () {
 	    var userId = this.state.currentUser.id;
 	    ClientActions.createGame(userId);
-	    hashHistory.push("/play");
 	  },
 	
 	  whiteText: function () {
@@ -33737,7 +33792,7 @@
 	      return React.createElement(
 	        'button',
 	        { className: 'btn btn-success', onClick: this.initializeGame },
-	        'LETS GO EXPLORING'
+	        'LETS PLAY NOW!'
 	      );
 	    } else {
 	      return React.createElement(
@@ -33751,7 +33806,7 @@
 	  render: function () {
 	    return React.createElement(
 	      'div',
-	      null,
+	      { id: 'splashimage' },
 	      this.whiteText(),
 	      ' ',
 	      React.createElement('br', null),

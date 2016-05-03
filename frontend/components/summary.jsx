@@ -9,6 +9,7 @@ var Summary = React.createClass({
   },
 
   render: function () {
+    console.log("summary render now");
     return (
       <form onSubmit={this.handleSubmit}>
         <h3>Your total score was {this.props.score} points</h3>

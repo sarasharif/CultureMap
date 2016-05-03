@@ -3,6 +3,7 @@ var ReactRouter = require('react-router');
 var UserClientActions = require('../actions/userClientActions');
 var ClientActions = require('../actions/clientActions');
 var CurrentUserState = require("../mixins/currentUserState");
+var GameStore = require("../stores/gameStore");
 var Link = ReactRouter.Link;
 var hashHistory = ReactRouter.hashHistory;
 
@@ -18,10 +19,21 @@ var Default = React.createClass({
     });
   },
 
+  componentDidMount: function () {
+    this.listener = GameStore.addListener(this.pushToPlay);
+  },
+
+  componentWillUnmount: function () {
+    this.listener.remove();
+  },
+
+  pushToPlay: function () {
+    hashHistory.push('/play');
+  },
+
   initializeGame: function () {
     var userId = this.state.currentUser.id;
     ClientActions.createGame(userId);
-    hashHistory.push("/play");
   },
 
   whiteText: function () {
@@ -34,7 +46,7 @@ var Default = React.createClass({
 
   greenButton: function () {
     if ( this.state.currentUser ) {
-      return (<button className="btn btn-success" onClick={this.initializeGame}>LETS GO EXPLORING</button>);
+      return (<button className="btn btn-success" onClick={this.initializeGame}>LETS PLAY NOW!</button>);
     } else {
       return (<button className="btn btn-success" type="submit" onClick={this.handleGuestLogin}>GUEST DEMO</button>);
     }
@@ -42,7 +54,7 @@ var Default = React.createClass({
 
   render: function () {
     return (
-      <div>
+      <div id="splashimage">
         {this.whiteText()} <br/><br/><br/>
         {this.greenButton()}
       </div>

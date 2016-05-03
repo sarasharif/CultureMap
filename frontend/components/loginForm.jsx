@@ -2,6 +2,7 @@ var React = require('react');
 var ReactRouter = require('react-router');
 var ClientActions = require('../actions/userClientActions');
 var CurrentUserState = require("../mixins/currentUserState");
+var UserStore = require('../stores/userStore.js');
 var LinkedStateMixin = require('react-addons-linked-state-mixin');
 var hashHistory = ReactRouter.hashHistory;
 
@@ -23,13 +24,26 @@ var LoginForm = React.createClass({
     }
   },
 
+  componentDidMount: function () {
+    this.sessionListener = UserStore.addListener(this.pushToSlash);
+  },
+
+  componentWillUnmount: function () {
+    this.sessionListener.remove();
+  },
+
+  pushToSlash: function () {
+    if (UserStore.currentUser()) {
+      hashHistory.push("/");
+    }
+  },
+
   handleSubmit: function (event) {
     event.preventDefault();
     ClientActions.login({
       username: this.state.username,
       password: this.state.password
     });
-    hashHistory.push('/');
   },
 
   form: function () {
@@ -39,8 +53,8 @@ var LoginForm = React.createClass({
     return (
       <form onSubmit={this.handleSubmit}>
         <section>
-          <input type="text" placeholder="username" valueLink={this.linkState("username")}></input>
-          <input type="password" placeholder="password" valueLink={this.linkState("password")}></input>
+          <input type="text" placeholder="username" valueLink={this.linkState("username")}></input><br/><br/>
+          <input type="password" placeholder="password" valueLink={this.linkState("password")}></input><br/><br/><br/><br/><br/><br/>
         </section>
 
         <input className="btn btn-success" type="submit" value="LOG IN"></input>

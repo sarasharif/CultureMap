@@ -1,13 +1,12 @@
 var Store = require('flux/utils').Store;
 var AppDispatcher = require('../dispatcher/dispatcher');
 var GameConstants = require('../constants/gameConstants');
-var GameStore = new Store(AppDispatcher);
+var GameStore = window.GameStore = new Store(AppDispatcher);
 
 var _gameId, _score;
 var _guesses = {};
 
 GameStore.currentGuess = function () {
-  console.log("roundnum");
   for ( var idx = 1; idx < 6; idx++) {
     if (_guesses[idx] && !_guesses[idx].lat_guess) {
       return _guesses[idx];
@@ -28,15 +27,12 @@ GameStore.__onDispatch = function(payload) {
     case GameConstants.PACKAGE_RECEIVED:
       var game = payload.data[0];
         _gameId = game.id;
-        console.log(_gameId);
         _score = game.score;
-        console.log(_score);
-
       var guesses = payload.data[1];
         for (var i = 0; i < guesses.length; i++) {
           _guesses[guesses[i].round_num] = guesses[i];
         }
-        console.log(_guesses);
+        console.log("emitting gamestore change now");
         GameStore.__emitChange();
       break;
   }

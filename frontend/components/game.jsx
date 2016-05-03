@@ -9,9 +9,9 @@ var Game = React.createClass({
 
   getInitialState: function () {
     return {
-      gameId: null,
-      roundNum: 1,
-      score: 0
+      gameId: GameStore.grabGameId(),
+      roundNum: GameStore.currentGuess().round_num,
+      score: GameStore.grabScore()
     };
   },
 
@@ -24,21 +24,16 @@ var Game = React.createClass({
   },
 
   _onChange: function() {
+    
     this.setState({
       gameId: GameStore.grabGameId(),
-      roundNum: GameStore.currentGuess().roundNum,
+      roundNum: GameStore.currentGuess().round_num,
       score: GameStore.grabScore()
     });
   },
 
   toRender: function () {
-    if (typeof this.state.gameId === "null" || typeof this.state.roundNum === "undefined") {
-      console.log("inthe null");
-      console.log("roundnum" + this.state.roundNum);
-      return (<div></div>);
-    } else if (this.state.gameId > 1 && this.state.roundNum < 6) {
-      debugger;
-      console.log("inthestreet view");
+    if (this.state.gameId) {
       return (
         <div className="gamediv">
           <div id='roundNum'>ROUND: {this.state.roundNum} </div>
@@ -48,8 +43,6 @@ var Game = React.createClass({
             roundNum={this.state.roundNum} />
         </div>);
       } else {
-        console.log("in the summary")
-        console.log("roundnum" + this.state.roundNum);
         return (
           <Summary score={this.state.score}/>
         );

@@ -14,7 +14,7 @@ var App = React.createClass({
   render: function () {
     return (
       <div>
-        <NavBar />
+        <NavBar currentUser={this.state.currentUser} />
         {this.props.children}
       </div>
     );

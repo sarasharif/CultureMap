@@ -6,7 +6,7 @@ var UserStore = new Store(AppDispatcher);
 var _currentUser;
 var _authErrors = [];
 
-UserStore.current_user = function () {
+UserStore.currentUser = function () {
   return _currentUser;
 };
 

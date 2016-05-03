@@ -31,11 +31,12 @@ var MapGuess = React.createClass({
     });
   },
 
-  makeGuess: function () {
+  makeGuess: function (e) {
+    e.preventDefault();
     var data = {
       lat_guess: this.marker.getPosition().lat(),
       long_guess: this.marker.getPosition().lng(),
-      id: this.props.id
+      id: this.props.guessId
     };
     ClientActions.makeGuess(data);
   },

@@ -5,7 +5,7 @@ var CurrentUserStateMixin = {
 
   getInitialState: function() {
     return {
-			currentUser: UserStore.current_user(),
+			currentUser: UserStore.currentUser(),
 			authErrors: UserStore.errors()
 		};
   },
@@ -23,7 +23,7 @@ var CurrentUserStateMixin = {
 
   updateUser: function () {
     this.setState({
-			currentUser: UserStore.current_user(),
+			currentUser: UserStore.currentUser(),
 			authErrors: UserStore.errors()
 		});
   }

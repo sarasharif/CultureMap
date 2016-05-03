@@ -15,7 +15,7 @@ var Splash = React.createClass({
   render: function () {
     return (
       <div>
-        <div id="background"></div>
+        <div></div>
         {this.props.children}
       </div>
     );

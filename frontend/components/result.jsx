@@ -9,7 +9,7 @@ var Result = React.createClass({
     // if (this.props.roundNum < 5) {
     //   // this will add 1 to the round_num except it SHOULDN'T BECAUSE roundNUM is A PROP.
     // } else {
-    //   hashHistory.push('/play');
+      hashHistory.push('/play');
     // }
 
   },
@@ -31,7 +31,7 @@ var Result = React.createClass({
 
   render: function () {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form id='guess-result' onSubmit={this.handleSubmit}>
         <div>{this.resultMap()}</div>
         <h3>You just earned {this.props.points} points</h3>
         <input className="btn btn-success" type="submit" value={this.submitTextValue}></input>
