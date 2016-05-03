@@ -1,5 +1,4 @@
 /* globals google */
-debugger;
 var React = require('react');
 var ClientActions = require('../actions/clientActions');
 
@@ -44,7 +43,6 @@ var StreetView = React.createClass({
   },
 
   guessOrResult: function () {
-    debugger;
     if (GameStore.currentGuess().points === 0) {
       return (
         <MapGuess

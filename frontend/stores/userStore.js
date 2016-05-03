@@ -19,16 +19,18 @@ UserStore.__onDispatch = function (payload) {
     case "LOGIN":
       _currentUser = payload.user;
       _authErrors = [];
+      UserStore.__emitChange();
       break;
     case "LOGOUT":
       _currentUser = null;
       _authErrors = [];
+      UserStore.__emitChange();
       break;
     case "ERROR":
       _authErrors = JSON.parse(payload.errors.responseText).errors;
+      UserStore.__emitChange();
       break;
   }
-  UserStore.__emitChange();
 };
 
 module.exports = UserStore;

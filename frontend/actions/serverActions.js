@@ -4,20 +4,12 @@ var GameConstants = require('../constants/gameConstants.js');
 
 var ServerActions = {
 
-  receiveGame: function (game) {
+  receivePackage: function (data) {
     AppDispatcher.dispatch({
-      actionType: GameConstants.GAME_RECEIVED,
-      game: game
-    });
-  },
-
-  receiveGuesses: function (guesses) {
-    AppDispatcher.dispatch({
-      actionType: GameConstants.GUESSES_RECEIVED,
-      guesses: guesses
+      actionType: GameConstants.PACKAGE_RECEIVED,
+      data: data
     });
   }
-
 };
 
 module.exports = ServerActions;

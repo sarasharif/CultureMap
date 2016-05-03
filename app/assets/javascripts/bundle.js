@@ -292,8 +292,8 @@
 /* 4 */
 /***/ function(module, exports) {
 
-	/* eslint-disable no-unused-vars */
 	'use strict';
+	/* eslint-disable no-unused-vars */
 	var hasOwnProperty = Object.prototype.hasOwnProperty;
 	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
 	
@@ -305,7 +305,51 @@
 		return Object(val);
 	}
 	
-	module.exports = Object.assign || function (target, source) {
+	function shouldUseNative() {
+		try {
+			if (!Object.assign) {
+				return false;
+			}
+	
+			// Detect buggy property enumeration order in older V8 versions.
+	
+			// https://bugs.chromium.org/p/v8/issues/detail?id=4118
+			var test1 = new String('abc');  // eslint-disable-line
+			test1[5] = 'de';
+			if (Object.getOwnPropertyNames(test1)[0] === '5') {
+				return false;
+			}
+	
+			// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+			var test2 = {};
+			for (var i = 0; i < 10; i++) {
+				test2['_' + String.fromCharCode(i)] = i;
+			}
+			var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
+				return test2[n];
+			});
+			if (order2.join('') !== '0123456789') {
+				return false;
+			}
+	
+			// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+			var test3 = {};
+			'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
+				test3[letter] = letter;
+			});
+			if (Object.keys(Object.assign({}, test3)).join('') !==
+					'abcdefghijklmnopqrst') {
+				return false;
+			}
+	
+			return true;
+		} catch (e) {
+			// We don't expect any of the above to throw, but better to be safe.
+			return false;
+		}
+	}
+	
+	module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 		var from;
 		var to = toObject(target);
 		var symbols;
@@ -25695,16 +25739,18 @@
 	    case "LOGIN":
 	      _currentUser = payload.user;
 	      _authErrors = [];
+	      UserStore.__emitChange();
 	      break;
 	    case "LOGOUT":
 	      _currentUser = null;
 	      _authErrors = [];
+	      UserStore.__emitChange();
 	      break;
 	    case "ERROR":
 	      _authErrors = JSON.parse(payload.errors.responseText).errors;
+	      UserStore.__emitChange();
 	      break;
 	  }
-	  UserStore.__emitChange();
 	};
 	
 	module.exports = UserStore;
@@ -32952,9 +32998,9 @@
 	var React = __webpack_require__(1);
 	
 	var StreetView = __webpack_require__(263);
-	var Summary = __webpack_require__(280);
+	var Summary = __webpack_require__(271);
 	
-	var GameStore = __webpack_require__(271);
+	var GameStore = __webpack_require__(268);
 	
 	var Game = React.createClass({
 	  displayName: 'Game',
@@ -32962,7 +33008,7 @@
 	
 	  getInitialState: function () {
 	    return {
-	      gameId: GameStore.grabGameId(),
+	      gameId: null,
 	      roundNum: 1,
 	      score: 0
 	    };
@@ -32985,7 +33031,13 @@
 	  },
 	
 	  toRender: function () {
-	    if (this.state.gameId > 1 && this.state.roundNum < 5) {
+	    if (typeof this.state.gameId === "null" || typeof this.state.roundNum === "undefined") {
+	      console.log("inthe null");
+	      console.log("roundnum" + this.state.roundNum);
+	      return React.createElement('div', null);
+	    } else if (this.state.gameId > 1 && this.state.roundNum < 6) {
+	      debugger;
+	      console.log("inthestreet view");
 	      return React.createElement(
 	        'div',
 	        { className: 'gamediv' },
@@ -33008,6 +33060,8 @@
 	          roundNum: this.state.roundNum })
 	      );
 	    } else {
+	      console.log("in the summary");
+	      console.log("roundnum" + this.state.roundNum);
 	      return React.createElement(Summary, { score: this.state.score });
 	    }
 	  },
@@ -33025,13 +33079,12 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/* globals google */
-	debugger;
 	var React = __webpack_require__(1);
 	var ClientActions = __webpack_require__(264);
 	
-	var GameStore = __webpack_require__(271);
-	var MapGuess = __webpack_require__(270);
-	var Result = __webpack_require__(281);
+	var GameStore = __webpack_require__(268);
+	var MapGuess = __webpack_require__(269);
+	var Result = __webpack_require__(270);
 	
 	var StreetView = React.createClass({
 	  displayName: 'StreetView',
@@ -33069,7 +33122,6 @@
 	  },
 	
 	  guessOrResult: function () {
-	    debugger;
 	    if (GameStore.currentGuess().points === 0) {
 	      return React.createElement(MapGuess, {
 	        id: GameStore.currentGuess().id
@@ -33131,8 +33183,7 @@
 	      type: "POST",
 	      data: { playerId: data },
 	      success: function (gamepackage) {
-	        ServerActions.receiveGuesses(gamepackage.slice(1));
-	        ServerActions.receiveGame(gamepackage[0]);
+	        ServerActions.receivePackage(gamepackage);
 	      }
 	    });
 	  },
@@ -33143,8 +33194,7 @@
 	      type: "PATCH",
 	      data: { lat_guess: data.lat_guess, long_guess: data.long_guess },
 	      success: function (gamepackage) {
-	        ServerActions.receiveGame(gamepackage[0]);
-	        ServerActions.receiveGuesses(gamepackage.slice(1));
+	        ServerActions.receivePackage(gamepackage);
 	      }
 	    });
 	  }
@@ -33157,44 +33207,83 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var AppDispatcher = __webpack_require__(231);
-	var GameConstants = __webpack_require__(268);
+	var GameConstants = __webpack_require__(267);
 	
 	var ServerActions = {
 	
-	  receiveGame: function (game) {
+	  receivePackage: function (data) {
 	    AppDispatcher.dispatch({
-	      actionType: GameConstants.GAME_RECEIVED,
-	      game: game
-	    });
-	  },
-	
-	  receiveGuesses: function (guesses) {
-	    AppDispatcher.dispatch({
-	      actionType: GameConstants.GUESSES_RECEIVED,
-	      guesses: guesses
+	      actionType: GameConstants.PACKAGE_RECEIVED,
+	      data: data
 	    });
 	  }
-	
 	};
 	
 	module.exports = ServerActions;
 
 /***/ },
-/* 267 */,
-/* 268 */
+/* 267 */
 /***/ function(module, exports) {
 
 	
 	module.exports = {
 	
-	    GAME_RECEIVED: "GAME_RECEIVED",
-	    GUESSES_RECEIVED: "GUESSES_RECEIVED"
+	    PACKAGE_RECEIVED: "PACKAGE_RECEIVED"
 	
 	};
 
 /***/ },
-/* 269 */,
-/* 270 */
+/* 268 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(235).Store;
+	var AppDispatcher = __webpack_require__(231);
+	var GameConstants = __webpack_require__(267);
+	var GameStore = new Store(AppDispatcher);
+	
+	var _gameId, _score;
+	var _guesses = {};
+	
+	GameStore.currentGuess = function () {
+	  console.log("roundnum");
+	  for (var idx = 1; idx < 6; idx++) {
+	    if (_guesses[idx] && !_guesses[idx].lat_guess) {
+	      return _guesses[idx];
+	    }
+	  }
+	};
+	
+	GameStore.grabGameId = function () {
+	  return _gameId;
+	};
+	
+	GameStore.grabScore = function () {
+	  return _score;
+	};
+	
+	GameStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case GameConstants.PACKAGE_RECEIVED:
+	      var game = payload.data[0];
+	      _gameId = game.id;
+	      console.log(_gameId);
+	      _score = game.score;
+	      console.log(_score);
+	
+	      var guesses = payload.data[1];
+	      for (var i = 0; i < guesses.length; i++) {
+	        _guesses[guesses[i].round_num] = guesses[i];
+	      }
+	      console.log(_guesses);
+	      GameStore.__emitChange();
+	      break;
+	  }
+	};
+	
+	module.exports = GameStore;
+
+/***/ },
+/* 269 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* globals google */
@@ -33255,51 +33344,101 @@
 	module.exports = MapGuess;
 
 /***/ },
+/* 270 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ReactRouter = __webpack_require__(168);
+	var hashHistory = ReactRouter.hashHistory;
+	
+	var Result = React.createClass({
+	  displayName: 'Result',
+	
+	
+	  handleSubmit: function () {
+	    // if (this.props.roundNum < 5) {
+	    //   // this will add 1 to the round_num except it SHOULDN'T BECAUSE roundNUM is A PROP.
+	    // } else {
+	    //   hashHistory.push('/play');
+	    // }
+	
+	  },
+	
+	  resultMap: function () {
+	    return React.createElement(
+	      'div',
+	      null,
+	      'RESULT MAP'
+	    );
+	    // User IMPLICIT POSITIONING OF MAP because you will supply markers
+	    // return "https://maps.googleapis.com/maps/api/staticmap?size=512x512&maptype=terrain\&markers=size:mid%7Ccolor:red%7CSan+Francisco,CA%7COakland,CA%7CSan+Jose,CA&key=YOUR_API_KEY"
+	    // path parameter: path=geodesic:true|color:0x0000ff|weight:5|40.737102,-73.990318|40.749825,-73.987963
+	  },
+	
+	  submitTextValue: function () {
+	    if (this.props.roundNum < 5) {
+	      return "PLAY NEXT ROUND";
+	    } else {
+	      return "VIEW SUMMARY";
+	    }
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'form',
+	      { onSubmit: this.handleSubmit },
+	      React.createElement(
+	        'div',
+	        null,
+	        this.resultMap()
+	      ),
+	      React.createElement(
+	        'h3',
+	        null,
+	        'You just earned ',
+	        this.props.points,
+	        ' points'
+	      ),
+	      React.createElement('input', { className: 'btn btn-success', type: 'submit', value: this.submitTextValue })
+	    );
+	  }
+	});
+	
+	module.exports = Result;
+
+/***/ },
 /* 271 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Store = __webpack_require__(235).Store;
-	var AppDispatcher = __webpack_require__(231);
-	var GameConstants = __webpack_require__(268);
-	var GameStore = new Store(AppDispatcher);
+	var React = __webpack_require__(1);
+	var ReactRouter = __webpack_require__(168);
+	var hashHistory = ReactRouter.hashHistory;
 	
-	var _gameId, _score;
-	var _guesses = {};
+	var Summary = React.createClass({
+	  displayName: 'Summary',
 	
-	GameStore.currentGuess = function () {
-	  for (var idx = 1; idx < 6; idx++) {
-	    if (_guesses[idx] && !_guesses[idx].lat_guess) {
-	      return _guesses[idx];
-	    }
+	
+	  handleSubmit: function () {
+	    hashHistory.push('/');
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'form',
+	      { onSubmit: this.handleSubmit },
+	      React.createElement(
+	        'h3',
+	        null,
+	        'Your total score was ',
+	        this.props.score,
+	        ' points'
+	      ),
+	      React.createElement('input', { className: 'btn btn-success', type: 'submit', value: 'LET\'S EXPLORE SOME MORE!' })
+	    );
 	  }
-	};
+	});
 	
-	GameStore.grabGameId = function () {
-	  return _gameId;
-	};
-	
-	GameStore.grabScore = function () {
-	  return _score;
-	};
-	
-	GameStore.__onDispatch = function (payload) {
-	  switch (payload.actionType) {
-	    case GameConstants.GAME_RECEIVED:
-	      _gameId = payload.game.id;
-	      _score = payload.game.score;
-	      break;
-	    case GameConstants.GUESSES_RECEIVED:
-	      var guesses = payload.guesses;
-	      for (var i = 0; i < guesses.length; i++) {
-	        _guesses[guesses[i].round_num] = guesses[i];
-	      }
-	      break;
-	  }
-	
-	  GameStore.__emitChange();
-	};
-	
-	module.exports = GameStore;
+	module.exports = Summary;
 
 /***/ },
 /* 272 */
@@ -33564,7 +33703,6 @@
 	  },
 	
 	  initializeGame: function () {
-	
 	    var userId = this.state.currentUser.id;
 	    ClientActions.createGame(userId);
 	    hashHistory.push("/play");
@@ -33626,103 +33764,6 @@
 	});
 	
 	module.exports = Default;
-
-/***/ },
-/* 280 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var ReactRouter = __webpack_require__(168);
-	var hashHistory = ReactRouter.hashHistory;
-	
-	var Summary = React.createClass({
-	  displayName: 'Summary',
-	
-	
-	  handleSubmit: function () {
-	    hashHistory.push('/');
-	  },
-	
-	  render: function () {
-	    return React.createElement(
-	      'form',
-	      { onSubmit: this.handleSubmit },
-	      React.createElement(
-	        'h3',
-	        null,
-	        'Your total score was ',
-	        this.props.score,
-	        ' points'
-	      ),
-	      React.createElement('input', { className: 'btn btn-success', type: 'submit', value: 'LET\'S EXPLORE SOME MORE!' })
-	    );
-	  }
-	});
-	
-	module.exports = Summary;
-
-/***/ },
-/* 281 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var ReactRouter = __webpack_require__(168);
-	var hashHistory = ReactRouter.hashHistory;
-	
-	var Result = React.createClass({
-	  displayName: 'Result',
-	
-	
-	  handleSubmit: function () {
-	    // if (this.props.roundNum < 5) {
-	    //   // this will add 1 to the round_num except it SHOULDN'T BECAUSE roundNUM is A PROP.
-	    // } else {
-	    //   hashHistory.push('/play');
-	    // }
-	
-	  },
-	
-	  resultMap: function () {
-	    return React.createElement(
-	      'div',
-	      null,
-	      'RESULT MAP'
-	    );
-	    // User IMPLICIT POSITIONING OF MAP because you will supply markers
-	    // return "https://maps.googleapis.com/maps/api/staticmap?size=512x512&maptype=terrain\&markers=size:mid%7Ccolor:red%7CSan+Francisco,CA%7COakland,CA%7CSan+Jose,CA&key=YOUR_API_KEY"
-	    // path parameter: path=geodesic:true|color:0x0000ff|weight:5|40.737102,-73.990318|40.749825,-73.987963
-	  },
-	
-	  submitTextValue: function () {
-	    if (this.props.roundNum < 5) {
-	      return "PLAY NEXT ROUND";
-	    } else {
-	      return "VIEW SUMMARY";
-	    }
-	  },
-	
-	  render: function () {
-	    return React.createElement(
-	      'form',
-	      { onSubmit: this.handleSubmit },
-	      React.createElement(
-	        'div',
-	        null,
-	        this.resultMap()
-	      ),
-	      React.createElement(
-	        'h3',
-	        null,
-	        'You just earned ',
-	        this.props.points,
-	        ' points'
-	      ),
-	      React.createElement('input', { className: 'btn btn-success', type: 'submit', value: this.submitTextValue })
-	    );
-	  }
-	});
-	
-	module.exports = Result;
 
 /***/ }
 /******/ ]);

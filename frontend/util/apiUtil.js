@@ -7,8 +7,7 @@ var ApiUtil = {
       type: "POST",
       data: {playerId: data},
       success: function (gamepackage) {
-        ServerActions.receiveGuesses(gamepackage.slice(1));
-        ServerActions.receiveGame(gamepackage[0]);
+        ServerActions.receivePackage(gamepackage);
       }
     });
   },
@@ -19,8 +18,8 @@ var ApiUtil = {
       type: "PATCH",
       data: {lat_guess: data.lat_guess, long_guess: data.long_guess},
       success: function (gamepackage) {
-        ServerActions.receiveGame(gamepackage[0]);
-        ServerActions.receiveGuesses(gamepackage.slice(1));
+        ServerActions.receivePackage(gamepackage);
+
       }
     });
   }

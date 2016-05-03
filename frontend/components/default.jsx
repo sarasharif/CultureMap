@@ -19,7 +19,6 @@ var Default = React.createClass({
   },
 
   initializeGame: function () {
-
     var userId = this.state.currentUser.id;
     ClientActions.createGame(userId);
     hashHistory.push("/play");
