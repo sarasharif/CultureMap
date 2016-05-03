@@ -9,7 +9,7 @@ var Game = React.createClass({
 
   getInitialState: function () {
     return {
-      gameId: GameStore.grabId(),
+      gameId: GameStore.grabGameId(),
       roundNum: 1,
       score: 0
     };
@@ -25,16 +25,14 @@ var Game = React.createClass({
 
   _onChange: function() {
     this.setState({
-      gameId: GameStore.grabId(),
-      roundNum: this.state.roundNum + 1,
+      gameId: GameStore.grabGameId(),
+      roundNum: GameStore.currentGuess().roundNum,
       score: GameStore.grabScore()
     });
   },
 
   toRender: function () {
-    if (typeof this.state.gameId === "undefined") {
-      return <div>Loading</div>;
-    } else if (this.state.roundNum < 5) {
+    if (this.state.gameId > 1 && this.state.roundNum < 5) {
       return (
         <div className="gamediv">
           <div id='roundNum'>ROUND: {this.state.roundNum} </div>
@@ -51,7 +49,6 @@ var Game = React.createClass({
   },
 
   render: function() {
-    // debugger;
     return this.toRender();
   }
 

@@ -1,9 +1,9 @@
 /* globals google */
-
+debugger;
 var React = require('react');
 var ClientActions = require('../actions/clientActions');
 
-var GuessStore = require('../stores/guessStore.js');
+var GameStore = require('../stores/gameStore.js');
 var MapGuess = require('./mapGuess');
 var Result = require('./result');
 
@@ -15,7 +15,7 @@ var StreetView = React.createClass({
   },
 
   componentDidMount: function() {
-    this.siteListener = GuessStore.addListener(this.renderStreetView);
+    this.siteListener = GameStore.addListener(this.renderStreetView);
   },
 
   componentWillUnmount: function() {
@@ -23,7 +23,7 @@ var StreetView = React.createClass({
   },
 
   renderStreetView: function () {
-    var viewToRender = GuessStore.currentGuess(this.props.roundNum);
+    var viewToRender = GameStore.currentGuess();
     var streetViewDOMNode = document.getElementById('street-view');
     var streetViewOptions = {
       position: {lat: viewToRender.lat_true, lng: viewToRender.long_true},
@@ -36,6 +36,7 @@ var StreetView = React.createClass({
       },
     };
   var pano = new google.maps.StreetViewPanorama(streetViewDOMNode, streetViewOptions);
+
   this.setState({});
   // we're not changing the state at all. Just using this as a tool to guarantee a rerender
 
@@ -43,16 +44,16 @@ var StreetView = React.createClass({
   },
 
   guessOrResult: function () {
-    // debugger;
-    if (GuessStore.currentGuess(this.props.roundNum).points === 0) {
+    debugger;
+    if (GameStore.currentGuess().points === 0) {
       return (
         <MapGuess
-          id={GuessStore.currentGuess(this.props.roundNum).id}
+          id={GameStore.currentGuess().id}
           />
       );
     } else {
       return (
-        <Result roundNum={this.props.roundNum}/>
+        <Result roundNum={GameStore.currentGuess().roundNum}/>
       );
     }
   },

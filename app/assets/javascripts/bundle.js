@@ -32962,7 +32962,7 @@
 	
 	  getInitialState: function () {
 	    return {
-	      gameId: GameStore.grabId(),
+	      gameId: GameStore.grabGameId(),
 	      roundNum: 1,
 	      score: 0
 	    };
@@ -32978,20 +32978,14 @@
 	
 	  _onChange: function () {
 	    this.setState({
-	      gameId: GameStore.grabId(),
-	      roundNum: this.state.roundNum + 1,
+	      gameId: GameStore.grabGameId(),
+	      roundNum: GameStore.currentGuess().roundNum,
 	      score: GameStore.grabScore()
 	    });
 	  },
 	
 	  toRender: function () {
-	    if (typeof this.state.gameId === "undefined") {
-	      return React.createElement(
-	        'div',
-	        null,
-	        'Loading'
-	      );
-	    } else if (this.state.roundNum < 5) {
+	    if (this.state.gameId > 1 && this.state.roundNum < 5) {
 	      return React.createElement(
 	        'div',
 	        { className: 'gamediv' },
@@ -33019,7 +33013,6 @@
 	  },
 	
 	  render: function () {
-	    // debugger;
 	    return this.toRender();
 	  }
 	
@@ -33032,11 +33025,11 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/* globals google */
-	
+	debugger;
 	var React = __webpack_require__(1);
 	var ClientActions = __webpack_require__(264);
 	
-	var GuessStore = __webpack_require__(269);
+	var GameStore = __webpack_require__(271);
 	var MapGuess = __webpack_require__(270);
 	var Result = __webpack_require__(281);
 	
@@ -33049,7 +33042,7 @@
 	  },
 	
 	  componentDidMount: function () {
-	    this.siteListener = GuessStore.addListener(this.renderStreetView);
+	    this.siteListener = GameStore.addListener(this.renderStreetView);
 	  },
 	
 	  componentWillUnmount: function () {
@@ -33057,7 +33050,7 @@
 	  },
 	
 	  renderStreetView: function () {
-	    var viewToRender = GuessStore.currentGuess(this.props.roundNum);
+	    var viewToRender = GameStore.currentGuess();
 	    var streetViewDOMNode = document.getElementById('street-view');
 	    var streetViewOptions = {
 	      position: { lat: viewToRender.lat_true, lng: viewToRender.long_true },
@@ -33070,18 +33063,19 @@
 	      }
 	    };
 	    var pano = new google.maps.StreetViewPanorama(streetViewDOMNode, streetViewOptions);
+	
 	    this.setState({});
 	    // we're not changing the state at all. Just using this as a tool to guarantee a rerender
 	  },
 	
 	  guessOrResult: function () {
-	    // debugger;
-	    if (GuessStore.currentGuess(this.props.roundNum).points === 0) {
+	    debugger;
+	    if (GameStore.currentGuess().points === 0) {
 	      return React.createElement(MapGuess, {
-	        id: GuessStore.currentGuess(this.props.roundNum).id
+	        id: GameStore.currentGuess().id
 	      });
 	    } else {
-	      return React.createElement(Result, { roundNum: this.props.roundNum });
+	      return React.createElement(Result, { roundNum: GameStore.currentGuess().roundNum });
 	    }
 	  },
 	
@@ -33163,7 +33157,6 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var AppDispatcher = __webpack_require__(231);
-	var GuessConstants = __webpack_require__(267);
 	var GameConstants = __webpack_require__(268);
 	
 	var ServerActions = {
@@ -33177,7 +33170,7 @@
 	
 	  receiveGuesses: function (guesses) {
 	    AppDispatcher.dispatch({
-	      actionType: GuessConstants.GUESSES_RECEIVED,
+	      actionType: GameConstants.GUESSES_RECEIVED,
 	      guesses: guesses
 	    });
 	  }
@@ -33187,57 +33180,20 @@
 	module.exports = ServerActions;
 
 /***/ },
-/* 267 */
-/***/ function(module, exports) {
-
-	module.exports = {
-	
-	  GUESSES_RECEIVED: "GUESSES_RECEIVED"
-	
-	};
-
-/***/ },
+/* 267 */,
 /* 268 */
 /***/ function(module, exports) {
 
 	
 	module.exports = {
 	
-	    GAME_RECEIVED: "GAME_RECEIVED"
+	    GAME_RECEIVED: "GAME_RECEIVED",
+	    GUESSES_RECEIVED: "GUESSES_RECEIVED"
 	
 	};
 
 /***/ },
-/* 269 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Store = __webpack_require__(235).Store;
-	var GuessConstants = __webpack_require__(267);
-	var AppDispatcher = __webpack_require__(231);
-	var GuessStore = window.GuessStore = new Store(AppDispatcher);
-	
-	var guess = {};
-	var _guesses = {};
-	
-	GuessStore.currentGuess = function (round_num) {
-	  return _guesses[round_num - 1];
-	};
-	
-	GuessStore.__onDispatch = function (payload) {
-	
-	  switch (payload.actionType) {
-	    case GuessConstants.GUESSES_RECEIVED:
-	      for (var i = 0; i < 5; i++) {
-	        _guesses[i] = payload.guesses[0][i];
-	      }
-	      break;
-	  }
-	  GuessStore.__emitChange();
-	};
-	
-	module.exports = GuessStore;
-
-/***/ },
+/* 269 */,
 /* 270 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -33303,14 +33259,22 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var Store = __webpack_require__(235).Store;
-	var GameConstants = __webpack_require__(268);
 	var AppDispatcher = __webpack_require__(231);
-	
+	var GameConstants = __webpack_require__(268);
 	var GameStore = new Store(AppDispatcher);
 	
 	var _gameId, _score;
+	var _guesses = {};
 	
-	GameStore.grabId = function () {
+	GameStore.currentGuess = function () {
+	  for (var idx = 1; idx < 6; idx++) {
+	    if (_guesses[idx] && !_guesses[idx].lat_guess) {
+	      return _guesses[idx];
+	    }
+	  }
+	};
+	
+	GameStore.grabGameId = function () {
 	  return _gameId;
 	};
 	
@@ -33323,6 +33287,12 @@
 	    case GameConstants.GAME_RECEIVED:
 	      _gameId = payload.game.id;
 	      _score = payload.game.score;
+	      break;
+	    case GameConstants.GUESSES_RECEIVED:
+	      var guesses = payload.guesses;
+	      for (var i = 0; i < guesses.length; i++) {
+	        _guesses[guesses[i].round_num] = guesses[i];
+	      }
 	      break;
 	  }
 	

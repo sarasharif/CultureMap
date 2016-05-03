@@ -1,5 +1,4 @@
 var AppDispatcher = require('../dispatcher/dispatcher.js');
-var GuessConstants = require('../constants/guessConstants.js');
 var GameConstants = require('../constants/gameConstants.js');
 
 
@@ -14,7 +13,7 @@ var ServerActions = {
 
   receiveGuesses: function (guesses) {
     AppDispatcher.dispatch({
-      actionType: GuessConstants.GUESSES_RECEIVED,
+      actionType: GameConstants.GUESSES_RECEIVED,
       guesses: guesses
     });
   }
