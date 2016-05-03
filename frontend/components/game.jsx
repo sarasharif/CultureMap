@@ -1,13 +1,11 @@
 var React = require('react');
-var CurrentUserState = require("../mixins/currentUserState");
 
 var StreetView = require('./streetView');
+var Summary = require('./summary');
 
 var GameStore = require('../stores/gameStore');
 
 var Game = React.createClass({
-
-  mixins: [CurrentUserState],
 
   getInitialState: function () {
     return {
@@ -19,7 +17,10 @@ var Game = React.createClass({
 
   componentDidMount: function() {
     this.listener = GameStore.addListener(this._onChange);
-    // this.setState({});
+  },
+
+  componentWillUnmount: function() {
+    this.listener.remove();
   },
 
   _onChange: function() {
@@ -31,22 +32,27 @@ var Game = React.createClass({
   },
 
   toRender: function () {
-    if ( this.state.currentUser ) {
+    if (typeof this.state.gameId === "undefined") {
+      return <div>Loading</div>;
+    } else if (this.state.roundNum < 5) {
       return (
         <div className="gamediv">
-          <div id='roundNum'>ROUND: {this.state.roundNum}</div>
-          <div id='score'>SCORE: {this.state.score}</div>
+          <div id='roundNum'>ROUND: {this.state.roundNum} </div>
+          <div id='score'>SCORE: {this.state.score} </div>
           <StreetView
             gameId={this.state.gameId}
             roundNum={this.state.roundNum} />
         </div>);
-    } else {
-      return null;
-    }
+      } else {
+        return (
+          <Summary score={this.state.score}/>
+        );
+      }
   },
 
   render: function() {
-    return this.toRender()
+    // debugger;
+    return this.toRender();
   }
 
 });

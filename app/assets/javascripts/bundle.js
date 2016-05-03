@@ -32950,17 +32950,15 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var CurrentUserState = __webpack_require__(229);
 	
 	var StreetView = __webpack_require__(263);
+	var Summary = __webpack_require__(280);
 	
 	var GameStore = __webpack_require__(271);
 	
 	var Game = React.createClass({
 	  displayName: 'Game',
 	
-	
-	  mixins: [CurrentUserState],
 	
 	  getInitialState: function () {
 	    return {
@@ -32972,7 +32970,10 @@
 	
 	  componentDidMount: function () {
 	    this.listener = GameStore.addListener(this._onChange);
-	    // this.setState({});
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.listener.remove();
 	  },
 	
 	  _onChange: function () {
@@ -32984,7 +32985,13 @@
 	  },
 	
 	  toRender: function () {
-	    if (this.state.currentUser) {
+	    if (typeof this.state.gameId === "undefined") {
+	      return React.createElement(
+	        'div',
+	        null,
+	        'Loading'
+	      );
+	    } else if (this.state.roundNum < 5) {
 	      return React.createElement(
 	        'div',
 	        { className: 'gamediv' },
@@ -32992,24 +32999,27 @@
 	          'div',
 	          { id: 'roundNum' },
 	          'ROUND: ',
-	          this.state.roundNum
+	          this.state.roundNum,
+	          ' '
 	        ),
 	        React.createElement(
 	          'div',
 	          { id: 'score' },
 	          'SCORE: ',
-	          this.state.score
+	          this.state.score,
+	          ' '
 	        ),
 	        React.createElement(StreetView, {
 	          gameId: this.state.gameId,
 	          roundNum: this.state.roundNum })
 	      );
 	    } else {
-	      return null;
+	      return React.createElement(Summary, { score: this.state.score });
 	    }
 	  },
 	
 	  render: function () {
+	    // debugger;
 	    return this.toRender();
 	  }
 	
@@ -33028,20 +33038,17 @@
 	
 	var GuessStore = __webpack_require__(269);
 	var MapGuess = __webpack_require__(270);
+	var Result = __webpack_require__(281);
 	
 	var StreetView = React.createClass({
 	  displayName: 'StreetView',
 	
 	
 	  getInitialState: function () {
-	    // debugger;
-	    // var viewToRender = GuessStore.current_guess();
-	    // OR var viewIdToRender = this.props.gameId ???;
 	    return { lat: 0, long: 0 };
 	  },
 	
 	  componentDidMount: function () {
-	    // debugger;
 	    this.siteListener = GuessStore.addListener(this.renderStreetView);
 	  },
 	
@@ -33050,11 +33057,7 @@
 	  },
 	
 	  renderStreetView: function () {
-	    // OR maybe it should go here instead????
-	    // this.setState({lat: viewToRender.lat, long: viewToRender.long});
-	
-	    var viewToRender = GuessStore.current_guess();
-	    // OR viewToRender = GuessStore.find(this.props.gameId) ???
+	    var viewToRender = GuessStore.currentGuess(this.props.roundNum);
 	    var streetViewDOMNode = document.getElementById('street-view');
 	    var streetViewOptions = {
 	      position: { lat: viewToRender.lat_true, lng: viewToRender.long_true },
@@ -33067,8 +33070,19 @@
 	      }
 	    };
 	    var pano = new google.maps.StreetViewPanorama(streetViewDOMNode, streetViewOptions);
-	    // this.setState({});
+	    this.setState({});
 	    // we're not changing the state at all. Just using this as a tool to guarantee a rerender
+	  },
+	
+	  guessOrResult: function () {
+	    // debugger;
+	    if (GuessStore.currentGuess(this.props.roundNum).points === 0) {
+	      return React.createElement(MapGuess, {
+	        id: GuessStore.currentGuess(this.props.roundNum).id
+	      });
+	    } else {
+	      return React.createElement(Result, { roundNum: this.props.roundNum });
+	    }
 	  },
 	
 	  render: function () {
@@ -33080,7 +33094,11 @@
 	        { target: '_blank', href: 'https://www.google.com/maps' },
 	        React.createElement('div', { id: 'hide_google_logo' })
 	      ),
-	      React.createElement(MapGuess, { id: GuessStore.current_guess().id })
+	      React.createElement(
+	        'div',
+	        null,
+	        this.guessOrResult()
+	      )
 	    );
 	  }
 	});
@@ -33119,8 +33137,8 @@
 	      type: "POST",
 	      data: { playerId: data },
 	      success: function (gamepackage) {
-	        ServerActions.receiveGame(gamepackage[0]);
 	        ServerActions.receiveGuesses(gamepackage.slice(1));
+	        ServerActions.receiveGame(gamepackage[0]);
 	      }
 	    });
 	  },
@@ -33157,10 +33175,10 @@
 	    });
 	  },
 	
-	  receiveGuesses: function (Guesses) {
+	  receiveGuesses: function (guesses) {
 	    AppDispatcher.dispatch({
 	      actionType: GuessConstants.GUESSES_RECEIVED,
-	      guesses: Guesses
+	      guesses: guesses
 	    });
 	  }
 	
@@ -33200,10 +33218,9 @@
 	
 	var guess = {};
 	var _guesses = {};
-	var _guessToRender = {};
 	
-	GuessStore.current_guess = function () {
-	  return _guessToRender;
+	GuessStore.currentGuess = function (round_num) {
+	  return _guesses[round_num - 1];
 	};
 	
 	GuessStore.__onDispatch = function (payload) {
@@ -33213,7 +33230,6 @@
 	      for (var i = 0; i < 5; i++) {
 	        _guesses[i] = payload.guesses[0][i];
 	      }
-	      _guessToRender = _guesses[0];
 	      break;
 	  }
 	  GuessStore.__emitChange();
@@ -33225,6 +33241,8 @@
 /* 270 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/* globals google */
+	
 	var React = __webpack_require__(1);
 	var ClientActions = __webpack_require__(264);
 	
@@ -33239,10 +33257,14 @@
 	
 	
 	  getInitialState: function () {
-	    var id = this.props.id;
-	    return { lat_guess: 0, long_guess: 0, id: id };
+	    // var id = this.props.id;
+	    return {
+	      lat_guess: 0,
+	      long_guess: 0
+	    };
 	  },
 	
+	  // id: id
 	  componentDidMount: function () {
 	    var mapDOMNode = document.getElementById('map-guess');
 	    this.map = new google.maps.Map(mapDOMNode, mapOptions);
@@ -33634,6 +33656,103 @@
 	});
 	
 	module.exports = Default;
+
+/***/ },
+/* 280 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ReactRouter = __webpack_require__(168);
+	var hashHistory = ReactRouter.hashHistory;
+	
+	var Summary = React.createClass({
+	  displayName: 'Summary',
+	
+	
+	  handleSubmit: function () {
+	    hashHistory.push('/');
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'form',
+	      { onSubmit: this.handleSubmit },
+	      React.createElement(
+	        'h3',
+	        null,
+	        'Your total score was ',
+	        this.props.score,
+	        ' points'
+	      ),
+	      React.createElement('input', { className: 'btn btn-success', type: 'submit', value: 'LET\'S EXPLORE SOME MORE!' })
+	    );
+	  }
+	});
+	
+	module.exports = Summary;
+
+/***/ },
+/* 281 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ReactRouter = __webpack_require__(168);
+	var hashHistory = ReactRouter.hashHistory;
+	
+	var Result = React.createClass({
+	  displayName: 'Result',
+	
+	
+	  handleSubmit: function () {
+	    // if (this.props.roundNum < 5) {
+	    //   // this will add 1 to the round_num except it SHOULDN'T BECAUSE roundNUM is A PROP.
+	    // } else {
+	    //   hashHistory.push('/play');
+	    // }
+	
+	  },
+	
+	  resultMap: function () {
+	    return React.createElement(
+	      'div',
+	      null,
+	      'RESULT MAP'
+	    );
+	    // User IMPLICIT POSITIONING OF MAP because you will supply markers
+	    // return "https://maps.googleapis.com/maps/api/staticmap?size=512x512&maptype=terrain\&markers=size:mid%7Ccolor:red%7CSan+Francisco,CA%7COakland,CA%7CSan+Jose,CA&key=YOUR_API_KEY"
+	    // path parameter: path=geodesic:true|color:0x0000ff|weight:5|40.737102,-73.990318|40.749825,-73.987963
+	  },
+	
+	  submitTextValue: function () {
+	    if (this.props.roundNum < 5) {
+	      return "PLAY NEXT ROUND";
+	    } else {
+	      return "VIEW SUMMARY";
+	    }
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'form',
+	      { onSubmit: this.handleSubmit },
+	      React.createElement(
+	        'div',
+	        null,
+	        this.resultMap()
+	      ),
+	      React.createElement(
+	        'h3',
+	        null,
+	        'You just earned ',
+	        this.props.points,
+	        ' points'
+	      ),
+	      React.createElement('input', { className: 'btn btn-success', type: 'submit', value: this.submitTextValue })
+	    );
+	  }
+	});
+	
+	module.exports = Result;
 
 /***/ }
 /******/ ]);

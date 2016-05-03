@@ -14,7 +14,6 @@ GameStore.grabScore = function () {
   return _score;
 };
 
-
 GameStore.__onDispatch = function(payload) {
   switch (payload.actionType) {
     case GameConstants.GAME_RECEIVED:

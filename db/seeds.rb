@@ -1,8 +1,8 @@
-# require 'csv'
+require 'csv'
 
 UnescoSite.delete_all
 
-csv_text = File.read(Rails.root.join('lib', 'seeds', 'unesco_data.csv'))
+csv_text = File.read(Rails.root.join('lib', 'seeds', 'curated.csv'))
 csv = CSV.parse(csv_text, headers: true)
 csv.each do |row|
   t = UnescoSite.new

@@ -12,10 +12,10 @@ var ServerActions = {
     });
   },
 
-  receiveGuesses: function (Guesses) {
+  receiveGuesses: function (guesses) {
     AppDispatcher.dispatch({
       actionType: GuessConstants.GUESSES_RECEIVED,
-      guesses: Guesses
+      guesses: guesses
     });
   }
 

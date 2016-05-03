@@ -1,3 +1,5 @@
+/* globals google */
+
 var React = require('react');
 var ClientActions = require('../actions/clientActions');
 
@@ -10,8 +12,12 @@ var mapOptions = {
 var MapGuess = React.createClass({
 
   getInitialState: function() {
-    var id = this.props.id;
-    return { lat_guess: 0, long_guess: 0, id: id};
+    // var id = this.props.id;
+    return {
+      lat_guess: 0,
+      long_guess: 0,
+      // id: id
+    };
   },
 
   componentDidMount: function() {

@@ -5,10 +5,9 @@ var GuessStore = window.GuessStore = new Store(AppDispatcher);
 
 var guess = {};
 var _guesses = {};
-var _guessToRender = {};
 
-GuessStore.current_guess = function () {
-  return _guessToRender;
+GuessStore.currentGuess = function (round_num) {
+  return _guesses[(round_num - 1)];
 };
 
 GuessStore.__onDispatch = function (payload) {
@@ -18,7 +17,6 @@ GuessStore.__onDispatch = function (payload) {
       for (var i = 0; i < 5; i++) {
         _guesses[i] = payload.guesses[0][i];
       }
-      _guessToRender = _guesses[0];
     break;
   }
   GuessStore.__emitChange();

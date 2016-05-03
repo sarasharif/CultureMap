@@ -7,8 +7,8 @@ var ApiUtil = {
       type: "POST",
       data: {playerId: data},
       success: function (gamepackage) {
-        ServerActions.receiveGame(gamepackage[0]);
         ServerActions.receiveGuesses(gamepackage.slice(1));
+        ServerActions.receiveGame(gamepackage[0]);
       }
     });
   },
