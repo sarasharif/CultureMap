@@ -6,6 +6,8 @@ class Api::GamesController < ApplicationController
       @guesses.each_with_index do |guess, i|
         guess.game_id = @game.id
         guess.round_num = i + 1
+        guess.lat_guess = 0
+        guess.long_guess = 0
         guess.points = 0
         guess.save!
       end
@@ -19,6 +21,13 @@ class Api::GamesController < ApplicationController
     @games = Games.includes(:userId)
     render 'index'
   end
+
+  def show
+    @game = Game.find(params[:id])
+    @guesses = @game.guesses
+    render :show
+  end
+
 
   # No ability to delete games
   #

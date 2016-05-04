@@ -10,7 +10,7 @@ var Game = React.createClass({
   getInitialState: function () {
     return {
       gameId: GameStore.grabGameId(),
-      roundNum: GameStore.currentGuess().round_num,
+      roundNum: GameStore.currentRoundNum(),
       score: GameStore.grabScore()
     };
   },
@@ -24,16 +24,19 @@ var Game = React.createClass({
   },
 
   _onChange: function() {
-    
     this.setState({
       gameId: GameStore.grabGameId(),
-      roundNum: GameStore.currentGuess().round_num,
+      roundNum: GameStore.currentRoundNum(),
       score: GameStore.grabScore()
     });
   },
 
   toRender: function () {
-    if (this.state.gameId) {
+    if (this.state.roundNum > 5) {
+      return (
+        <Summary score={this.state.score} roundNum={this.state.roundNum}/>
+      );
+    } else {
       return (
         <div className="gamediv">
           <div id='roundNum'>ROUND: {this.state.roundNum} </div>
@@ -41,12 +44,9 @@ var Game = React.createClass({
           <StreetView
             gameId={this.state.gameId}
             roundNum={this.state.roundNum} />
-        </div>);
-      } else {
-        return (
-          <Summary score={this.state.score}/>
-        );
-      }
+        </div>
+      );
+    }
   },
 
   render: function() {

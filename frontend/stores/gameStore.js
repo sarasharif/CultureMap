@@ -4,14 +4,15 @@ var GameConstants = require('../constants/gameConstants');
 var GameStore = window.GameStore = new Store(AppDispatcher);
 
 var _gameId, _score;
+var _roundNum = 1;
 var _guesses = {};
 
 GameStore.currentGuess = function () {
-  for ( var idx = 1; idx < 6; idx++) {
-    if (_guesses[idx] && !_guesses[idx].lat_guess) {
-      return _guesses[idx];
-    }
-  }
+  return _guesses[_roundNum];
+};
+
+GameStore.currentRoundNum = function () {
+  return _roundNum;
 };
 
 GameStore.grabGameId = function () {
@@ -32,8 +33,11 @@ GameStore.__onDispatch = function(payload) {
         for (var i = 0; i < guesses.length; i++) {
           _guesses[guesses[i].round_num] = guesses[i];
         }
-        console.log("emitting gamestore change now");
         GameStore.__emitChange();
+      break;
+    case GameConstants.NEXT_ROUND:
+      _roundNum += 1;
+      GameStore.__emitChange();
       break;
   }
 };

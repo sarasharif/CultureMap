@@ -3,7 +3,11 @@ class Guess < ActiveRecord::Base
   validates :game_id, :round_num, :site_id, :lat_true, :long_true, presence: true
 
   belongs_to :game, :inverse_of => :guesses
-  belongs_to :unesco_site
+
+  belongs_to :unesco_site,
+    class_name: :UnescoSite,
+    foreign_key: :site_id,
+    primary_key: :id_no
 
   def self.return_5_guesses(site_ids)
     guesses = []

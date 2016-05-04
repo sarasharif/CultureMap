@@ -7,6 +7,7 @@ var GameStore = require('../stores/gameStore.js');
 var UserStore = require('../stores/userStore.js');
 var MapGuess = require('./mapGuess');
 var Result = require('./result');
+
 var hashHistory = ReactRouter.hashHistory;
 
 var StreetView = React.createClass({
@@ -55,17 +56,13 @@ var StreetView = React.createClass({
   },
 
   guessOrResult: function () {
-    console.log("deciding between guess or result for round " + this.props.roundNum);
     if (this.state.currentGuess.points === 0) {
-      console.log("return mapguess for round " + this.props.roundNum);
       return (
         <MapGuess
           guessId={this.state.currentGuess.id}
           />
       );
     } else {
-      debugger;
-      console.log("return result for round " + this.props.roundNum);
       return (
         <Result roundNum={this.props.roundNum}/>
       );

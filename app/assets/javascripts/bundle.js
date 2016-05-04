@@ -33006,7 +33006,7 @@
 	  getInitialState: function () {
 	    return {
 	      gameId: GameStore.grabGameId(),
-	      roundNum: GameStore.currentGuess().round_num,
+	      roundNum: GameStore.currentRoundNum(),
 	      score: GameStore.grabScore()
 	    };
 	  },
@@ -33020,16 +33020,17 @@
 	  },
 	
 	  _onChange: function () {
-	
 	    this.setState({
 	      gameId: GameStore.grabGameId(),
-	      roundNum: GameStore.currentGuess().round_num,
+	      roundNum: GameStore.currentRoundNum(),
 	      score: GameStore.grabScore()
 	    });
 	  },
 	
 	  toRender: function () {
-	    if (this.state.gameId) {
+	    if (this.state.roundNum > 5) {
+	      return React.createElement(Summary, { score: this.state.score, roundNum: this.state.roundNum });
+	    } else {
 	      return React.createElement(
 	        'div',
 	        { className: 'gamediv' },
@@ -33051,8 +33052,6 @@
 	          gameId: this.state.gameId,
 	          roundNum: this.state.roundNum })
 	      );
-	    } else {
-	      return React.createElement(Summary, { score: this.state.score });
 	    }
 	  },
 	
@@ -33077,6 +33076,7 @@
 	var UserStore = __webpack_require__(230);
 	var MapGuess = __webpack_require__(269);
 	var Result = __webpack_require__(270);
+	
 	var hashHistory = ReactRouter.hashHistory;
 	
 	var StreetView = React.createClass({
@@ -33125,15 +33125,11 @@
 	  },
 	
 	  guessOrResult: function () {
-	    console.log("deciding between guess or result for round " + this.props.roundNum);
 	    if (this.state.currentGuess.points === 0) {
-	      console.log("return mapguess for round " + this.props.roundNum);
 	      return React.createElement(MapGuess, {
 	        guessId: this.state.currentGuess.id
 	      });
 	    } else {
-	      debugger;
-	      console.log("return result for round " + this.props.roundNum);
 	      return React.createElement(Result, { roundNum: this.props.roundNum });
 	    }
 	  },
@@ -33165,6 +33161,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var ApiUtil = __webpack_require__(265);
+	var AppDispatcher = __webpack_require__(231);
+	var GameConstants = __webpack_require__(267);
 	
 	var ClientActions = {
 	  createGame: function (userId) {
@@ -33173,8 +33171,13 @@
 	
 	  makeGuess: function (data) {
 	    ApiUtil.updateGuess(data);
-	  }
+	  },
 	
+	  incrementRoundNum: function () {
+	    AppDispatcher.dispatch({
+	      actionType: GameConstants.NEXT_ROUND
+	    });
+	  }
 	};
 	
 	module.exports = ClientActions;
@@ -33207,6 +33210,7 @@
 	      }
 	    });
 	  }
+	
 	};
 	
 	module.exports = ApiUtil;
@@ -33237,7 +33241,8 @@
 	
 	module.exports = {
 	
-	    PACKAGE_RECEIVED: "PACKAGE_RECEIVED"
+	  PACKAGE_RECEIVED: "PACKAGE_RECEIVED",
+	  NEXT_ROUND: "NEXT_ROUND"
 	
 	};
 
@@ -33251,14 +33256,15 @@
 	var GameStore = window.GameStore = new Store(AppDispatcher);
 	
 	var _gameId, _score;
+	var _roundNum = 1;
 	var _guesses = {};
 	
 	GameStore.currentGuess = function () {
-	  for (var idx = 1; idx < 6; idx++) {
-	    if (_guesses[idx] && !_guesses[idx].lat_guess) {
-	      return _guesses[idx];
-	    }
-	  }
+	  return _guesses[_roundNum];
+	};
+	
+	GameStore.currentRoundNum = function () {
+	  return _roundNum;
 	};
 	
 	GameStore.grabGameId = function () {
@@ -33279,7 +33285,10 @@
 	      for (var i = 0; i < guesses.length; i++) {
 	        _guesses[guesses[i].round_num] = guesses[i];
 	      }
-	      console.log("emitting gamestore change now");
+	      GameStore.__emitChange();
+	      break;
+	    case GameConstants.NEXT_ROUND:
+	      _roundNum += 1;
 	      GameStore.__emitChange();
 	      break;
 	  }
@@ -33355,18 +33364,17 @@
 
 	var React = __webpack_require__(1);
 	var ReactRouter = __webpack_require__(168);
+	var ClientActions = __webpack_require__(264);
+	var GameStore = __webpack_require__(268);
 	var hashHistory = ReactRouter.hashHistory;
 	
 	var Result = React.createClass({
 	  displayName: 'Result',
 	
 	
-	  handleSubmit: function () {
-	    // if (this.props.roundNum < 5) {
-	    //   // this will add 1 to the round_num except it SHOULDN'T BECAUSE roundNUM is A PROP.
-	    // } else {
-	    hashHistory.push('/play');
-	    // }
+	  handleSubmit: function (e) {
+	    e.preventDefault();
+	    ClientActions.incrementRoundNum();
 	  },
 	
 	  resultMap: function () {
@@ -33401,10 +33409,10 @@
 	        'h3',
 	        null,
 	        'You just earned ',
-	        this.props.points,
+	        GameStore.currentGuess().points,
 	        ' points'
 	      ),
-	      React.createElement('input', { className: 'btn btn-success', type: 'submit', value: this.submitTextValue })
+	      React.createElement('input', { className: 'btn btn-success', type: 'submit', value: this.submitTextValue() })
 	    );
 	  }
 	});
@@ -33424,6 +33432,7 @@
 	
 	
 	  handleSubmit: function () {
+	    debugger;
 	    hashHistory.push('/');
 	  },
 	

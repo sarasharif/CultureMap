@@ -1,17 +1,15 @@
 var React = require('react');
 var ReactRouter = require('react-router');
+var ClientActions = require('../actions/clientActions');
+var GameStore = require('../stores/gameStore.js');
 var hashHistory = ReactRouter.hashHistory;
 
 
 var Result = React.createClass({
 
-  handleSubmit: function () {
-    // if (this.props.roundNum < 5) {
-    //   // this will add 1 to the round_num except it SHOULDN'T BECAUSE roundNUM is A PROP.
-    // } else {
-      hashHistory.push('/play');
-    // }
-
+  handleSubmit: function (e) {
+    e.preventDefault();
+    ClientActions.incrementRoundNum();
   },
 
   resultMap: function () {
@@ -33,8 +31,8 @@ var Result = React.createClass({
     return (
       <form id='guess-result' onSubmit={this.handleSubmit}>
         <div>{this.resultMap()}</div>
-        <h3>You just earned {this.props.points} points</h3>
-        <input className="btn btn-success" type="submit" value={this.submitTextValue}></input>
+        <h3>You just earned {GameStore.currentGuess().points} points</h3>
+        <input className="btn btn-success" type="submit" value={this.submitTextValue()}></input>
       </form>
     );
   }

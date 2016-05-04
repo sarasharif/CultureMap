@@ -23,10 +23,10 @@ CultureMap will allow users to do the following:
 
 - [x] Create an account (MVP)
 - [x] Log in / Log out, including as a Guest/Demo User (MVP)
-- [ ] Choose to initialize a game and enter the Google Street View of a randomly selected UNESCO World Heritage Site (MVP)
-- [ ] Input a guess (lat/long) for each of 5 rounds (MVP)
-- [ ] Receive a score and map for each site after each round with a button to advance to the next round (MVP)
-- [ ] Receive a score and map at the end of each game with a button to initiate another game (MVP)
+- [x] Choose to initialize a game and enter the Google Street View of a randomly selected UNESCO World Heritage Site (MVP)
+- [x] Input a guess (lat/long) for each of 5 rounds (MVP)
+- [x] Receive a score and map for each site after each round with a button to advance to the next round (MVP)
+- [x] Receive a score and map at the end of each game with a button to initiate another game (MVP)
 - [ ] Receive information from UNESCO regarding each site (expected feature, but not MVP)
 - [ ] Filter game-play by country/continent (expected feature, but not MVP)
 - [ ] View previously played rounds and scores (expected feature, but not MVP)
@@ -68,7 +68,7 @@ CultureMap will allow users to do the following:
 - [x] backend algorithms
 - [x] Flux Loop for updating user guess data(lat, long, round_num)
 - [ ] Add "information" component
-- [ ] ajax request distance/points/map/UN data
+- [x] ajax request distance/points/map/UN data
 
 ### W/Th: Everything Profile
 

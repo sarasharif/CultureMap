@@ -7,7 +7,7 @@ Rails.application.routes.draw do
     resource :user, only: [:create, :show]
     resource :session, only: [:create, :show, :destroy]
     resources :unesco_sites, only: [:show, :index]
-    resources :games, only: [:create]
+    resources :games, only: [:create, :show]
     resources :guesses, only: [:update]
 
   end
