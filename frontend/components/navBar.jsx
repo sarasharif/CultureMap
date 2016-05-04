@@ -1,6 +1,5 @@
 var React = require('react');
 var ReactRouter = require('react-router');
-var LinkedStateMixin = require('react-addons-linked-state-mixin');
 var ClientActions = require('../actions/userClientActions');
 var Link = ReactRouter.Link;
 

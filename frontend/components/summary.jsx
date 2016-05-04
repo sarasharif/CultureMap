@@ -5,6 +5,7 @@ var hashHistory = ReactRouter.hashHistory;
 var Summary = React.createClass({
 
   handleSubmit: function () {
+    // NEED TO SET STATE TO RESTART ROUNDNUM somehow?
     hashHistory.push('/');
   },
 

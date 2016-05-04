@@ -3,12 +3,11 @@ var ReactRouter = require('react-router');
 var ClientActions = require('../actions/userClientActions');
 var CurrentUserState = require("../mixins/currentUserState");
 var UserStore = require('../stores/userStore.js');
-var LinkedStateMixin = require('react-addons-linked-state-mixin');
 var hashHistory = ReactRouter.hashHistory;
 
 var LoginForm = React.createClass({
 
-  mixins: [LinkedStateMixin, CurrentUserState],
+  mixins: [CurrentUserState],
 
   errors: function () {
     if (this.state.authErrors) {
@@ -46,6 +45,14 @@ var LoginForm = React.createClass({
     });
   },
 
+  handleUsernameChange: function (event) {
+    this.setState({username: event.target.value});
+  },
+
+  handlePasswordChange: function (event) {
+    this.setState({password: event.target.value});
+  },
+
   form: function () {
     if (this.state.currentUser) {
       return;
@@ -53,8 +60,18 @@ var LoginForm = React.createClass({
     return (
       <form onSubmit={this.handleSubmit}>
         <section>
-          <input type="text" placeholder="username" valueLink={this.linkState("username")}></input><br/><br/>
-          <input type="password" placeholder="password" valueLink={this.linkState("password")}></input><br/><br/><br/><br/><br/><br/>
+          <input
+            type="text"
+            placeholder="username"
+            onChange={this.handleUsernameChange}
+            >
+          </input><br/><br/>
+
+          <input type="password"
+            placeholder="password"
+            onChange={this.handlePasswordChange}
+            >
+          </input><br/><br/><br/><br/><br/><br/>
         </section>
 
         <input className="btn btn-success" type="submit" value="LOG IN"></input>

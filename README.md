@@ -11,7 +11,7 @@ CultureMap is a web application inspired by GeoGuessr that will, at a minimum, s
 - [x] New account creation, login, and guest/demo login
 - [ ] Smooth, bug-free navigation
 - [x] Adequate seed data to demonstrate the site's features
-- [ ] The minimally necessary features for an GeoGuessr-inspired site: Users will be able to initialize a game, input their guess on a zoom-able Google map, and receive a score and information about the true location
+- [ ] The minimally necessary features for an GeoGuessr-inspired site: Users will be able to initialize a game of 5 rounds, input their guesses on a map, and receive a score based on distance.
 - [x] Hosting on Heroku
 - [ ] CSS styling that is satisfactorily visually appealing
 - [ ] A production README, replacing this README
@@ -66,7 +66,7 @@ CultureMap will allow users to do the following:
 
 - [x] backend algorithms
 - [x] Flux Loop for updating user guess data(lat, long, round_num)
-- [ ] Add "information" component
+- [x] Add "information" component
 - [x] ajax request distance/points/map/UN data
 
 ### W/Th: Everything Profile
@@ -83,19 +83,19 @@ CultureMap will allow users to do the following:
 
 **Objective:** Streamline the site. UX flow should be OBVIOUS.
 
-- [ ] Get your splash page image to actually work on Heroku
+- [x] Get your splash page image to actually work on Heroku
 - [ ] Fix that hideous navbar
 - [ ] Get feedback on my UI from others
 - [ ] Refactor HTML classes & CSS rules
-- [ ] Add modals to signup/signin form, transitions, and other styling flourishes.
+- [ ] Add transitions, and other styling flourishes.
 
 ### Bonus: Favorites
 
 **Objective:** Previously guessed sites can be favorited and accessed by the user.
 
 - [ ] create `Favorites` model and join table
-- build out API, Flux loop, and components for:
-- [ ] fetching status for sites
-- [ ] adding status to sites
+- [ ] build out API, Flux loop, and components for:
+  - [ ] fetching status for sites
+  - [ ] adding status to sites
 - [ ] Style new elements
 - [ ] Category Index. Ha.

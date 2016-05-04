@@ -32652,7 +32652,6 @@
 	var ReactRouter = __webpack_require__(168);
 	var ClientActions = __webpack_require__(252);
 	var CurrentUserState = __webpack_require__(229);
-	var LinkedStateMixin = __webpack_require__(257);
 	var Link = ReactRouter.Link;
 	
 	var NavBar = __webpack_require__(261);
@@ -32909,7 +32908,6 @@
 
 	var React = __webpack_require__(1);
 	var ReactRouter = __webpack_require__(168);
-	var LinkedStateMixin = __webpack_require__(257);
 	var ClientActions = __webpack_require__(252);
 	var Link = ReactRouter.Link;
 	
@@ -33451,6 +33449,7 @@
 	
 	
 	  handleSubmit: function () {
+	    // NEED TO SET STATE TO RESTART ROUNDNUM somehow?
 	    hashHistory.push('/');
 	  },
 	
@@ -33480,7 +33479,6 @@
 	var React = __webpack_require__(1);
 	var ReactRouter = __webpack_require__(168);
 	var CurrentUserState = __webpack_require__(229);
-	var LinkedStateMixin = __webpack_require__(257);
 	var LoginForm = __webpack_require__(273);
 	
 	var Register = React.createClass({
@@ -33503,14 +33501,13 @@
 	var ClientActions = __webpack_require__(252);
 	var CurrentUserState = __webpack_require__(229);
 	var UserStore = __webpack_require__(230);
-	var LinkedStateMixin = __webpack_require__(257);
 	var hashHistory = ReactRouter.hashHistory;
 	
 	var LoginForm = React.createClass({
 	  displayName: 'LoginForm',
 	
 	
-	  mixins: [LinkedStateMixin, CurrentUserState],
+	  mixins: [CurrentUserState],
 	
 	  errors: function () {
 	    if (this.state.authErrors) {
@@ -33551,6 +33548,14 @@
 	    });
 	  },
 	
+	  handleUsernameChange: function (event) {
+	    this.setState({ username: event.target.value });
+	  },
+	
+	  handlePasswordChange: function (event) {
+	    this.setState({ password: event.target.value });
+	  },
+	
 	  form: function () {
 	    if (this.state.currentUser) {
 	      return;
@@ -33561,10 +33566,17 @@
 	      React.createElement(
 	        'section',
 	        null,
-	        React.createElement('input', { type: 'text', placeholder: 'username', valueLink: this.linkState("username") }),
+	        React.createElement('input', {
+	          type: 'text',
+	          placeholder: 'username',
+	          onChange: this.handleUsernameChange
+	        }),
 	        React.createElement('br', null),
 	        React.createElement('br', null),
-	        React.createElement('input', { type: 'password', placeholder: 'password', valueLink: this.linkState("password") }),
+	        React.createElement('input', { type: 'password',
+	          placeholder: 'password',
+	          onChange: this.handlePasswordChange
+	        }),
 	        React.createElement('br', null),
 	        React.createElement('br', null),
 	        React.createElement('br', null),
@@ -33595,7 +33607,6 @@
 	var React = __webpack_require__(1);
 	var ReactRouter = __webpack_require__(168);
 	var CurrentUserState = __webpack_require__(229);
-	var LinkedStateMixin = __webpack_require__(257);
 	var SignupForm = __webpack_require__(275);
 	
 	var Register = React.createClass({
@@ -33665,6 +33676,14 @@
 	    });
 	  },
 	
+	  handleUsernameChange: function (event) {
+	    this.setState({ username: event.target.value });
+	  },
+	
+	  handlePasswordChange: function (event) {
+	    this.setState({ password: event.target.value });
+	  },
+	
 	  form: function () {
 	    if (this.state.currentUser) {
 	      return;
@@ -33676,10 +33695,10 @@
 	      React.createElement(
 	        'section',
 	        null,
-	        React.createElement('input', { type: 'text', placeholder: 'username', valueLink: this.linkState("username") }),
+	        React.createElement('input', { type: 'text', placeholder: 'username', onChange: this.handleUsernameChange }),
 	        React.createElement('br', null),
 	        React.createElement('br', null),
-	        React.createElement('input', { type: 'password', placeholder: 'password', valueLink: this.linkState("password") }),
+	        React.createElement('input', { type: 'password', placeholder: 'password', onChange: this.handlePasswordChange }),
 	        React.createElement('br', null),
 	        React.createElement('br', null),
 	        React.createElement('br', null),
@@ -33717,7 +33736,6 @@
 	var ReactRouter = __webpack_require__(168);
 	var ClientActions = __webpack_require__(252);
 	var CurrentUserState = __webpack_require__(229);
-	var LinkedStateMixin = __webpack_require__(257);
 	var Link = ReactRouter.Link;
 	
 	var NavBar = __webpack_require__(261);
