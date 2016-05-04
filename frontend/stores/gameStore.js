@@ -42,6 +42,12 @@ GameStore.__onDispatch = function(payload) {
       _roundNum += 1;
       GameStore.__emitChange();
       break;
+    case GameConstants.CLEAN_HOUSE:
+      _gameId = 0;
+      _score = 0;
+      _guesses = {};
+      _roundNum = 0;
+      break;
   }
 };
 

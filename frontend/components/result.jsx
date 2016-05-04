@@ -33,7 +33,6 @@ var Result = React.createClass({
   },
 
   render: function () {
-    console.log("render result for round:" + this.props.roundNum);
     return (
       <form id='guess-result' onSubmit={this.handleSubmit}>
         <div>{this.resultMap()}</div>

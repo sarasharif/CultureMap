@@ -2,15 +2,16 @@ var React = require('react');
 var ReactRouter = require('react-router');
 var hashHistory = ReactRouter.hashHistory;
 
+var ClientActions = require('../actions/clientActions');
+
 var Summary = React.createClass({
 
   handleSubmit: function () {
-    // NEED TO SET STATE TO RESTART ROUNDNUM somehow?
+    ClientActions.cleanHouse();
     hashHistory.push('/');
   },
 
   render: function () {
-    console.log("Why isn't summary rendering");
     return (
       <form onSubmit={this.handleSubmit}>
         <h3>Your total score was {this.props.score} points</h3>

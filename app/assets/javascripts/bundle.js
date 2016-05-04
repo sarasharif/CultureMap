@@ -32958,6 +32958,12 @@
 	    AppDispatcher.dispatch({
 	      actionType: GameConstants.NEXT_ROUND
 	    });
+	  },
+	
+	  cleanHouse: function () {
+	    AppDispatcher.dispatch({
+	      actionType: GameConstants.CLEAN_HOUSE
+	    });
 	  }
 	};
 	
@@ -33023,7 +33029,8 @@
 	module.exports = {
 	
 	  PACKAGE_RECEIVED: "PACKAGE_RECEIVED",
-	  NEXT_ROUND: "NEXT_ROUND"
+	  NEXT_ROUND: "NEXT_ROUND",
+	  CLEAN_HOUSE: "CLEAN_HOUSE"
 	
 	};
 
@@ -33074,6 +33081,12 @@
 	    case GameConstants.NEXT_ROUND:
 	      _roundNum += 1;
 	      GameStore.__emitChange();
+	      break;
+	    case GameConstants.CLEAN_HOUSE:
+	      _gameId = 0;
+	      _score = 0;
+	      _guesses = {};
+	      _roundNum = 0;
 	      break;
 	  }
 	};
@@ -33186,7 +33199,6 @@
 	  },
 	
 	  render: function () {
-	    console.log("render result for round:" + this.props.roundNum);
 	    return React.createElement(
 	      'form',
 	      { id: 'guess-result', onSubmit: this.handleSubmit },
@@ -33217,17 +33229,18 @@
 	var ReactRouter = __webpack_require__(168);
 	var hashHistory = ReactRouter.hashHistory;
 	
+	var ClientActions = __webpack_require__(264);
+	
 	var Summary = React.createClass({
 	  displayName: 'Summary',
 	
 	
 	  handleSubmit: function () {
-	    // NEED TO SET STATE TO RESTART ROUNDNUM somehow?
+	    ClientActions.cleanHouse();
 	    hashHistory.push('/');
 	  },
 	
 	  render: function () {
-	    console.log("Why isn't summary rendering");
 	    return React.createElement(
 	      'form',
 	      { onSubmit: this.handleSubmit },

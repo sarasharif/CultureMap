@@ -15,6 +15,12 @@ var ClientActions = {
     AppDispatcher.dispatch({
       actionType: GameConstants.NEXT_ROUND
     });
+  },
+
+  cleanHouse: function () {
+    AppDispatcher.dispatch({
+      actionType: GameConstants.CLEAN_HOUSE
+    });
   }
 };
 
