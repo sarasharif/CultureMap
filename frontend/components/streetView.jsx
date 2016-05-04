@@ -41,7 +41,7 @@ var StreetView = React.createClass({
     this.setState({currentGuess: GameStore.currentGuess()});
     var streetViewDOMNode = document.getElementById('street-view');
     var streetViewOptions = {
-      position: {lat: this.state.currentGuess.lat_true, lng: this.state.currentGuess.long_true},
+      position: {lat: GameStore.currentGuess().lat_true, lng: GameStore.currentGuess().long_true},
       addressControl: false,
       zoomControlOptions: {
         position: google.maps.ControlPosition.TOP_LEFT
@@ -69,12 +69,22 @@ var StreetView = React.createClass({
     }
   },
 
-  render: function () {
-    return (
+  getItToGoAway: function () {
+    if (this.props.roundNum === 5 && this.state.currentGuess.points > 0) {
+      return <div></div>;
+    } else {
+      return (
         <div id='street-view'>
           <a target="_blank" href="https://www.google.com/maps"> <div id="hide_google_logo" /> </a>
           <div>{this.guessOrResult()}</div>
         </div>
+      );
+    }
+  },
+
+  render: function () {
+    return (
+      <div>{this.getItToGoAway()}</div>
     );
   }
 });

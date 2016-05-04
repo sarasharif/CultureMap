@@ -13,10 +13,15 @@ var Result = React.createClass({
   },
 
   resultMap: function () {
-    return (<div>RESULT MAP</div>);
-    // User IMPLICIT POSITIONING OF MAP because you will supply markers
-    // return "https://maps.googleapis.com/maps/api/staticmap?size=512x512&maptype=terrain\&markers=size:mid%7Ccolor:red%7CSan+Francisco,CA%7COakland,CA%7CSan+Jose,CA&key=YOUR_API_KEY"
-    // path parameter: path=geodesic:true|color:0x0000ff|weight:5|40.737102,-73.990318|40.749825,-73.987963
+    var guess_pos = GameStore.currentGuess().lat_guess.toString() + "," + GameStore.currentGuess().long_guess.toString();
+    var true_pos = GameStore.currentGuess().lat_true.toString() + "," + GameStore.currentGuess().long_true.toString();
+    var markers = 'markers=size:mid%7Ccolor:red%7C' + guess_pos + '%7C' + true_pos;
+    var path = 'path=color:0xff0000ff|weight:5|' + guess_pos + '|' + true_pos;
+    var url = 'https://maps.googleapis.com/maps/api/staticmap?size=512x512&maptype=roadmap\&' + markers + '&' + path + '&key=AIzaSyD0uYEJt5myjVIWmTJICUK6vOP-nndsXw8';
+
+    return (<div><img
+      src={url}
+    ></img></div>);
   },
 
   submitTextValue: function () {

@@ -33112,7 +33112,7 @@
 	    this.setState({ currentGuess: GameStore.currentGuess() });
 	    var streetViewDOMNode = document.getElementById('street-view');
 	    var streetViewOptions = {
-	      position: { lat: this.state.currentGuess.lat_true, lng: this.state.currentGuess.long_true },
+	      position: { lat: GameStore.currentGuess().lat_true, lng: GameStore.currentGuess().long_true },
 	      addressControl: false,
 	      zoomControlOptions: {
 	        position: google.maps.ControlPosition.TOP_LEFT
@@ -33134,22 +33134,34 @@
 	    }
 	  },
 	
+	  getItToGoAway: function () {
+	    if (this.props.roundNum === 5 && this.state.currentGuess.points > 0) {
+	      return React.createElement('div', null);
+	    } else {
+	      return React.createElement(
+	        'div',
+	        { id: 'street-view' },
+	        React.createElement(
+	          'a',
+	          { target: '_blank', href: 'https://www.google.com/maps' },
+	          ' ',
+	          React.createElement('div', { id: 'hide_google_logo' }),
+	          ' '
+	        ),
+	        React.createElement(
+	          'div',
+	          null,
+	          this.guessOrResult()
+	        )
+	      );
+	    }
+	  },
+	
 	  render: function () {
 	    return React.createElement(
 	      'div',
-	      { id: 'street-view' },
-	      React.createElement(
-	        'a',
-	        { target: '_blank', href: 'https://www.google.com/maps' },
-	        ' ',
-	        React.createElement('div', { id: 'hide_google_logo' }),
-	        ' '
-	      ),
-	      React.createElement(
-	        'div',
-	        null,
-	        this.guessOrResult()
-	      )
+	      null,
+	      this.getItToGoAway()
 	    );
 	  }
 	});
@@ -33378,14 +33390,19 @@
 	  },
 	
 	  resultMap: function () {
+	    var guess_pos = GameStore.currentGuess().lat_guess.toString() + "," + GameStore.currentGuess().long_guess.toString();
+	    var true_pos = GameStore.currentGuess().lat_true.toString() + "," + GameStore.currentGuess().long_true.toString();
+	    var markers = 'markers=size:mid%7Ccolor:red%7C' + guess_pos + '%7C' + true_pos;
+	    var path = 'path=color:0xff0000ff|weight:5|' + guess_pos + '|' + true_pos;
+	    var url = 'https://maps.googleapis.com/maps/api/staticmap?size=512x512&maptype=roadmap\&' + markers + '&' + path + '&key=AIzaSyD0uYEJt5myjVIWmTJICUK6vOP-nndsXw8';
+	
 	    return React.createElement(
 	      'div',
 	      null,
-	      'RESULT MAP'
+	      React.createElement('img', {
+	        src: url
+	      })
 	    );
-	    // User IMPLICIT POSITIONING OF MAP because you will supply markers
-	    // return "https://maps.googleapis.com/maps/api/staticmap?size=512x512&maptype=terrain\&markers=size:mid%7Ccolor:red%7CSan+Francisco,CA%7COakland,CA%7CSan+Jose,CA&key=YOUR_API_KEY"
-	    // path parameter: path=geodesic:true|color:0x0000ff|weight:5|40.737102,-73.990318|40.749825,-73.987963
 	  },
 	
 	  submitTextValue: function () {
@@ -33436,7 +33453,7 @@
 	  },
 	
 	  render: function () {
-	    console.log("summary render now");
+	    console.log("Why isn't summary rendering");
 	    return React.createElement(
 	      'form',
 	      { onSubmit: this.handleSubmit },
