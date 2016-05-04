@@ -1,13 +1,12 @@
 var React = require('react');
 var ClientActions = require('../actions/userClientActions');
 var CurrentUserState = require("../mixins/currentUserState");
-var LinkedStateMixin = require('react-addons-linked-state-mixin');
 var UserStore = require('../stores/userStore.js');
 var ReactRouter = require('react-router');
 var hashHistory = ReactRouter.hashHistory;
 var LoginForm = React.createClass({
 
-  mixins: [LinkedStateMixin, CurrentUserState],
+  mixins: [CurrentUserState],
 
   errors: function () {
     if (this.state.authErrors) {
