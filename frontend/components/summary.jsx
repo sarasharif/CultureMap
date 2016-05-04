@@ -5,7 +5,6 @@ var hashHistory = ReactRouter.hashHistory;
 var Summary = React.createClass({
 
   handleSubmit: function () {
-    debugger;
     hashHistory.push('/');
   },
 

@@ -33432,7 +33432,6 @@
 	
 	
 	  handleSubmit: function () {
-	    debugger;
 	    hashHistory.push('/');
 	  },
 	
