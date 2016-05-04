@@ -8,6 +8,9 @@ var _roundNum = 1;
 var _guesses = {};
 
 GameStore.currentGuess = function () {
+  if (_roundNum === 6) {
+    return {points: _score};
+  }
   return _guesses[_roundNum];
 };
 

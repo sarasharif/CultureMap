@@ -32,7 +32,7 @@ var Game = React.createClass({
   },
 
   toRender: function () {
-    if (this.state.roundNum > 5) {
+    if (this.state.roundNum === 6) {
       return (
         <Summary score={this.state.score} roundNum={this.state.roundNum}/>
       );

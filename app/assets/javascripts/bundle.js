@@ -33028,7 +33028,7 @@
 	  },
 	
 	  toRender: function () {
-	    if (this.state.roundNum > 5) {
+	    if (this.state.roundNum === 6) {
 	      return React.createElement(Summary, { score: this.state.score, roundNum: this.state.roundNum });
 	    } else {
 	      return React.createElement(
@@ -33109,6 +33109,7 @@
 	  },
 	
 	  renderStreetView: function () {
+	
 	    this.setState({ currentGuess: GameStore.currentGuess() });
 	    var streetViewDOMNode = document.getElementById('street-view');
 	    var streetViewOptions = {
@@ -33134,8 +33135,8 @@
 	    }
 	  },
 	
-	  getItToGoAway: function () {
-	    if (this.props.roundNum === 5 && this.state.currentGuess.points > 0) {
+	  dismountAtRound6: function () {
+	    if (this.props.roundNum === 6) {
 	      return React.createElement('div', null);
 	    } else {
 	      return React.createElement(
@@ -33158,11 +33159,8 @@
 	  },
 	
 	  render: function () {
-	    return React.createElement(
-	      'div',
-	      null,
-	      this.getItToGoAway()
-	    );
+	    console.log("render/rerendering streetview component for round:" + this.props.roundNum);
+	    return this.dismountAtRound6();
 	  }
 	});
 	
@@ -33272,6 +33270,9 @@
 	var _guesses = {};
 	
 	GameStore.currentGuess = function () {
+	  if (_roundNum === 6) {
+	    return { points: _score };
+	  }
 	  return _guesses[_roundNum];
 	};
 	
@@ -33414,6 +33415,7 @@
 	  },
 	
 	  render: function () {
+	    console.log("render result for round:" + this.props.roundNum);
 	    return React.createElement(
 	      'form',
 	      { id: 'guess-result', onSubmit: this.handleSubmit },

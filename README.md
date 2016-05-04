@@ -6,13 +6,12 @@
 
 ## Minimum Viable Product
 
-CultureMap is a web application inspired by GeoGuessr that will be built using Ruby on Rails and React.js.  By the end of Week 9, this app will, at a minimum, satisfy the following criteria:
+CultureMap is a web application inspired by GeoGuessr that will, at a minimum, satisfy the following criteria:
 
 - [x] New account creation, login, and guest/demo login
 - [ ] Smooth, bug-free navigation
 - [x] Adequate seed data to demonstrate the site's features
 - [ ] The minimally necessary features for an GeoGuessr-inspired site: Users will be able to initialize a game, input their guess on a zoom-able Google map, and receive a score and information about the true location
-- [ ] Users will also be able to access all sites they have guessed, and favorite any sites included in that index
 - [x] Hosting on Heroku
 - [ ] CSS styling that is satisfactorily visually appealing
 - [ ] A production README, replacing this README

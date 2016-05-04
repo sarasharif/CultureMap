@@ -38,6 +38,7 @@ var StreetView = React.createClass({
   },
 
   renderStreetView: function () {
+
     this.setState({currentGuess: GameStore.currentGuess()});
     var streetViewDOMNode = document.getElementById('street-view');
     var streetViewOptions = {
@@ -69,8 +70,8 @@ var StreetView = React.createClass({
     }
   },
 
-  getItToGoAway: function () {
-    if (this.props.roundNum === 5 && this.state.currentGuess.points > 0) {
+  dismountAtRound6: function () {
+    if (this.props.roundNum === 6) {
       return <div></div>;
     } else {
       return (
@@ -83,9 +84,8 @@ var StreetView = React.createClass({
   },
 
   render: function () {
-    return (
-      <div>{this.getItToGoAway()}</div>
-    );
+    console.log("render/rerendering streetview component for round:" + this.props.roundNum)
+    return this.dismountAtRound6();
   }
 });
 
