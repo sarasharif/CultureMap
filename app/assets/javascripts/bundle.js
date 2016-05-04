@@ -86,9 +86,6 @@
 	  var root = document.getElementById("content");
 	  ReactDOM.render(Router, root);
 	});
-	
-	// <Route path="categories" component={Categories}></Route>
-	// <Route path="me" component={Profile}></Route>
 
 /***/ },
 /* 1 */
@@ -32685,7 +32682,9 @@
 
 	var React = __webpack_require__(1);
 	var ReactRouter = __webpack_require__(168);
-	var ClientActions = __webpack_require__(252);
+	var UserClientActions = __webpack_require__(252);
+	var ClientActions = __webpack_require__(264);
+	
 	var Link = ReactRouter.Link;
 	
 	var NavBar = React.createClass({
@@ -32727,7 +32726,7 @@
 	
 	  logout: function (event) {
 	    event.preventDefault();
-	    ClientActions.logout();
+	    UserClientActions.logout();
 	  },
 	
 	  render: function () {
@@ -33147,7 +33146,7 @@
 	      'form',
 	      { id: 'guess-form', onSubmit: this.makeGuess },
 	      React.createElement('div', { id: 'map-guess' }),
-	      React.createElement('input', { className: 'btn btn-success', id: 'guess-submit', type: 'submit', value: 'MAKE GUESS' })
+	      React.createElement('input', { className: 'btn btn-success', id: 'guess-submit', type: 'submit', value: 'SUBMIT YOUR GUESS' })
 	    );
 	  }
 	
@@ -33509,9 +33508,34 @@
 
 /***/ },
 /* 276 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-
+	var React = __webpack_require__(1);
+	
+	var myStats = __webpack_require__(282);
+	var myGames = __webpack_require__(283);
+	var leaderboard = __webpack_require__(284);
+	
+	var Profile = React.createClass({
+	  displayName: 'Profile',
+	
+	
+	  render: function () {
+	    // buttons to stats games and leaderboard.
+	    // also render one component here at a time based on which button is selected
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'h1',
+	        null,
+	        'Under Construction'
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = Profile;
 
 /***/ },
 /* 277 */
@@ -33649,6 +33673,56 @@
 	});
 	
 	module.exports = Default;
+
+/***/ },
+/* 280 */,
+/* 281 */,
+/* 282 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var myStats = React.createClass({
+	  displayName: 'myStats',
+	
+	
+	  render: function () {}
+	
+	});
+	
+	module.exports = myStats;
+
+/***/ },
+/* 283 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var myGames = React.createClass({
+	  displayName: 'myGames',
+	
+	
+	  render: function () {}
+	
+	});
+	
+	module.exports = myGames;
+
+/***/ },
+/* 284 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var leaderboard = React.createClass({
+	  displayName: 'leaderboard',
+	
+	
+	  render: function () {}
+	
+	});
+	
+	module.exports = leaderboard;
 
 /***/ }
 /******/ ]);

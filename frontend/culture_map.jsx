@@ -36,6 +36,3 @@ document.addEventListener("DOMContentLoaded", function () {
   var root = document.getElementById("content");
   ReactDOM.render(Router, root);
 });
-
-// <Route path="categories" component={Categories}></Route>
-// <Route path="me" component={Profile}></Route>

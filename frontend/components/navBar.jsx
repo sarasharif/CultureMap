@@ -1,6 +1,8 @@
 var React = require('react');
 var ReactRouter = require('react-router');
-var ClientActions = require('../actions/userClientActions');
+var UserClientActions = require('../actions/userClientActions');
+var ClientActions = require('../actions/clientActions');
+
 var Link = ReactRouter.Link;
 
 var NavBar = React.createClass({
@@ -24,7 +26,7 @@ var NavBar = React.createClass({
 
   logout: function(event) {
     event.preventDefault();
-    ClientActions.logout();
+    UserClientActions.logout();
   },
 
   render: function () {

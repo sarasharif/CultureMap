@@ -45,7 +45,7 @@ var MapGuess = React.createClass({
     return (
         <form id='guess-form' onSubmit={this.makeGuess}>
           <div id='map-guess'></div>
-          <input className='btn btn-success' id='guess-submit' type="submit" value="MAKE GUESS"></input>
+          <input className='btn btn-success' id='guess-submit' type="submit" value="SUBMIT YOUR GUESS"></input>
         </form>
 
     );
