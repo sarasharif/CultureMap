@@ -27,6 +27,7 @@ var Router = (
         <Route path="signup" component={Signup}></Route>
       </Route>
       <Route path="play" component={Game}></Route>
+      <Route path="me" component={Profile}></Route>
     </Route>
   </Router>
 );

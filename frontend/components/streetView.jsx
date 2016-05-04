@@ -21,9 +21,13 @@ var StreetView = React.createClass({
   },
 
   componentDidMount: function() {
-    this.renderStreetView();
-    this.siteListener = GameStore.addListener(this.renderStreetView);
-    this.sessionListener = UserStore.addListener(this.pushToLogin);
+    if (typeof GameStore.currentGuess() === "undefined") {
+      hashHistory.push("/");
+    } else {
+      this.renderStreetView();
+      this.siteListener = GameStore.addListener(this.renderStreetView);
+      this.sessionListener = UserStore.addListener(this.pushToLogin);
+    }
   },
 
   componentWillUnmount: function() {
@@ -38,7 +42,6 @@ var StreetView = React.createClass({
   },
 
   renderStreetView: function () {
-
     this.setState({currentGuess: GameStore.currentGuess()});
     var streetViewDOMNode = document.getElementById('street-view');
     var streetViewOptions = {
@@ -52,12 +55,12 @@ var StreetView = React.createClass({
       },
     };
     var pano = new google.maps.StreetViewPanorama(streetViewDOMNode, streetViewOptions);
-
-
   },
 
   guessOrResult: function () {
-    if (this.state.currentGuess.points === 0) {
+    if (typeof GameStore.currentGuess() === "undefined") {
+      hashHistory.push("/");
+    } else if (this.state.currentGuess.points === 0) {
       return (
         <MapGuess
           guessId={this.state.currentGuess.id}
@@ -70,22 +73,13 @@ var StreetView = React.createClass({
     }
   },
 
-  dismountAtRound6: function () {
-    if (this.props.roundNum === 6) {
-      return <div></div>;
-    } else {
-      return (
-        <div id='street-view'>
-          <a target="_blank" href="https://www.google.com/maps"> <div id="hide_google_logo" /> </a>
-          <div>{this.guessOrResult()}</div>
-        </div>
-      );
-    }
-  },
-
   render: function () {
-    console.log("render/rerendering streetview component for round:" + this.props.roundNum)
-    return this.dismountAtRound6();
+    return (
+      <div id='street-view'>
+        <a target="_blank" href="https://www.google.com/maps"> <div id="hide_google_logo" /> </a>
+        <div>{this.guessOrResult()}</div>
+      </div>
+    );
   }
 });
 
