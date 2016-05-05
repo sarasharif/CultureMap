@@ -2,6 +2,7 @@ var React = require('react');
 var ReactRouter = require('react-router');
 var UserClientActions = require('../actions/userClientActions');
 var ClientActions = require('../actions/clientActions');
+var hashHistory = ReactRouter.hashHistory;
 
 var Link = ReactRouter.Link;
 
@@ -26,6 +27,7 @@ var NavBar = React.createClass({
   logout: function(event) {
     event.preventDefault();
     UserClientActions.logout();
+    hashHistory.push("/login");
   },
 
   render: function () {

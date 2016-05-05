@@ -32681,6 +32681,7 @@
 	var ReactRouter = __webpack_require__(168);
 	var UserClientActions = __webpack_require__(252);
 	var ClientActions = __webpack_require__(258);
+	var hashHistory = ReactRouter.hashHistory;
 	
 	var Link = ReactRouter.Link;
 	
@@ -32723,6 +32724,7 @@
 	  logout: function (event) {
 	    event.preventDefault();
 	    UserClientActions.logout();
+	    hashHistory.push("/login");
 	  },
 	
 	  render: function () {
@@ -32793,6 +32795,10 @@
 	
 	  fetchBestGames: function () {
 	    ApiUtil.fetchBestGames();
+	  },
+	
+	  getSiteInfo: function (site_id) {
+	    ApiUtil.getSiteInfo(site_id);
 	  }
 	};
 	
@@ -32842,6 +32848,15 @@
 	      url: "api/games",
 	      success: function (data) {
 	        ServerActions.receiveBestGames(data);
+	      }
+	    });
+	  },
+	
+	  getSiteInfo: function (id) {
+	    $.ajax({
+	      url: "",
+	      success: function (data) {
+	        ServerActions.recieveSiteData(data);
 	      }
 	    });
 	  }
@@ -33258,6 +33273,12 @@
 	    }
 	  },
 	
+	  siteInfo: function () {
+	    var siteId = GameStore.currentGuess().site_id;
+	    ClientActions.getSiteInfo(siteId);
+	    return React.createElement('div', null);
+	  },
+	
 	  render: function () {
 	    return React.createElement(
 	      'form',
@@ -33273,6 +33294,11 @@
 	        'You just earned ',
 	        GameStore.currentGuess().points,
 	        ' points'
+	      ),
+	      React.createElement(
+	        'h3',
+	        null,
+	        ' ---- info on site '
 	      ),
 	      React.createElement('input', { className: 'btn btn-success', type: 'submit', value: this.submitTextValue() })
 	    );

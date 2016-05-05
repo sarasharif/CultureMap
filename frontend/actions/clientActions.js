@@ -30,6 +30,10 @@ var ClientActions = window.ClientActions = {
 
   fetchBestGames: function () {
     ApiUtil.fetchBestGames();
+  },
+
+  getSiteInfo: function (site_id) {
+    ApiUtil.getSiteInfo(site_id);
   }
 };
 

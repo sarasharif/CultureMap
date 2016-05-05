@@ -42,6 +42,15 @@ var ApiUtil = {
     });
   },
 
+  getSiteInfo: function (id) {
+    $.ajax({
+      url: "",
+      success: function (data) {
+        ServerActions.recieveSiteData(data);
+      }
+    })
+  }
+
 };
 
 module.exports = ApiUtil;
