@@ -31,9 +31,10 @@ var myStats = React.createClass({
       return (
         <div>
           <h1>statistics</h1>
-          <h2>under construction</h2>
-          best: {this.state.stats[0]} points<br/>
-          average: {this.state.stats[1]} points<br/>
+            <ul className="list-group">
+              <li className="list-group-item">best: {this.state.stats[0]} points</li>
+              <li className="list-group-item">average: {this.state.stats[1]} points</li>
+            </ul>
         </div>
       );
     } else {

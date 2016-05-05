@@ -33,6 +33,15 @@ var ApiUtil = {
     });
   },
 
+  fetchBestGames: function () {
+    $.ajax({
+      url: "api/games",
+      success: function (data) {
+        ServerActions.receiveBestGames(data);
+      }
+    });
+  },
+
 };
 
 module.exports = ApiUtil;

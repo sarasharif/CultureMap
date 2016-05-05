@@ -32788,6 +32788,10 @@
 	
 	  fetchGames: function (userId) {
 	    ApiUtil.fetchGames(userId);
+	  },
+	
+	  fetchBestGames: function () {
+	    ApiUtil.fetchBestGames();
 	  }
 	};
 	
@@ -32830,6 +32834,15 @@
 	        ServerActions.receiveGames(data);
 	      }
 	    });
+	  },
+	
+	  fetchBestGames: function () {
+	    $.ajax({
+	      url: "api/games",
+	      success: function (data) {
+	        ServerActions.receiveBestGames(data);
+	      }
+	    });
 	  }
 	
 	};
@@ -32858,6 +32871,13 @@
 	      actionType: StatConstants.GAMES_RECEIVED,
 	      data: data
 	    });
+	  },
+	
+	  receiveBestGames: function (data) {
+	    AppDispatcher.dispatch({
+	      actionType: StatConstants.BEST_GAMES_RECEIVED,
+	      data: data
+	    });
 	  }
 	};
 	
@@ -32882,7 +32902,8 @@
 
 	module.exports = {
 	
-	  GAMES_RECEIVED: "GAMES_RECEIVED"
+	  GAMES_RECEIVED: "GAMES_RECEIVED",
+	  BEST_GAMES_RECEIVED: "BEST_GAMES_RECEIVED"
 	};
 
 /***/ },
@@ -33651,18 +33672,23 @@
 	          'statistics'
 	        ),
 	        React.createElement(
-	          'h2',
-	          null,
-	          'under construction'
-	        ),
-	        'best: ',
-	        this.state.stats[0],
-	        ' points',
-	        React.createElement('br', null),
-	        'average: ',
-	        this.state.stats[1],
-	        ' points',
-	        React.createElement('br', null)
+	          'ul',
+	          { className: 'list-group' },
+	          React.createElement(
+	            'li',
+	            { className: 'list-group-item' },
+	            'best: ',
+	            this.state.stats[0],
+	            ' points'
+	          ),
+	          React.createElement(
+	            'li',
+	            { className: 'list-group-item' },
+	            'average: ',
+	            this.state.stats[1],
+	            ' points'
+	          )
+	        )
 	      );
 	    } else {
 	      return React.createElement('div', null);
@@ -33688,6 +33714,7 @@
 	
 	var _stats = [];
 	var _allGames = {};
+	var _bestGames = {};
 	
 	StatStore.grabStats = function () {
 	  return _stats;
@@ -33697,11 +33724,19 @@
 	  return _allGames;
 	};
 	
+	StatStore.grabBestGames = function () {
+	  return _bestGames;
+	};
+	
 	StatStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
 	    case StatConstants.GAMES_RECEIVED:
 	      _stats = payload.data.stats;
-	      // _allGames = payload.data.games;
+	      _allGames = payload.data.games;
+	      StatStore.__emitChange();
+	      break;
+	    case StatConstants.BEST_GAMES_RECEIVED:
+	      _bestGames = payload.data.bestGames;
 	      StatStore.__emitChange();
 	      break;
 	  }
@@ -33743,8 +33778,34 @@
 	    this.setState({ games: StatStore.grabGames() });
 	  },
 	
+	  makeTable: function (tuples) {
+	    return React.createElement(
+	      'ul',
+	      { className: 'list-group' },
+	      tuples.reverse().map(function (tuple) {
+	        if (tuple[1] === 0) {
+	          return;
+	        } else {
+	          return React.createElement(
+	            'li',
+	            { className: 'list-group-item' },
+	            tuple[0],
+	            ' - ',
+	            tuple[1],
+	            ' points'
+	          );
+	        }
+	      })
+	    );
+	  },
+	
 	  bodyContent: function () {
 	    if (this.props.contentType === "myGames") {
+	
+	      var gamesData = this.state.games.map(function (game) {
+	        return [game.created_at.slice(5, 10), game.score];
+	      });
+	
 	      return React.createElement(
 	        'div',
 	        null,
@@ -33752,7 +33813,8 @@
 	          'h1',
 	          null,
 	          'games'
-	        )
+	        ),
+	        this.makeTable(gamesData)
 	      );
 	    } else {
 	      return React.createElement('div', null);
@@ -33772,28 +33834,79 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
+	var StatStore = __webpack_require__(275);
+	var ClientActions = __webpack_require__(258);
+	var CurrentUserState = __webpack_require__(229);
 	
 	var leaderboard = React.createClass({
-	  displayName: "leaderboard",
+	  displayName: 'leaderboard',
 	
+	
+	  mixins: [CurrentUserState],
+	
+	  getInitialState: function () {
+	    return {
+	      bestGames: []
+	    };
+	  },
+	
+	  componentDidMount: function () {
+	    ClientActions.fetchBestGames();
+	    this.listener = StatStore.addListener(this.addBestGames);
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.listener.remove();
+	  },
+	
+	  addBestGames: function () {
+	    this.setState({ bestGames: StatStore.grabBestGames() });
+	  },
+	
+	  makeTable: function (tuples) {
+	    return React.createElement(
+	      'ul',
+	      { className: 'list-group' },
+	      tuples.reverse().map(function (tuple) {
+	        if (tuple[1] === 0) {
+	          return;
+	        } else {
+	          return React.createElement(
+	            'li',
+	            { className: 'list-group-item' },
+	            tuple[0],
+	            ' - ',
+	            tuple[1],
+	            ' points'
+	          );
+	        }
+	      })
+	    );
+	  },
 	
 	  bodyContent: function () {
 	    if (this.props.contentType === "leaderboard") {
+	      var bestGamesData = this.state.bestGames.map(function (game) {
+	        return [game[0], game[1]];
+	      });
+	
 	      return React.createElement(
-	        "div",
+	        'div',
 	        null,
 	        React.createElement(
-	          "h1",
+	          'h1',
 	          null,
-	          "leaderboard"
-	        )
+	          'leaderboard'
+	        ),
+	        this.makeTable(bestGamesData)
 	      );
 	    } else {
-	      return React.createElement("div", null);
+	      return React.createElement('div', null);
 	    }
 	  },
 	
 	  render: function () {
+	
 	    return this.bodyContent();
 	  }
 	

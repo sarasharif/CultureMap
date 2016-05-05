@@ -30,8 +30,12 @@ class Game < ActiveRecord::Base
     stats = {}
     scores = games.map{|game| game.score}
     best = scores.max
-    avg = scores.inject{|sum, score| sum + score} / (scores.length)
+    avg = (best == 0 ? 0 : (scores.inject{|sum, score| sum + score} / (scores.length)))
     stats = [best, avg]
+  end
+
+  def self.leaderboard_sort(games)
+    games.sort_by{ |game| game.score}.map{|game| [game.player.username, game.score]}
   end
 
 end

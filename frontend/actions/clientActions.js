@@ -25,6 +25,10 @@ var ClientActions = {
 
   fetchGames: function (userId) {
     ApiUtil.fetchGames(userId);
+  },
+
+  fetchBestGames: function () {
+    ApiUtil.fetchBestGames();
   }
 };
 

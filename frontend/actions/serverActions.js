@@ -17,6 +17,13 @@ var ServerActions = {
       actionType: StatConstants.GAMES_RECEIVED,
       data: data
     });
+  },
+
+  receiveBestGames: function (data) {
+    AppDispatcher.dispatch({
+      actionType: StatConstants.BEST_GAMES_RECEIVED,
+      data: data
+    });
   }
 };
 

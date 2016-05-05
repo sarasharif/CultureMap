@@ -16,10 +16,12 @@ class Api::GamesController < ApplicationController
   end
 
   #every game that the current user has played
+  #and the best games too
   def index
     player_id = params[:playerId].to_i
     @games = Game.where('player_id=?', player_id)
     @stats = Game.stats(@games)
+    @best_games = Game.leaderboard_sort(Game.where('player_id>=?',1))
     render :index
   end
 

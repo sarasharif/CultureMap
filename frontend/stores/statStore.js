@@ -6,6 +6,7 @@ var StatStore = new Store(AppDispatcher);
 
 var _stats = [];
 var _allGames = {};
+var _bestGames = {};
 
 StatStore.grabStats = function () {
   return _stats;
@@ -15,13 +16,21 @@ StatStore.grabGames = function () {
   return _allGames;
 };
 
+StatStore.grabBestGames = function () {
+  return _bestGames;
+};
+
 StatStore.__onDispatch = function (payload) {
   switch (payload.actionType) {
     case StatConstants.GAMES_RECEIVED:
       _stats = payload.data.stats;
-      // _allGames = payload.data.games;
+      _allGames = payload.data.games;
       StatStore.__emitChange();
-    break;
+      break;
+    case StatConstants.BEST_GAMES_RECEIVED:
+      _bestGames = payload.data.bestGames;
+      StatStore.__emitChange();
+      break;
   }
 };
 
