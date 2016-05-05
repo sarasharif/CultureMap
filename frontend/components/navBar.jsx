@@ -17,7 +17,6 @@ var NavBar = React.createClass({
 
   navlink2: function () {
     if (this.props.currentUser) {
-
       return (<Link to="/me">{this.props.currentUser.username.toUpperCase()}</Link>);
     } else {
       return (<Link to="/signup">SIGNUP</Link>);

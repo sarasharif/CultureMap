@@ -19,8 +19,17 @@ var ApiUtil = {
       data: {lat_guess: data.lat_guess, long_guess: data.long_guess},
       success: function (gamepackage) {
         ServerActions.receivePackage(gamepackage);
-
       }
+    });
+  },
+
+  grabStats: function (userId) {
+    $.ajax({
+      url: "api/users/" + userId,
+      success: function (data) {
+        debugger;
+        ServerActions.receiveStats(data);
+      },
     });
   },
 

@@ -1,0 +1,7 @@
+module.exports = {
+
+  STATS_RECEIVED: "STATS_RECEIVED",
+  OTHER: "OTHER",
+  THIRTHTHINGS: "THIRTHTHINGS"
+
+};

@@ -21,6 +21,10 @@ var ClientActions = {
     AppDispatcher.dispatch({
       actionType: GameConstants.CLEAN_HOUSE
     });
+  },
+
+  grabStats: function (userId) {
+    ApiUtil.grabStats(userId);
   }
 };
 

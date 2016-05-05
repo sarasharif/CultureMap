@@ -57,12 +57,12 @@
 	
 	var App = __webpack_require__(256);
 	var Game = __webpack_require__(262);
-	var Login = __webpack_require__(272);
-	var Signup = __webpack_require__(274);
-	var Profile = __webpack_require__(276);
-	var Splash = __webpack_require__(277);
-	var Categories = __webpack_require__(278);
-	var Default = __webpack_require__(279);
+	var Login = __webpack_require__(268);
+	var Signup = __webpack_require__(270);
+	var Profile = __webpack_require__(272);
+	var Splash = __webpack_require__(276);
+	var Categories = __webpack_require__(277);
+	var Default = __webpack_require__(278);
 	
 	var Router = React.createElement(
 	  Router,
@@ -32652,7 +32652,7 @@
 	var CurrentUserState = __webpack_require__(229);
 	var Link = ReactRouter.Link;
 	
-	var NavBar = __webpack_require__(261);
+	var NavBar = __webpack_require__(257);
 	
 	var App = React.createClass({
 	  displayName: 'App',
@@ -32673,17 +32673,13 @@
 	module.exports = App;
 
 /***/ },
-/* 257 */,
-/* 258 */,
-/* 259 */,
-/* 260 */,
-/* 261 */
+/* 257 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var ReactRouter = __webpack_require__(168);
 	var UserClientActions = __webpack_require__(252);
-	var ClientActions = __webpack_require__(264);
+	var ClientActions = __webpack_require__(258);
 	
 	var Link = ReactRouter.Link;
 	
@@ -32709,7 +32705,6 @@
 	
 	  navlink2: function () {
 	    if (this.props.currentUser) {
-	
 	      return React.createElement(
 	        Link,
 	        { to: '/me' },
@@ -32763,15 +32758,134 @@
 	module.exports = NavBar;
 
 /***/ },
+/* 258 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var ApiUtil = __webpack_require__(259);
+	var AppDispatcher = __webpack_require__(231);
+	var GameConstants = __webpack_require__(261);
+	
+	var ClientActions = {
+	  createGame: function (userId) {
+	    ApiUtil.createGame(userId);
+	  },
+	
+	  makeGuess: function (data) {
+	    ApiUtil.updateGuess(data);
+	  },
+	
+	  incrementRoundNum: function () {
+	    AppDispatcher.dispatch({
+	      actionType: GameConstants.NEXT_ROUND
+	    });
+	  },
+	
+	  cleanHouse: function () {
+	    AppDispatcher.dispatch({
+	      actionType: GameConstants.CLEAN_HOUSE
+	    });
+	  },
+	
+	  grabStats: function (userId) {
+	    ApiUtil.grabStats(userId);
+	  }
+	};
+	
+	module.exports = ClientActions;
+
+/***/ },
+/* 259 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var ServerActions = __webpack_require__(260);
+	
+	var ApiUtil = {
+	  createGame: function (data) {
+	    $.ajax({
+	      url: "api/games",
+	      type: "POST",
+	      data: { playerId: data },
+	      success: function (gamepackage) {
+	        ServerActions.receivePackage(gamepackage);
+	      }
+	    });
+	  },
+	
+	  updateGuess: function (data) {
+	    $.ajax({
+	      url: "api/guesses/" + data.id,
+	      type: "PATCH",
+	      data: { lat_guess: data.lat_guess, long_guess: data.long_guess },
+	      success: function (gamepackage) {
+	        ServerActions.receivePackage(gamepackage);
+	      }
+	    });
+	  },
+	
+	  grabStats: function (userId) {
+	    $.ajax({
+	      url: "api/users/" + userId,
+	      success: function (data) {
+	        debugger;
+	        ServerActions.receiveStats(data);
+	      }
+	    });
+	  }
+	
+	};
+	
+	module.exports = ApiUtil;
+
+/***/ },
+/* 260 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var AppDispatcher = __webpack_require__(231);
+	var GameConstants = __webpack_require__(261);
+	var StatConstants = __webpack_require__(280);
+	
+	var ServerActions = {
+	
+	  receivePackage: function (data) {
+	    AppDispatcher.dispatch({
+	      actionType: GameConstants.PACKAGE_RECEIVED,
+	      data: data
+	    });
+	  },
+	
+	  receiveStats: function (userStats) {
+	    AppDispatcher.dispatch({
+	      actionType: StatConstants.STATS_RECEIVED,
+	      userStats: userStats
+	    });
+	  }
+	};
+	
+	module.exports = ServerActions;
+
+/***/ },
+/* 261 */
+/***/ function(module, exports) {
+
+	
+	module.exports = {
+	
+	  PACKAGE_RECEIVED: "PACKAGE_RECEIVED",
+	  NEXT_ROUND: "NEXT_ROUND",
+	  CLEAN_HOUSE: "CLEAN_HOUSE"
+	
+	};
+
+/***/ },
 /* 262 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	
 	var StreetView = __webpack_require__(263);
-	var Summary = __webpack_require__(271);
+	var Summary = __webpack_require__(267);
 	
-	var GameStore = __webpack_require__(268);
+	var GameStore = __webpack_require__(264);
 	
 	var Game = React.createClass({
 	  displayName: 'Game',
@@ -32844,12 +32958,12 @@
 	/* globals google */
 	var React = __webpack_require__(1);
 	var ReactRouter = __webpack_require__(168);
-	var ClientActions = __webpack_require__(264);
+	var ClientActions = __webpack_require__(258);
 	var CurrentUserState = __webpack_require__(229);
-	var GameStore = __webpack_require__(268);
+	var GameStore = __webpack_require__(264);
 	var UserStore = __webpack_require__(230);
-	var MapGuess = __webpack_require__(269);
-	var Result = __webpack_require__(270);
+	var MapGuess = __webpack_require__(265);
+	var Result = __webpack_require__(266);
 	
 	var hashHistory = ReactRouter.hashHistory;
 	
@@ -32940,106 +33054,9 @@
 /* 264 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var ApiUtil = __webpack_require__(265);
-	var AppDispatcher = __webpack_require__(231);
-	var GameConstants = __webpack_require__(267);
-	
-	var ClientActions = {
-	  createGame: function (userId) {
-	    ApiUtil.createGame(userId);
-	  },
-	
-	  makeGuess: function (data) {
-	    ApiUtil.updateGuess(data);
-	  },
-	
-	  incrementRoundNum: function () {
-	    AppDispatcher.dispatch({
-	      actionType: GameConstants.NEXT_ROUND
-	    });
-	  },
-	
-	  cleanHouse: function () {
-	    AppDispatcher.dispatch({
-	      actionType: GameConstants.CLEAN_HOUSE
-	    });
-	  }
-	};
-	
-	module.exports = ClientActions;
-
-/***/ },
-/* 265 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var ServerActions = __webpack_require__(266);
-	
-	var ApiUtil = {
-	  createGame: function (data) {
-	    $.ajax({
-	      url: "api/games",
-	      type: "POST",
-	      data: { playerId: data },
-	      success: function (gamepackage) {
-	        ServerActions.receivePackage(gamepackage);
-	      }
-	    });
-	  },
-	
-	  updateGuess: function (data) {
-	    $.ajax({
-	      url: "api/guesses/" + data.id,
-	      type: "PATCH",
-	      data: { lat_guess: data.lat_guess, long_guess: data.long_guess },
-	      success: function (gamepackage) {
-	        ServerActions.receivePackage(gamepackage);
-	      }
-	    });
-	  }
-	
-	};
-	
-	module.exports = ApiUtil;
-
-/***/ },
-/* 266 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var AppDispatcher = __webpack_require__(231);
-	var GameConstants = __webpack_require__(267);
-	
-	var ServerActions = {
-	
-	  receivePackage: function (data) {
-	    AppDispatcher.dispatch({
-	      actionType: GameConstants.PACKAGE_RECEIVED,
-	      data: data
-	    });
-	  }
-	};
-	
-	module.exports = ServerActions;
-
-/***/ },
-/* 267 */
-/***/ function(module, exports) {
-
-	
-	module.exports = {
-	
-	  PACKAGE_RECEIVED: "PACKAGE_RECEIVED",
-	  NEXT_ROUND: "NEXT_ROUND",
-	  CLEAN_HOUSE: "CLEAN_HOUSE"
-	
-	};
-
-/***/ },
-/* 268 */
-/***/ function(module, exports, __webpack_require__) {
-
 	var Store = __webpack_require__(235).Store;
 	var AppDispatcher = __webpack_require__(231);
-	var GameConstants = __webpack_require__(267);
+	var GameConstants = __webpack_require__(261);
 	var GameStore = window.GameStore = new Store(AppDispatcher);
 	
 	var _gameId, _score;
@@ -33093,13 +33110,13 @@
 	module.exports = GameStore;
 
 /***/ },
-/* 269 */
+/* 265 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* globals google */
 	
 	var React = __webpack_require__(1);
-	var ClientActions = __webpack_require__(264);
+	var ClientActions = __webpack_require__(258);
 	
 	var mapOptions = {
 	  center: { lat: 0, lng: 0 },
@@ -33155,13 +33172,13 @@
 	module.exports = MapGuess;
 
 /***/ },
-/* 270 */
+/* 266 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var ReactRouter = __webpack_require__(168);
-	var ClientActions = __webpack_require__(264);
-	var GameStore = __webpack_require__(268);
+	var ClientActions = __webpack_require__(258);
+	var GameStore = __webpack_require__(264);
 	var hashHistory = ReactRouter.hashHistory;
 	
 	var Result = React.createClass({
@@ -33221,14 +33238,14 @@
 	module.exports = Result;
 
 /***/ },
-/* 271 */
+/* 267 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var ReactRouter = __webpack_require__(168);
 	var hashHistory = ReactRouter.hashHistory;
 	
-	var ClientActions = __webpack_require__(264);
+	var ClientActions = __webpack_require__(258);
 	
 	var Summary = React.createClass({
 	  displayName: 'Summary',
@@ -33258,13 +33275,13 @@
 	module.exports = Summary;
 
 /***/ },
-/* 272 */
+/* 268 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var ReactRouter = __webpack_require__(168);
 	var CurrentUserState = __webpack_require__(229);
-	var LoginForm = __webpack_require__(273);
+	var LoginForm = __webpack_require__(269);
 	
 	var Register = React.createClass({
 	  displayName: 'Register',
@@ -33278,7 +33295,7 @@
 	module.exports = Register;
 
 /***/ },
-/* 273 */
+/* 269 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -33386,13 +33403,13 @@
 	module.exports = LoginForm;
 
 /***/ },
-/* 274 */
+/* 270 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var ReactRouter = __webpack_require__(168);
 	var CurrentUserState = __webpack_require__(229);
-	var SignupForm = __webpack_require__(275);
+	var SignupForm = __webpack_require__(271);
 	
 	var Register = React.createClass({
 	  displayName: 'Register',
@@ -33406,7 +33423,7 @@
 	module.exports = Register;
 
 /***/ },
-/* 275 */
+/* 271 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -33507,38 +33524,194 @@
 	module.exports = LoginForm;
 
 /***/ },
-/* 276 */
+/* 272 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	
-	var myStats = __webpack_require__(282);
-	var myGames = __webpack_require__(283);
-	var leaderboard = __webpack_require__(284);
+	var MyStats = __webpack_require__(273);
+	var MyGames = __webpack_require__(274);
+	var Leaderboard = __webpack_require__(275);
 	
 	var Profile = React.createClass({
 	  displayName: 'Profile',
 	
 	
-	  render: function () {
-	    // buttons to stats games and leaderboard.
-	    // also render one component here at a time based on which button is selected
+	  getInitialState: function () {
+	    return {
+	      contentType: "myStats"
+	    };
+	  },
+	
+	  handleSwitch: function (e) {
+	    e.preventDefault();
+	    this.setState({ contentType: e.currentTarget.value });
+	  },
+	
+	  headerButtons: function () {
+	    return React.createElement(
+	      'div',
+	      { 'class': 'btn-group' },
+	      React.createElement(
+	        'button',
+	        { className: 'btn btn-secondary-outline', value: 'myStats', onClick: this.handleSwitch },
+	        'my stats'
+	      ),
+	      React.createElement(
+	        'button',
+	        { className: 'btn btn-info-outline', value: 'myGames', onClick: this.handleSwitch },
+	        'my games'
+	      ),
+	      React.createElement(
+	        'button',
+	        { className: 'btn btn-secondary-outline', value: 'leaderboard', onClick: this.handleSwitch },
+	        'leaderboard'
+	      )
+	    );
+	  },
+	
+	  bodyContent: function (contentType) {
 	    return React.createElement(
 	      'div',
 	      null,
-	      React.createElement(
-	        'h1',
-	        null,
-	        'Under Construction'
-	      )
+	      'contentType'
+	    );
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      null,
+	      this.headerButtons(),
+	      ' ',
+	      React.createElement('br', null),
+	      React.createElement('br', null),
+	      React.createElement('br', null),
+	      React.createElement(MyStats, { contentType: this.state.contentType }),
+	      React.createElement(MyGames, { contentType: this.state.contentType }),
+	      React.createElement(Leaderboard, { contentType: this.state.contentType })
 	    );
 	  }
+	
 	});
 	
 	module.exports = Profile;
 
 /***/ },
-/* 277 */
+/* 273 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var StatStore = __webpack_require__(279);
+	var ClientActions = __webpack_require__(258);
+	var CurrentUserState = __webpack_require__(229);
+	
+	var myStats = React.createClass({
+	  displayName: 'myStats',
+	
+	
+	  mixins: [CurrentUserState],
+	
+	  componentWillMount: function () {
+	    this.listener = StatStore.addListener(this.addStats);
+	    ClientActions.grabStats(this.state.currentUser.id);
+	  },
+	
+	  bodyContent: function () {
+	    if (this.props.contentType === "myStats") {
+	      return React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	          'h1',
+	          null,
+	          'statistics'
+	        )
+	      );
+	    } else {
+	      return React.createElement('div', null);
+	    }
+	  },
+	
+	  render: function () {
+	    console.log(StatStore.grabStats());
+	    return this.bodyContent();
+	  }
+	
+	});
+	
+	module.exports = myStats;
+
+/***/ },
+/* 274 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var myGames = React.createClass({
+	  displayName: "myGames",
+	
+	
+	  bodyContent: function () {
+	    if (this.props.contentType === "myGames") {
+	      return React.createElement(
+	        "div",
+	        null,
+	        React.createElement(
+	          "h1",
+	          null,
+	          "games"
+	        )
+	      );
+	    } else {
+	      return React.createElement("div", null);
+	    }
+	  },
+	
+	  render: function () {
+	    return this.bodyContent();
+	  }
+	
+	});
+	
+	module.exports = myGames;
+
+/***/ },
+/* 275 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var leaderboard = React.createClass({
+	  displayName: "leaderboard",
+	
+	
+	  bodyContent: function () {
+	    if (this.props.contentType === "leaderboard") {
+	      return React.createElement(
+	        "div",
+	        null,
+	        React.createElement(
+	          "h1",
+	          null,
+	          "leaderboard"
+	        )
+	      );
+	    } else {
+	      return React.createElement("div", null);
+	    }
+	  },
+	
+	  render: function () {
+	    return this.bodyContent();
+	  }
+	
+	});
+	
+	module.exports = leaderboard;
+
+/***/ },
+/* 276 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -33547,7 +33720,7 @@
 	var CurrentUserState = __webpack_require__(229);
 	var Link = ReactRouter.Link;
 	
-	var NavBar = __webpack_require__(261);
+	var NavBar = __webpack_require__(257);
 	
 	var Splash = React.createClass({
 	  displayName: 'Splash',
@@ -33568,21 +33741,21 @@
 	module.exports = Splash;
 
 /***/ },
-/* 278 */
+/* 277 */
 /***/ function(module, exports) {
 
 
 
 /***/ },
-/* 279 */
+/* 278 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var ReactRouter = __webpack_require__(168);
 	var UserClientActions = __webpack_require__(252);
-	var ClientActions = __webpack_require__(264);
+	var ClientActions = __webpack_require__(258);
 	var CurrentUserState = __webpack_require__(229);
-	var GameStore = __webpack_require__(268);
+	var GameStore = __webpack_require__(264);
 	var Link = ReactRouter.Link;
 	var hashHistory = ReactRouter.hashHistory;
 	
@@ -33675,54 +33848,48 @@
 	module.exports = Default;
 
 /***/ },
-/* 280 */,
-/* 281 */,
-/* 282 */
+/* 279 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(1);
+	var Store = __webpack_require__(235).Store;
+	var AppDispatcher = __webpack_require__(231);
+	var StatConstants = __webpack_require__(261);
+	var StatStore = window.StatStore = new Store(AppDispatcher);
 	
-	var myStats = React.createClass({
-	  displayName: 'myStats',
+	var _stats = {};
+	var _allGames = {};
 	
+	StatStore.grabStats = function () {
+	  return _stats;
+	};
 	
-	  render: function () {}
+	StatStore.grabGames = function () {
+	  return _allGames;
+	};
 	
-	});
+	StatStore.__OnDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case StatConstants.STATS_RECEIVED:
+	      _stats[bestRound] = payload.userStats[0];
+	      _stats[avgGame] = payload.userStats[1];
+	      _stats[bestGame] = payload.userStats[2];
+	      break;
+	  }
+	};
 	
-	module.exports = myStats;
+	module.exports = StatStore;
 
 /***/ },
-/* 283 */
-/***/ function(module, exports, __webpack_require__) {
+/* 280 */
+/***/ function(module, exports) {
 
-	var React = __webpack_require__(1);
+	module.exports = {
 	
-	var myGames = React.createClass({
-	  displayName: 'myGames',
+	  STATS_RECEIVED: "STATS_RECEIVED",
+	  OTHER: "OTHER",
+	  THIRTHTHINGS: "THIRTHTHINGS"
 	
-	
-	  render: function () {}
-	
-	});
-	
-	module.exports = myGames;
-
-/***/ },
-/* 284 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	
-	var leaderboard = React.createClass({
-	  displayName: 'leaderboard',
-	
-	
-	  render: function () {}
-	
-	});
-	
-	module.exports = leaderboard;
+	};
 
 /***/ }
 /******/ ]);
