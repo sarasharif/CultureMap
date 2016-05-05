@@ -33141,10 +33141,10 @@
 	
 	  switch (payload.actionType) {
 	    case GameConstants.PACKAGE_RECEIVED:
-	      var game = payload.data[0];
+	      var game = payload.data.game;
 	      _gameId = game.id;
 	      _score = game.score;
-	      var guesses = payload.data[1];
+	      var guesses = payload.data.guesses;
 	      for (var i = 0; i < guesses.length; i++) {
 	        _guesses[guesses[i].round_num] = guesses[i];
 	      }
@@ -33274,15 +33274,33 @@
 	  },
 	
 	  siteInfo: function () {
-	    var siteId = GameStore.currentGuess().site_id;
-	    ClientActions.getSiteInfo(siteId);
-	    return React.createElement('div', null);
+	    var result = GameStore.currentGuess();
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'h2',
+	        null,
+	        result.title_en
+	      ),
+	      React.createElement(
+	        'h4',
+	        null,
+	        result.title_fr
+	      )
+	    );
 	  },
 	
 	  render: function () {
 	    return React.createElement(
 	      'form',
 	      { id: 'guess-result', onSubmit: this.handleSubmit },
+	      React.createElement(
+	        'h3',
+	        null,
+	        ' ',
+	        this.siteInfo()
+	      ),
 	      React.createElement(
 	        'div',
 	        null,
@@ -33294,11 +33312,6 @@
 	        'You just earned ',
 	        GameStore.currentGuess().points,
 	        ' points'
-	      ),
-	      React.createElement(
-	        'h3',
-	        null,
-	        ' ---- info on site '
 	      ),
 	      React.createElement('input', { className: 'btn btn-success', type: 'submit', value: this.submitTextValue() })
 	    );

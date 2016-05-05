@@ -34,11 +34,11 @@ var Result = React.createClass({
   },
 
   siteInfo: function () {
-    var siteId = GameStore.currentGuess().site_id;
-    ClientActions.getSiteInfo(siteId);
+    var result = GameStore.currentGuess();
     return (
       <div>
-
+        <h2>{result.title_en}</h2>
+        <h4>{result.title_fr}</h4>
       </div>
     );
   },
@@ -46,9 +46,9 @@ var Result = React.createClass({
   render: function () {
     return (
       <form id='guess-result' onSubmit={this.handleSubmit}>
+        <h3> {this.siteInfo()}</h3>
         <div>{this.resultMap()}</div>
         <h3>You just earned {GameStore.currentGuess().points} points</h3>
-        <h3> ---- info on site </h3>
         <input className="btn btn-success" type="submit" value={this.submitTextValue()}></input>
       </form>
     );

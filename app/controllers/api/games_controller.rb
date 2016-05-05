@@ -11,8 +11,7 @@ class Api::GamesController < ApplicationController
         guess.points = 0
         guess.save!
       end
-    @package = [@game, @guesses]
-    render json: @package
+    render :show
   end
 
   #every game that the current user has played

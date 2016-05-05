@@ -39,10 +39,10 @@ GameStore.__onDispatch = function(payload) {
 
   switch (payload.actionType) {
     case GameConstants.PACKAGE_RECEIVED:
-      var game = payload.data[0];
+      var game = payload.data.game;
         _gameId = game.id;
         _score = game.score;
-      var guesses = payload.data[1];
+      var guesses = payload.data.guesses;
         for (var i = 0; i < guesses.length; i++) {
           _guesses[guesses[i].round_num] = guesses[i];
         }

@@ -11,8 +11,7 @@ class Api::GuessesController < ApplicationController
     @game.update_score!
 
     @guesses = @game.guesses
-    @package = [@game, @guesses]
 
-    render json: @package
+    render 'api/games/show'
   end
 end
