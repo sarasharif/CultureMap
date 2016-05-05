@@ -12,10 +12,10 @@ var ServerActions = {
     });
   },
 
-  receiveStats: function (userStats) {
+  receiveGames: function (data) {
     AppDispatcher.dispatch({
-      actionType: StatConstants.STATS_RECEIVED,
-      userStats: userStats
+      actionType: StatConstants.GAMES_RECEIVED,
+      data: data
     });
   }
 };

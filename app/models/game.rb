@@ -26,4 +26,12 @@ class Game < ActiveRecord::Base
     self.save!
   end
 
+  def self.stats(games)
+    stats = {}
+    scores = games.map{|game| game.score}
+    best = scores.max
+    avg = scores.inject{|sum, score| sum + score} / (scores.length)
+    stats = [best, avg]
+  end
+
 end

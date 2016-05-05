@@ -1,4 +1,5 @@
 json.game @game
+
 json.guesses do
   json.array! @guesses do |guess|
     json.title_en guess.unesco_site.title_en

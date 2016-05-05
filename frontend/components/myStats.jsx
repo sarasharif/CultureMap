@@ -7,9 +7,23 @@ var myStats = React.createClass({
 
   mixins: [CurrentUserState],
 
-  componentWillMount: function() {
+  getInitialState: function () {
+    return({
+      stats: []
+    });
+  },
+
+  componentDidMount: function() {
+    ClientActions.fetchGames(this.state.currentUser.id);
     this.listener = StatStore.addListener(this.addStats);
-    ClientActions.grabStats(this.state.currentUser.id);
+  },
+
+  componentWillUnmount: function() {
+    this.listener.remove();
+  },
+
+  addStats: function () {
+    this.setState({stats: StatStore.grabStats()});
   },
 
   bodyContent: function () {
@@ -17,6 +31,9 @@ var myStats = React.createClass({
       return (
         <div>
           <h1>statistics</h1>
+          <h2>under construction</h2>
+          best: {this.state.stats[0]} points<br/>
+          average: {this.state.stats[1]} points<br/>
         </div>
       );
     } else {
@@ -25,7 +42,6 @@ var myStats = React.createClass({
   },
 
   render: function () {
-    console.log(StatStore.grabStats());
     return(
       this.bodyContent()
     );

@@ -32786,8 +32786,8 @@
 	    });
 	  },
 	
-	  grabStats: function (userId) {
-	    ApiUtil.grabStats(userId);
+	  fetchGames: function (userId) {
+	    ApiUtil.fetchGames(userId);
 	  }
 	};
 	
@@ -32822,12 +32822,12 @@
 	    });
 	  },
 	
-	  grabStats: function (userId) {
+	  fetchGames: function (userId) {
 	    $.ajax({
-	      url: "api/users/" + userId,
+	      url: "api/games",
+	      data: { playerId: userId.toString() },
 	      success: function (data) {
-	        debugger;
-	        ServerActions.receiveStats(data);
+	        ServerActions.receiveGames(data);
 	      }
 	    });
 	  }
@@ -32853,10 +32853,10 @@
 	    });
 	  },
 	
-	  receiveStats: function (userStats) {
+	  receiveGames: function (data) {
 	    AppDispatcher.dispatch({
-	      actionType: StatConstants.STATS_RECEIVED,
-	      userStats: userStats
+	      actionType: StatConstants.GAMES_RECEIVED,
+	      data: data
 	    });
 	  }
 	};
@@ -33612,9 +33612,23 @@
 	
 	  mixins: [CurrentUserState],
 	
-	  componentWillMount: function () {
+	  getInitialState: function () {
+	    return {
+	      stats: []
+	    };
+	  },
+	
+	  componentDidMount: function () {
+	    ClientActions.fetchGames(this.state.currentUser.id);
 	    this.listener = StatStore.addListener(this.addStats);
-	    ClientActions.grabStats(this.state.currentUser.id);
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.listener.remove();
+	  },
+	
+	  addStats: function () {
+	    this.setState({ stats: StatStore.grabStats() });
 	  },
 	
 	  bodyContent: function () {
@@ -33626,7 +33640,20 @@
 	          'h1',
 	          null,
 	          'statistics'
-	        )
+	        ),
+	        React.createElement(
+	          'h2',
+	          null,
+	          'under construction'
+	        ),
+	        'best: ',
+	        this.state.stats[0],
+	        ' points',
+	        React.createElement('br', null),
+	        'average: ',
+	        this.state.stats[1],
+	        ' points',
+	        React.createElement('br', null)
 	      );
 	    } else {
 	      return React.createElement('div', null);
@@ -33634,7 +33661,6 @@
 	  },
 	
 	  render: function () {
-	    console.log(StatStore.grabStats());
 	    return this.bodyContent();
 	  }
 	
@@ -33647,24 +33673,48 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
+	var StatStore = __webpack_require__(279);
+	var ClientActions = __webpack_require__(258);
+	var CurrentUserState = __webpack_require__(229);
 	
 	var myGames = React.createClass({
-	  displayName: "myGames",
+	  displayName: 'myGames',
 	
+	
+	  mixins: [CurrentUserState],
+	
+	  getInitialState: function () {
+	    return {
+	      games: []
+	    };
+	  },
+	
+	  componentDidMount: function () {
+	    ClientActions.fetchGames(this.state.currentUser.id);
+	    this.listener = StatStore.addListener(this.addGames);
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.listener.remove();
+	  },
+	
+	  addGames: function () {
+	    this.setState({ games: StatStore.grabGames() });
+	  },
 	
 	  bodyContent: function () {
 	    if (this.props.contentType === "myGames") {
 	      return React.createElement(
-	        "div",
+	        'div',
 	        null,
 	        React.createElement(
-	          "h1",
+	          'h1',
 	          null,
-	          "games"
+	          'games'
 	        )
 	      );
 	    } else {
-	      return React.createElement("div", null);
+	      return React.createElement('div', null);
 	    }
 	  },
 	
@@ -33853,10 +33903,10 @@
 
 	var Store = __webpack_require__(235).Store;
 	var AppDispatcher = __webpack_require__(231);
-	var StatConstants = __webpack_require__(261);
-	var StatStore = window.StatStore = new Store(AppDispatcher);
+	var StatConstants = __webpack_require__(280);
+	var StatStore = new Store(AppDispatcher);
 	
-	var _stats = {};
+	var _stats = [];
 	var _allGames = {};
 	
 	StatStore.grabStats = function () {
@@ -33867,12 +33917,12 @@
 	  return _allGames;
 	};
 	
-	StatStore.__OnDispatch = function (payload) {
+	StatStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
-	    case StatConstants.STATS_RECEIVED:
-	      _stats[bestRound] = payload.userStats[0];
-	      _stats[avgGame] = payload.userStats[1];
-	      _stats[bestGame] = payload.userStats[2];
+	    case StatConstants.GAMES_RECEIVED:
+	      _stats = payload.data.stats;
+	      // _allGames = payload.data.games;
+	      StatStore.__emitChange();
 	      break;
 	  }
 	};
@@ -33885,10 +33935,7 @@
 
 	module.exports = {
 	
-	  STATS_RECEIVED: "STATS_RECEIVED",
-	  OTHER: "OTHER",
-	  THIRTHTHINGS: "THIRTHTHINGS"
-	
+	  GAMES_RECEIVED: "GAMES_RECEIVED"
 	};
 
 /***/ }

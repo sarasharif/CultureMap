@@ -1,10 +1,10 @@
 var Store = require('flux/utils').Store;
 var AppDispatcher = require('../dispatcher/dispatcher');
-var StatConstants = require('../constants/gameConstants');
-var StatStore = window.StatStore = new Store(AppDispatcher);
+var StatConstants = require('../constants/statConstants');
+var StatStore = new Store(AppDispatcher);
 
 
-var _stats = {};
+var _stats = [];
 var _allGames = {};
 
 StatStore.grabStats = function () {
@@ -15,12 +15,12 @@ StatStore.grabGames = function () {
   return _allGames;
 };
 
-StatStore.__OnDispatch = function (payload) {
+StatStore.__onDispatch = function (payload) {
   switch (payload.actionType) {
-    case StatConstants.STATS_RECEIVED:
-      _stats[bestRound] = payload.userStats[0];
-      _stats[avgGame] = payload.userStats[1];
-      _stats[bestGame] = payload.userStats[2];
+    case StatConstants.GAMES_RECEIVED:
+      _stats = payload.data.stats;
+      // _allGames = payload.data.games;
+      StatStore.__emitChange();
     break;
   }
 };

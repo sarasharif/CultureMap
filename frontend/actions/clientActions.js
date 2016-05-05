@@ -23,8 +23,8 @@ var ClientActions = {
     });
   },
 
-  grabStats: function (userId) {
-    ApiUtil.grabStats(userId);
+  fetchGames: function (userId) {
+    ApiUtil.fetchGames(userId);
   }
 };
 

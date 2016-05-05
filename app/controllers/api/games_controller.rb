@@ -15,11 +15,12 @@ class Api::GamesController < ApplicationController
     render json: @package
   end
 
-
-  #every game that any individual user has played
+  #every game that the current user has played
   def index
-    @games = Games.includes(:userId)
-    render 'index'
+    player_id = params[:playerId].to_i
+    @games = Game.where('player_id=?', player_id)
+    @stats = Game.stats(@games)
+    render :index
   end
 
   def show

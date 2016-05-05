@@ -23,12 +23,12 @@ var ApiUtil = {
     });
   },
 
-  grabStats: function (userId) {
+  fetchGames: function (userId) {
     $.ajax({
-      url: "api/users/" + userId,
+      url: "api/games",
+      data: {playerId: userId.toString()},
       success: function (data) {
-        debugger;
-        ServerActions.receiveStats(data);
+        ServerActions.receiveGames(data);
       },
     });
   },
