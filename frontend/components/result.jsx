@@ -17,7 +17,8 @@ var Result = React.createClass({
     var true_pos = GameStore.currentGuess().lat_true.toString() + "," + GameStore.currentGuess().long_true.toString();
     var markers = 'markers=size:mid%7Ccolor:red%7C' + guess_pos + '%7C' + true_pos;
     var path = 'path=color:0xff0000ff|weight:5|' + guess_pos + '|' + true_pos;
-    var url = 'https://maps.googleapis.com/maps/api/staticmap?size=512x512&maptype=roadmap\&' + markers + '&' + path + '&key=AIzaSyD0uYEJt5myjVIWmTJICUK6vOP-nndsXw8';
+    var stuff = 'AIzaSyD0uYEJt5myjVIWmTJICUK6vOP-nndsXw8';
+    var url = 'https://maps.googleapis.com/maps/api/staticmap?size=512x512&maptype=roadmap\&' + markers + '&' + path + '&key=' + stuff;
 
     return (<div><img
       src={url}

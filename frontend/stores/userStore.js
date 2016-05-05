@@ -14,6 +14,7 @@ UserStore.errors = function () {
   return _authErrors;
 };
 
+//TODO change actionTypes to use constants file
 UserStore.__onDispatch = function (payload) {
   switch (payload.actionType) {
     case "LOGIN":

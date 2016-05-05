@@ -25732,6 +25732,7 @@
 	  return _authErrors;
 	};
 	
+	//TODO change actionTypes to use constants file
 	UserStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
 	    case "LOGIN":
@@ -32765,7 +32766,7 @@
 	var AppDispatcher = __webpack_require__(231);
 	var GameConstants = __webpack_require__(261);
 	
-	var ClientActions = {
+	var ClientActions = window.ClientActions = {
 	  createGame: function (userId) {
 	    ApiUtil.createGame(userId);
 	  },
@@ -33087,7 +33088,9 @@
 	var Store = __webpack_require__(235).Store;
 	var AppDispatcher = __webpack_require__(231);
 	var GameConstants = __webpack_require__(261);
+	var UserConstants = __webpack_require__(255);
 	var GameStore = window.GameStore = new Store(AppDispatcher);
+	//TODO REMOVE window.
 	
 	var _gameId, _score;
 	var _roundNum = 1;
@@ -33112,7 +33115,15 @@
 	  return _score;
 	};
 	
+	var cleanHouse = function () {
+	  _gameId = 0;
+	  _score = 0;
+	  _guesses = {};
+	  _roundNum = 1;
+	};
+	
 	GameStore.__onDispatch = function (payload) {
+	
 	  switch (payload.actionType) {
 	    case GameConstants.PACKAGE_RECEIVED:
 	      var game = payload.data[0];
@@ -33129,10 +33140,12 @@
 	      GameStore.__emitChange();
 	      break;
 	    case GameConstants.CLEAN_HOUSE:
-	      _gameId = 0;
-	      _score = 0;
-	      _guesses = {};
-	      _roundNum = 0;
+	      cleanHouse();
+	      GameStore.__emitChange();
+	      break;
+	    case UserConstants.LOGOUT:
+	      cleanHouse();
+	      GameStore.__emitChange();
 	      break;
 	  }
 	};
@@ -33225,7 +33238,8 @@
 	    var true_pos = GameStore.currentGuess().lat_true.toString() + "," + GameStore.currentGuess().long_true.toString();
 	    var markers = 'markers=size:mid%7Ccolor:red%7C' + guess_pos + '%7C' + true_pos;
 	    var path = 'path=color:0xff0000ff|weight:5|' + guess_pos + '|' + true_pos;
-	    var url = 'https://maps.googleapis.com/maps/api/staticmap?size=512x512&maptype=roadmap\&' + markers + '&' + path + '&key=AIzaSyD0uYEJt5myjVIWmTJICUK6vOP-nndsXw8';
+	    var stuff = 'AIzaSyD0uYEJt5myjVIWmTJICUK6vOP-nndsXw8';
+	    var url = 'https://maps.googleapis.com/maps/api/staticmap?size=512x512&maptype=roadmap\&' + markers + '&' + path + '&key=' + stuff;
 	
 	    return React.createElement(
 	      'div',

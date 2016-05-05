@@ -17,6 +17,3 @@ csv.each do |row|
   t.region = row['region']
   t.save
 end
-
-
-# https://www.google.com/maps/embed/v1/streetview?key=AIzaSyD0uYEJt5myjVIWmTJICUK6vOP-nndsXw8&location=46.414382,10.013988&heading=210&pitch=10&fov=35

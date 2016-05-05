@@ -2,7 +2,8 @@ var ApiUtil = require('../util/apiUtil');
 var AppDispatcher = require('../dispatcher/dispatcher.js');
 var GameConstants = require('../constants/gameConstants.js');
 
-var ClientActions = {
+
+var ClientActions = window.ClientActions = {
   createGame: function (userId) {
     ApiUtil.createGame(userId);
   },

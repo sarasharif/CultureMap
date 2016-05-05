@@ -1,7 +1,9 @@
 var Store = require('flux/utils').Store;
 var AppDispatcher = require('../dispatcher/dispatcher');
 var GameConstants = require('../constants/gameConstants');
+var UserConstants = require('../constants/userConstants');
 var GameStore = window.GameStore = new Store(AppDispatcher);
+//TODO REMOVE window.
 
 var _gameId, _score;
 var _roundNum = 1;
@@ -26,7 +28,15 @@ GameStore.grabScore = function () {
   return _score;
 };
 
+var cleanHouse = function () {
+    _gameId = 0;
+    _score = 0;
+    _guesses = {};
+    _roundNum = 1;
+};
+
 GameStore.__onDispatch = function(payload) {
+
   switch (payload.actionType) {
     case GameConstants.PACKAGE_RECEIVED:
       var game = payload.data[0];
@@ -43,10 +53,12 @@ GameStore.__onDispatch = function(payload) {
       GameStore.__emitChange();
       break;
     case GameConstants.CLEAN_HOUSE:
-      _gameId = 0;
-      _score = 0;
-      _guesses = {};
-      _roundNum = 0;
+      cleanHouse();
+      GameStore.__emitChange();
+      break;
+    case UserConstants.LOGOUT:
+      cleanHouse();
+      GameStore.__emitChange();
       break;
   }
 };

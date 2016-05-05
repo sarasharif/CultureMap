@@ -27,6 +27,7 @@ gem 'autoprefixer-rails', '>= 3.2'
 # gem 'bcrypt', '~> 3.1.7'
 
 gem 'bcrypt'
+gem 'figaro'
 
 # Use Unicorn as the app server
 # gem 'unicorn'
