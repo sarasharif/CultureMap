@@ -56,13 +56,13 @@
 	var CurrentUserState = __webpack_require__(229);
 	
 	var App = __webpack_require__(256);
-	var Game = __webpack_require__(262);
-	var Login = __webpack_require__(268);
-	var Signup = __webpack_require__(270);
-	var Profile = __webpack_require__(272);
-	var Splash = __webpack_require__(276);
-	var Categories = __webpack_require__(277);
-	var Default = __webpack_require__(278);
+	var Game = __webpack_require__(263);
+	var Login = __webpack_require__(269);
+	var Signup = __webpack_require__(271);
+	var Profile = __webpack_require__(273);
+	var Splash = __webpack_require__(278);
+	var Categories = __webpack_require__(279);
+	var Default = __webpack_require__(280);
 	
 	var Router = React.createElement(
 	  Router,
@@ -32842,7 +32842,7 @@
 
 	var AppDispatcher = __webpack_require__(231);
 	var GameConstants = __webpack_require__(261);
-	var StatConstants = __webpack_require__(280);
+	var StatConstants = __webpack_require__(262);
 	
 	var ServerActions = {
 	
@@ -32878,14 +32878,23 @@
 
 /***/ },
 /* 262 */
+/***/ function(module, exports) {
+
+	module.exports = {
+	
+	  GAMES_RECEIVED: "GAMES_RECEIVED"
+	};
+
+/***/ },
+/* 263 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	
-	var StreetView = __webpack_require__(263);
-	var Summary = __webpack_require__(267);
+	var StreetView = __webpack_require__(264);
+	var Summary = __webpack_require__(268);
 	
-	var GameStore = __webpack_require__(264);
+	var GameStore = __webpack_require__(265);
 	
 	var Game = React.createClass({
 	  displayName: 'Game',
@@ -32952,7 +32961,7 @@
 	module.exports = Game;
 
 /***/ },
-/* 263 */
+/* 264 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* globals google */
@@ -32960,10 +32969,10 @@
 	var ReactRouter = __webpack_require__(168);
 	var ClientActions = __webpack_require__(258);
 	var CurrentUserState = __webpack_require__(229);
-	var GameStore = __webpack_require__(264);
+	var GameStore = __webpack_require__(265);
 	var UserStore = __webpack_require__(230);
-	var MapGuess = __webpack_require__(265);
-	var Result = __webpack_require__(266);
+	var MapGuess = __webpack_require__(266);
+	var Result = __webpack_require__(267);
 	
 	var hashHistory = ReactRouter.hashHistory;
 	
@@ -33051,7 +33060,7 @@
 	module.exports = StreetView;
 
 /***/ },
-/* 264 */
+/* 265 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Store = __webpack_require__(235).Store;
@@ -33110,7 +33119,7 @@
 	module.exports = GameStore;
 
 /***/ },
-/* 265 */
+/* 266 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* globals google */
@@ -33172,13 +33181,13 @@
 	module.exports = MapGuess;
 
 /***/ },
-/* 266 */
+/* 267 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var ReactRouter = __webpack_require__(168);
 	var ClientActions = __webpack_require__(258);
-	var GameStore = __webpack_require__(264);
+	var GameStore = __webpack_require__(265);
 	var hashHistory = ReactRouter.hashHistory;
 	
 	var Result = React.createClass({
@@ -33238,7 +33247,7 @@
 	module.exports = Result;
 
 /***/ },
-/* 267 */
+/* 268 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -33275,13 +33284,13 @@
 	module.exports = Summary;
 
 /***/ },
-/* 268 */
+/* 269 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var ReactRouter = __webpack_require__(168);
 	var CurrentUserState = __webpack_require__(229);
-	var LoginForm = __webpack_require__(269);
+	var LoginForm = __webpack_require__(270);
 	
 	var Register = React.createClass({
 	  displayName: 'Register',
@@ -33295,7 +33304,7 @@
 	module.exports = Register;
 
 /***/ },
-/* 269 */
+/* 270 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -33316,7 +33325,7 @@
 	      var self = this;
 	      return React.createElement(
 	        'ul',
-	        null,
+	        { className: 'list-unstyled text-danger' },
 	        Object.keys(this.state.authErrors).map(function (key, i) {
 	          return React.createElement(
 	            'li',
@@ -33403,13 +33412,13 @@
 	module.exports = LoginForm;
 
 /***/ },
-/* 270 */
+/* 271 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var ReactRouter = __webpack_require__(168);
 	var CurrentUserState = __webpack_require__(229);
-	var SignupForm = __webpack_require__(271);
+	var SignupForm = __webpack_require__(272);
 	
 	var Register = React.createClass({
 	  displayName: 'Register',
@@ -33423,7 +33432,7 @@
 	module.exports = Register;
 
 /***/ },
-/* 271 */
+/* 272 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -33443,7 +33452,7 @@
 	      var self = this;
 	      return React.createElement(
 	        'ul',
-	        null,
+	        { className: 'list-unstyled text-danger' },
 	        Object.keys(this.state.authErrors).map(function (key, i) {
 	          return React.createElement(
 	            'li',
@@ -33524,14 +33533,14 @@
 	module.exports = LoginForm;
 
 /***/ },
-/* 272 */
+/* 273 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	
-	var MyStats = __webpack_require__(273);
-	var MyGames = __webpack_require__(274);
-	var Leaderboard = __webpack_require__(275);
+	var MyStats = __webpack_require__(274);
+	var MyGames = __webpack_require__(276);
+	var Leaderboard = __webpack_require__(277);
 	
 	var Profile = React.createClass({
 	  displayName: 'Profile',
@@ -33598,11 +33607,11 @@
 	module.exports = Profile;
 
 /***/ },
-/* 273 */
+/* 274 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var StatStore = __webpack_require__(279);
+	var StatStore = __webpack_require__(275);
 	var ClientActions = __webpack_require__(258);
 	var CurrentUserState = __webpack_require__(229);
 	
@@ -33669,11 +33678,43 @@
 	module.exports = myStats;
 
 /***/ },
-/* 274 */
+/* 275 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(235).Store;
+	var AppDispatcher = __webpack_require__(231);
+	var StatConstants = __webpack_require__(262);
+	var StatStore = new Store(AppDispatcher);
+	
+	var _stats = [];
+	var _allGames = {};
+	
+	StatStore.grabStats = function () {
+	  return _stats;
+	};
+	
+	StatStore.grabGames = function () {
+	  return _allGames;
+	};
+	
+	StatStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case StatConstants.GAMES_RECEIVED:
+	      _stats = payload.data.stats;
+	      // _allGames = payload.data.games;
+	      StatStore.__emitChange();
+	      break;
+	  }
+	};
+	
+	module.exports = StatStore;
+
+/***/ },
+/* 276 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var StatStore = __webpack_require__(279);
+	var StatStore = __webpack_require__(275);
 	var ClientActions = __webpack_require__(258);
 	var CurrentUserState = __webpack_require__(229);
 	
@@ -33727,7 +33768,7 @@
 	module.exports = myGames;
 
 /***/ },
-/* 275 */
+/* 277 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -33761,7 +33802,7 @@
 	module.exports = leaderboard;
 
 /***/ },
-/* 276 */
+/* 278 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -33791,13 +33832,13 @@
 	module.exports = Splash;
 
 /***/ },
-/* 277 */
+/* 279 */
 /***/ function(module, exports) {
 
 
 
 /***/ },
-/* 278 */
+/* 280 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -33805,7 +33846,7 @@
 	var UserClientActions = __webpack_require__(252);
 	var ClientActions = __webpack_require__(258);
 	var CurrentUserState = __webpack_require__(229);
-	var GameStore = __webpack_require__(264);
+	var GameStore = __webpack_require__(265);
 	var Link = ReactRouter.Link;
 	var hashHistory = ReactRouter.hashHistory;
 	
@@ -33843,22 +33884,60 @@
 	  whiteText: function () {
 	    if (this.state.currentUser) {
 	      return React.createElement(
-	        'header',
+	        'div',
 	        null,
 	        React.createElement(
-	          'h1',
-	          { className: 'display-1' },
-	          'Come explore the world!'
+	          'header',
+	          null,
+	          React.createElement(
+	            'h1',
+	            { className: 'display-1' },
+	            'Ready to see the world?'
+	          )
+	        ),
+	        React.createElement(
+	          'h4',
+	          { className: 'display-2' },
+	          'You are about to be dropped off at 5 very special locations'
+	        ),
+	        React.createElement(
+	          'h4',
+	          { className: 'display-2' },
+	          'Use the map to guess where we are'
+	        ),
+	        React.createElement(
+	          'h4',
+	          { className: 'display-2' },
+	          'See how close you can get to score the most points!'
 	        )
 	      );
 	    } else {
 	      return React.createElement(
-	        'header',
+	        'div',
 	        null,
 	        React.createElement(
-	          'h1',
-	          { className: 'display-1' },
-	          'Lets Explore our World Heritage!'
+	          'header',
+	          null,
+	          React.createElement(
+	            'h1',
+	            { className: 'display-1' },
+	            'Lets Explore our World Heritage!'
+	          )
+	        ),
+	        React.createElement(
+	          'h4',
+	          { className: 'display-3' },
+	          React.createElement(
+	            'a',
+	            { target: '_blank', href: 'http://whc.unesco.org/en/about/' },
+	            'UNESCO World Heritage sites'
+	          ),
+	          ' belong to all of us'
+	        ),
+	        React.createElement(
+	          'h4',
+	          { className: 'display-3' },
+	          'Let\'s discover them together!'
 	        )
 	      );
 	    }
@@ -33896,47 +33975,6 @@
 	});
 	
 	module.exports = Default;
-
-/***/ },
-/* 279 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Store = __webpack_require__(235).Store;
-	var AppDispatcher = __webpack_require__(231);
-	var StatConstants = __webpack_require__(280);
-	var StatStore = new Store(AppDispatcher);
-	
-	var _stats = [];
-	var _allGames = {};
-	
-	StatStore.grabStats = function () {
-	  return _stats;
-	};
-	
-	StatStore.grabGames = function () {
-	  return _allGames;
-	};
-	
-	StatStore.__onDispatch = function (payload) {
-	  switch (payload.actionType) {
-	    case StatConstants.GAMES_RECEIVED:
-	      _stats = payload.data.stats;
-	      // _allGames = payload.data.games;
-	      StatStore.__emitChange();
-	      break;
-	  }
-	};
-	
-	module.exports = StatStore;
-
-/***/ },
-/* 280 */
-/***/ function(module, exports) {
-
-	module.exports = {
-	
-	  GAMES_RECEIVED: "GAMES_RECEIVED"
-	};
 
 /***/ }
 /******/ ]);

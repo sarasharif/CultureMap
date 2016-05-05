@@ -38,9 +38,27 @@ var Default = React.createClass({
 
   whiteText: function () {
     if ( this.state.currentUser ) {
-      return (<header><h1 className="display-1">Come explore the world!</h1></header>);
+      return (
+        <div>
+          <header><h1 className="display-1">Ready to see the world?</h1></header>
+          <h4 className='display-2'>You are about to be dropped off at 5 very special locations</h4>
+          <h4 className='display-2'>Use the map to guess where we are</h4>
+          <h4 className='display-2'>See how close you can get to score the most points!</h4>
+        </div>
+      );
     } else {
-      return (<header><h1 className="display-1">Lets Explore our World Heritage!</h1></header>);
+      return (
+        <div>
+          <header>
+            <h1 className="display-1">Lets Explore our World Heritage!</h1>
+          </header>
+          <h4 className='display-3'>
+            <a target="_blank" href="http://whc.unesco.org/en/about/">UNESCO World Heritage sites</a> belong to all of us
+          </h4>
+          <h4 className='display-3'>Let's discover them together!</h4>
+
+        </div>
+      );
     }
   },
 

@@ -13,7 +13,7 @@ var LoginForm = React.createClass({
     if (this.state.authErrors) {
       var self = this;
       return (
-        <ul>
+        <ul className='list-unstyled text-danger'>
           { Object.keys(this.state.authErrors).map(function(key, i) {
               return (<li key={i}>{self.state.authErrors[key]}</li>);
             })
