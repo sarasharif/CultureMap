@@ -32682,7 +32682,6 @@
 	var UserClientActions = __webpack_require__(252);
 	var ClientActions = __webpack_require__(258);
 	var hashHistory = ReactRouter.hashHistory;
-	
 	var Link = ReactRouter.Link;
 	
 	var NavBar = React.createClass({
@@ -32692,8 +32691,8 @@
 	  navlink1: function () {
 	    if (this.props.currentUser) {
 	      return React.createElement(
-	        'a',
-	        { className: 'btn btn-info-outline', type: 'submit', onClick: this.logout },
+	        Link,
+	        { to: '/login', onClick: this.logout },
 	        'LOGOUT'
 	      );
 	    } else {
@@ -32722,37 +32721,31 @@
 	  },
 	
 	  logout: function (event) {
-	    event.preventDefault();
 	    UserClientActions.logout();
-	    hashHistory.push("/login");
 	  },
 	
 	  render: function () {
 	    return React.createElement(
-	      'nav',
-	      { className: 'navbar navbar-dark bg-inverse', id: 'navbar' },
+	      'div',
+	      { className: 'nav' },
 	      React.createElement(
-	        'ul',
-	        { className: 'nav navbar-nav' },
+	        'div',
+	        { className: 'btn btn-info-outline', id: 'navL' },
 	        React.createElement(
-	          'li',
-	          { className: 'btn btn-info-outline', id: 'navL' },
-	          React.createElement(
-	            Link,
-	            { to: '/' },
-	            'cultureMap'
-	          )
-	        ),
-	        React.createElement(
-	          'li',
-	          { className: 'btn btn-info-outline', id: 'navR1' },
-	          this.navlink1()
-	        ),
-	        React.createElement(
-	          'li',
-	          { className: 'btn btn-info-outline', id: 'navR2' },
-	          this.navlink2()
+	          Link,
+	          { to: '/' },
+	          'cultureMap'
 	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'btn btn-info-outline', id: 'navR1' },
+	        this.navlink1()
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'btn btn-info-outline', id: 'navR2' },
+	        this.navlink2()
 	      )
 	    );
 	  }
@@ -33275,7 +33268,7 @@
 	    var markers = 'markers=size:mid%7Ccolor:red%7C' + guess_pos + '%7C' + true_pos;
 	    var path = 'path=color:0xff0000ff|weight:5|' + guess_pos + '|' + true_pos;
 	    var stuff = 'AIzaSyD0uYEJt5myjVIWmTJICUK6vOP-nndsXw8';
-	    var url = 'https://maps.googleapis.com/maps/api/staticmap?size=512x512&maptype=roadmap\&' + markers + '&' + path + '&key=' + stuff;
+	    var url = 'https://maps.googleapis.com/maps/api/staticmap?size=260x260&maptype=roadmap\&' + markers + '&' + path + '&key=' + stuff;
 	
 	    return React.createElement(
 	      'div',
@@ -33300,7 +33293,7 @@
 	      'div',
 	      null,
 	      React.createElement(
-	        'h2',
+	        'h3',
 	        null,
 	        result.title_en
 	      ),
@@ -33317,17 +33310,17 @@
 	      'form',
 	      { id: 'guess-result', onSubmit: this.handleSubmit },
 	      React.createElement(
-	        'h3',
+	        'h4',
 	        null,
 	        this.siteInfo()
 	      ),
 	      React.createElement(
 	        'div',
-	        null,
+	        { id: 'static-map' },
 	        this.resultMap()
 	      ),
 	      React.createElement(
-	        'h3',
+	        'h4',
 	        null,
 	        'You just earned ',
 	        GameStore.currentGuess().points,
@@ -33383,7 +33376,7 @@
 	  render: function () {
 	    return React.createElement(
 	      'form',
-	      { onSubmit: this.handleSubmit },
+	      { className: 'bodycontent', onSubmit: this.handleSubmit },
 	      React.createElement(
 	        'h3',
 	        null,

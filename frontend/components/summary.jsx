@@ -32,7 +32,7 @@ var Summary = React.createClass({
 
   render: function () {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form className='bodycontent' onSubmit={this.handleSubmit}>
         <h3>Your total score was {this.props.score} points</h3>
         <h4>here is a list of all the cool places you just visited</h4>
         {this.guess_list()}
