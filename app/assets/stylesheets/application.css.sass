@@ -38,6 +38,7 @@
   height: 75vh
   width: auto
   z-index: 1
+  margin: 5px
 
 
 #hide_google_logo
@@ -72,8 +73,7 @@
   position: absolute
   bottom: 0px
   right: 0px
-  background-color: transparent
-
+  background: rgba(black,.7)
 
 #guess-submit
   z-index: 4
@@ -82,10 +82,64 @@
   right: 0px
   width: 35vw
 
-h1
+#roundNum
+  background: rgb(34,34,34)
+  padding: 10px
+  position: absolute
+  top: 10px
+  left: 100px
+  z-index: 10
+  color: #B3B3B3!important
+  border-radius: 2px
+
+#score
+  background: rgb(34,34,34)
+  padding: 10px
+  position: absolute
+  top: 10px
+  left: 190px
+  z-index: 10
+  color: #B3B3B3!important
+  border-radius: 2px
+
+.game-details
+  display: -webkit-flex
+  display: flex
+  -webkit-justify-content: center
+  justify-content: center
+
+.game-details > *
+  margin-left: 20px
+  margin-right: 20px
+
+h1, h2, h3, h4
   color: white
 
 input
   border-style: hidden
   border-bottom: 2px solid gray
   background-color: transparent
+
+.list-group
+  width: 40vw
+  display: -webkit-flex
+  display: flex
+  flex-direction: column
+
+.bodycontent
+  display: flex
+  flex-direction: column
+  align-items: center
+
+#navR1
+  position: absolute
+  right: 80px
+
+#navR2
+  position: absolute
+  right: 0px
+
+#navbar
+  display: flex
+  justify-content: flex-start
+  align-content: space-between

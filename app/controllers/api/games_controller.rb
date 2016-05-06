@@ -18,9 +18,9 @@ class Api::GamesController < ApplicationController
   #and the best games too
   def index
     player_id = params[:playerId].to_i
-    @games = Game.where('player_id=?', player_id)
+    @games = Game.where('player_id=?', player_id).where('score>?',0);
     @stats = Game.stats(@games)
-    @best_games = Game.leaderboard_sort(Game.where('player_id>=?', 2))
+    @best_games = Game.leaderboard_sort(Game.where('player_id>=?', 2).where('score>?',0));
     render :index
   end
 

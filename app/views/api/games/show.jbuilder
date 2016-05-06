@@ -15,6 +15,7 @@ json.guesses do
     json.game_id guess.game_id
     json.id guess.id
     json.created_at guess.created_at
+    json.time_ago guess.created_at.to_time.strftime("%B %d, %Y")
   end
 
 end

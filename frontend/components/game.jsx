@@ -39,8 +39,17 @@ var Game = React.createClass({
     } else {
       return (
         <div className="gamediv">
-          <div id='roundNum'>ROUND: {this.state.roundNum} </div>
-          <div id='score'>SCORE: {this.state.score} </div>
+          <div className="game-details">
+            <div id='roundNum'>
+              <div>ROUND</div>
+              <h3>{this.state.roundNum}</h3>
+            </div>
+
+            <div id='score'>
+              <div>SCORE</div>
+              <h3>{this.state.score}</h3>
+            </div>
+          </div>
           <StreetView
             gameId={this.state.gameId}
             roundNum={this.state.roundNum} />

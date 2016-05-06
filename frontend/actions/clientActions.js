@@ -3,7 +3,7 @@ var AppDispatcher = require('../dispatcher/dispatcher.js');
 var GameConstants = require('../constants/gameConstants.js');
 
 
-var ClientActions = window.ClientActions = {
+var ClientActions = {
   createGame: function (userId) {
     ApiUtil.createGame(userId);
   },

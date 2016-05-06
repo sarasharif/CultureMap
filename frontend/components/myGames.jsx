@@ -31,11 +31,7 @@ var myGames = React.createClass({
       <ul className="list-group">
         {
           tuples.reverse().map(function (tuple) {
-            if (tuple[1] === 0) {
-              return;
-            } else {
-              return (<li className="list-group-item">{tuple[0]} - {tuple[1]} points</li>);
-            }
+            return (<li className="list-group-item">{tuple[0]} - {tuple[1]} points</li>);
           })
         }
       </ul>
@@ -45,12 +41,12 @@ var myGames = React.createClass({
   bodyContent: function () {
     if (this.props.contentType ===  "myGames") {
 
-      var gamesData = this.state.games.map( function(game) {
-        return [game.created_at.slice(5,10), game.score];
+      var gamesData = this.state.games.slice(0,10).map( function(game) {
+        return [game.created_at.slice(5,7) + "/" + game.created_at.slice(8,10), game.score];
       });
 
       return (
-        <div>
+        <div className="bodycontent">
           <h1>games</h1>
           {this.makeTable(gamesData)}
         </div>

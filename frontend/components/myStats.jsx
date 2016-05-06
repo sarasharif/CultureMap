@@ -29,7 +29,7 @@ var myStats = React.createClass({
   bodyContent: function () {
     if (this.props.contentType ===  "myStats") {
       return (
-        <div>
+        <div className="bodycontent">
           <h1>statistics</h1>
             <ul className="list-group">
               <li className="list-group-item">best: {this.state.stats[0]} points</li>

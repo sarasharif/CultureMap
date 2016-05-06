@@ -9,13 +9,13 @@ var leaderboard = React.createClass({
 
   getInitialState: function () {
     return({
-      bestGames: []
+      bestGames: StatStore.grabBestGames()
     });
   },
 
   componentDidMount: function() {
-    ClientActions.fetchBestGames();
     this.listener = StatStore.addListener(this.addBestGames);
+    ClientActions.fetchBestGames();
   },
 
   componentWillUnmount: function() {
@@ -30,12 +30,8 @@ var leaderboard = React.createClass({
     return (
       <ul className="list-group">
         {
-          tuples.reverse().map(function (tuple) {
-            if (tuple[1] === 0) {
-              return;
-            } else {
-              return (<li className="list-group-item">{tuple[0]} - {tuple[1]} points</li>);
-            }
+          tuples.reverse().slice(0,10).map(function (tuple, idx) {
+              return (<li className="list-group-item">#{idx+1} {tuple[0]} - {tuple[1]} points</li>);
           })
         }
       </ul>
@@ -49,7 +45,7 @@ var leaderboard = React.createClass({
       });
 
       return (
-        <div>
+        <div className='bodycontent'>
           <h1>leaderboard</h1>
           {this.makeTable(bestGamesData)}
         </div>

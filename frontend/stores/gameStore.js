@@ -2,8 +2,7 @@ var Store = require('flux/utils').Store;
 var AppDispatcher = require('../dispatcher/dispatcher');
 var GameConstants = require('../constants/gameConstants');
 var UserConstants = require('../constants/userConstants');
-var GameStore = window.GameStore = new Store(AppDispatcher);
-//TODO REMOVE window.
+var GameStore = new Store(AppDispatcher);
 
 var _gameId, _score;
 var _roundNum = 1;
@@ -14,6 +13,10 @@ GameStore.currentGuess = function () {
     return {points: _score};
   }
   return _guesses[_roundNum];
+};
+
+GameStore.grabAllGuesses = function () {
+  return _guesses;
 };
 
 GameStore.currentRoundNum = function () {

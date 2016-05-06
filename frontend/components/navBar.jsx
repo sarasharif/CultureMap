@@ -32,11 +32,11 @@ var NavBar = React.createClass({
 
   render: function () {
     return (
-      <nav className="navbar navbar-dark bg-inverse">
+      <nav className="navbar navbar-dark bg-inverse" id="navbar">
         <ul className="nav navbar-nav">
-          <li className="btn btn-info-outline"><Link to="/">cultureMap</Link></li>
-          <li className="btn btn-info-outline">{this.navlink1()}</li>
-          <li className="btn btn-info-outline">{this.navlink2()}</li>
+          <li className="btn btn-info-outline" id="navL"><Link to="/">cultureMap</Link></li>
+          <li className="btn btn-info-outline" id="navR1">{this.navlink1()}</li>
+          <li className="btn btn-info-outline" id="navR2">{this.navlink2()}</li>
         </ul>
       </nav>
     );

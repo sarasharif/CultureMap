@@ -32730,13 +32730,13 @@
 	  render: function () {
 	    return React.createElement(
 	      'nav',
-	      { className: 'navbar navbar-dark bg-inverse' },
+	      { className: 'navbar navbar-dark bg-inverse', id: 'navbar' },
 	      React.createElement(
 	        'ul',
 	        { className: 'nav navbar-nav' },
 	        React.createElement(
 	          'li',
-	          { className: 'btn btn-info-outline' },
+	          { className: 'btn btn-info-outline', id: 'navL' },
 	          React.createElement(
 	            Link,
 	            { to: '/' },
@@ -32745,12 +32745,12 @@
 	        ),
 	        React.createElement(
 	          'li',
-	          { className: 'btn btn-info-outline' },
+	          { className: 'btn btn-info-outline', id: 'navR1' },
 	          this.navlink1()
 	        ),
 	        React.createElement(
 	          'li',
-	          { className: 'btn btn-info-outline' },
+	          { className: 'btn btn-info-outline', id: 'navR2' },
 	          this.navlink2()
 	        )
 	      )
@@ -32768,7 +32768,7 @@
 	var AppDispatcher = __webpack_require__(231);
 	var GameConstants = __webpack_require__(261);
 	
-	var ClientActions = window.ClientActions = {
+	var ClientActions = {
 	  createGame: function (userId) {
 	    ApiUtil.createGame(userId);
 	  },
@@ -32970,17 +32970,35 @@
 	        { className: 'gamediv' },
 	        React.createElement(
 	          'div',
-	          { id: 'roundNum' },
-	          'ROUND: ',
-	          this.state.roundNum,
-	          ' '
-	        ),
-	        React.createElement(
-	          'div',
-	          { id: 'score' },
-	          'SCORE: ',
-	          this.state.score,
-	          ' '
+	          { className: 'game-details' },
+	          React.createElement(
+	            'div',
+	            { id: 'roundNum' },
+	            React.createElement(
+	              'div',
+	              null,
+	              'ROUND'
+	            ),
+	            React.createElement(
+	              'h3',
+	              null,
+	              this.state.roundNum
+	            )
+	          ),
+	          React.createElement(
+	            'div',
+	            { id: 'score' },
+	            React.createElement(
+	              'div',
+	              null,
+	              'SCORE'
+	            ),
+	            React.createElement(
+	              'h3',
+	              null,
+	              this.state.score
+	            )
+	          )
 	        ),
 	        React.createElement(StreetView, {
 	          gameId: this.state.gameId,
@@ -33104,8 +33122,7 @@
 	var AppDispatcher = __webpack_require__(231);
 	var GameConstants = __webpack_require__(261);
 	var UserConstants = __webpack_require__(255);
-	var GameStore = window.GameStore = new Store(AppDispatcher);
-	//TODO REMOVE window.
+	var GameStore = new Store(AppDispatcher);
 	
 	var _gameId, _score;
 	var _roundNum = 1;
@@ -33116,6 +33133,10 @@
 	    return { points: _score };
 	  }
 	  return _guesses[_roundNum];
+	};
+	
+	GameStore.grabAllGuesses = function () {
+	  return _guesses;
 	};
 	
 	GameStore.currentRoundNum = function () {
@@ -33298,7 +33319,6 @@
 	      React.createElement(
 	        'h3',
 	        null,
-	        ' ',
 	        this.siteInfo()
 	      ),
 	      React.createElement(
@@ -33327,12 +33347,33 @@
 	var React = __webpack_require__(1);
 	var ReactRouter = __webpack_require__(168);
 	var hashHistory = ReactRouter.hashHistory;
-	
+	var GameStore = window.GameStore = __webpack_require__(265);
 	var ClientActions = __webpack_require__(258);
 	
 	var Summary = React.createClass({
 	  displayName: 'Summary',
 	
+	
+	  guess_list: function () {
+	    var guesses = GameStore.grabAllGuesses();
+	    return React.createElement(
+	      'ul',
+	      { className: 'list-group' },
+	      [1, 2, 3, 4, 5].map(function (round) {
+	        var url = "http://whc.unesco.org/en/list/" + guesses[round].site_no;
+	        return React.createElement(
+	          'li',
+	          { className: 'list-group-item' },
+	          React.createElement(
+	            'a',
+	            { target: '_blank', href: url },
+	            ' ',
+	            guesses[round].title_en
+	          )
+	        );
+	      })
+	    );
+	  },
 	
 	  handleSubmit: function () {
 	    ClientActions.cleanHouse();
@@ -33350,6 +33391,12 @@
 	        this.props.score,
 	        ' points'
 	      ),
+	      React.createElement(
+	        'h4',
+	        null,
+	        'here is a list of all the cool places you just visited'
+	      ),
+	      this.guess_list(),
 	      React.createElement('input', { className: 'btn btn-success', type: 'submit', value: 'LET\'S EXPLORE SOME MORE!' })
 	    );
 	  }
@@ -33718,7 +33765,7 @@
 	    if (this.props.contentType === "myStats") {
 	      return React.createElement(
 	        'div',
-	        null,
+	        { className: 'bodycontent' },
 	        React.createElement(
 	          'h1',
 	          null,
@@ -33836,18 +33883,14 @@
 	      'ul',
 	      { className: 'list-group' },
 	      tuples.reverse().map(function (tuple) {
-	        if (tuple[1] === 0) {
-	          return;
-	        } else {
-	          return React.createElement(
-	            'li',
-	            { className: 'list-group-item' },
-	            tuple[0],
-	            ' - ',
-	            tuple[1],
-	            ' points'
-	          );
-	        }
+	        return React.createElement(
+	          'li',
+	          { className: 'list-group-item' },
+	          tuple[0],
+	          ' - ',
+	          tuple[1],
+	          ' points'
+	        );
 	      })
 	    );
 	  },
@@ -33855,13 +33898,13 @@
 	  bodyContent: function () {
 	    if (this.props.contentType === "myGames") {
 	
-	      var gamesData = this.state.games.map(function (game) {
-	        return [game.created_at.slice(5, 10), game.score];
+	      var gamesData = this.state.games.slice(0, 10).map(function (game) {
+	        return [game.created_at.slice(5, 7) + "/" + game.created_at.slice(8, 10), game.score];
 	      });
 	
 	      return React.createElement(
 	        'div',
-	        null,
+	        { className: 'bodycontent' },
 	        React.createElement(
 	          'h1',
 	          null,
@@ -33899,13 +33942,13 @@
 	
 	  getInitialState: function () {
 	    return {
-	      bestGames: []
+	      bestGames: StatStore.grabBestGames()
 	    };
 	  },
 	
 	  componentDidMount: function () {
-	    ClientActions.fetchBestGames();
 	    this.listener = StatStore.addListener(this.addBestGames);
+	    ClientActions.fetchBestGames();
 	  },
 	
 	  componentWillUnmount: function () {
@@ -33920,19 +33963,18 @@
 	    return React.createElement(
 	      'ul',
 	      { className: 'list-group' },
-	      tuples.reverse().map(function (tuple) {
-	        if (tuple[1] === 0) {
-	          return;
-	        } else {
-	          return React.createElement(
-	            'li',
-	            { className: 'list-group-item' },
-	            tuple[0],
-	            ' - ',
-	            tuple[1],
-	            ' points'
-	          );
-	        }
+	      tuples.reverse().slice(0, 10).map(function (tuple, idx) {
+	        return React.createElement(
+	          'li',
+	          { className: 'list-group-item' },
+	          '#',
+	          idx + 1,
+	          ' ',
+	          tuple[0],
+	          ' - ',
+	          tuple[1],
+	          ' points'
+	        );
 	      })
 	    );
 	  },
@@ -33945,7 +33987,7 @@
 	
 	      return React.createElement(
 	        'div',
-	        null,
+	        { className: 'bodycontent' },
 	        React.createElement(
 	          'h1',
 	          null,
