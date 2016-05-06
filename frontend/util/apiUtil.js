@@ -48,7 +48,7 @@ var ApiUtil = {
       success: function (data) {
         ServerActions.recieveSiteData(data);
       }
-    })
+    });
   }
 
 };

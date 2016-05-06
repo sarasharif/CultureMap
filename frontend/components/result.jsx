@@ -38,7 +38,7 @@ var Result = React.createClass({
     return (
       <div>
         <h3>{result.title_en}</h3>
-        <h4>{result.title_fr}</h4>
+        <h5>{result.title_fr}</h5>
       </div>
     );
   },
@@ -46,7 +46,7 @@ var Result = React.createClass({
   render: function () {
     return (
       <form id='guess-result' onSubmit={this.handleSubmit}>
-        <h4>{this.siteInfo()}</h4>
+        <h4 id='sitenames'>{this.siteInfo()}</h4>
         <div id='static-map'>{this.resultMap()}</div>
         <h4>You just earned {GameStore.currentGuess().points} points</h4>
         <input className="btn btn-success" type="submit" value={this.submitTextValue()}></input>

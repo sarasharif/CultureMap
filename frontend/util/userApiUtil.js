@@ -7,6 +7,7 @@ module.exports = {
       url: "api/session",
       type: "GET",
       success: function (object) {
+        debugger
         if (Object.keys(object)[0] !== "errors") {
           ServerActions.receiveCurrentUser(object);
         } else {
@@ -36,7 +37,7 @@ module.exports = {
       type: "POST",
       data: {user: user},
       success: function (data) {
-  
+
         ServerActions.receiveCurrentUser(data);
       },
       error: function (error) {

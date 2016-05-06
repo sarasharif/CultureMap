@@ -32552,6 +32552,7 @@
 	      url: "api/session",
 	      type: "GET",
 	      success: function (object) {
+	        debugger;
 	        if (Object.keys(object)[0] !== "errors") {
 	          ServerActions.receiveCurrentUser(object);
 	        } else {
@@ -33298,7 +33299,7 @@
 	        result.title_en
 	      ),
 	      React.createElement(
-	        'h4',
+	        'h5',
 	        null,
 	        result.title_fr
 	      )
@@ -33311,7 +33312,7 @@
 	      { id: 'guess-result', onSubmit: this.handleSubmit },
 	      React.createElement(
 	        'h4',
-	        null,
+	        { id: 'sitenames' },
 	        this.siteInfo()
 	      ),
 	      React.createElement(
@@ -34079,6 +34080,7 @@
 	
 	  initializeGame: function () {
 	    var userId = this.state.currentUser.id;
+	    debugger;
 	    ClientActions.createGame(userId);
 	  },
 	

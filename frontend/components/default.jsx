@@ -33,6 +33,7 @@ var Default = React.createClass({
 
   initializeGame: function () {
     var userId = this.state.currentUser.id;
+    debugger;
     ClientActions.createGame(userId);
   },
 
