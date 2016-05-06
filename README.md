@@ -11,4 +11,4 @@ Users can...
   - access their high scores and personal bests
   - view highest scores of other users
 
-[culturemap]: https://culturemap.site
+[culturemap]: https://www.culturemap.site
