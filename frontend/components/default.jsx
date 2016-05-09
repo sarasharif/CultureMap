@@ -33,7 +33,6 @@ var Default = React.createClass({
 
   initializeGame: function () {
     var userId = this.state.currentUser.id;
-    debugger;
     ClientActions.createGame(userId);
   },
 
@@ -42,8 +41,8 @@ var Default = React.createClass({
       return (
         <div>
           <header><h1 className="display-1">Ready to see the world?</h1></header>
-          <h4 className='display-2'>You are about to be dropped off at 5 very special locations</h4>
-          <h4 className='display-2'>Use the map to guess where we are</h4>
+          <h4 className='display-2'>You are about to be dropped off at 5 very special places.</h4>
+          <h4 className='display-2'>Use the map to guess your location.</h4>
           <h4 className='display-2'>See how close you can get to score the most points!</h4>
         </div>
       );

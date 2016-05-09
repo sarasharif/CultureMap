@@ -25717,9 +25717,10 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var AppDispatcher = __webpack_require__(231);
-	var Store = __webpack_require__(235).Store;
+	var UserConstants = __webpack_require__(255);
 	
-	var UserStore = new Store(AppDispatcher);
+	var Store = __webpack_require__(235).Store;
+	var UserStore = window.UserStore = new Store(AppDispatcher);
 	
 	var _currentUser;
 	var _authErrors = [];
@@ -25732,20 +25733,19 @@
 	  return _authErrors;
 	};
 	
-	//TODO change actionTypes to use constants file
 	UserStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
-	    case "LOGIN":
+	    case UserConstants.LOGIN:
 	      _currentUser = payload.user;
 	      _authErrors = [];
 	      UserStore.__emitChange();
 	      break;
-	    case "LOGOUT":
+	    case UserConstants.LOGOUT:
 	      _currentUser = null;
 	      _authErrors = [];
 	      UserStore.__emitChange();
 	      break;
-	    case "ERROR":
+	    case UserConstants.ERROR:
 	      _authErrors = JSON.parse(payload.errors.responseText).errors;
 	      UserStore.__emitChange();
 	      break;
@@ -32552,7 +32552,6 @@
 	      url: "api/session",
 	      type: "GET",
 	      success: function (object) {
-	        debugger;
 	        if (Object.keys(object)[0] !== "errors") {
 	          ServerActions.receiveCurrentUser(object);
 	        } else {
@@ -32567,8 +32566,8 @@
 	      url: "api/user",
 	      type: "POST",
 	      data: { user: user },
-	      success: function () {
-	        ServerActions.receiveCurrentUser(user);
+	      success: function (data) {
+	        ServerActions.receiveCurrentUser(data);
 	      },
 	      error: function (error) {
 	        ServerActions.handleError(error);
@@ -32582,7 +32581,6 @@
 	      type: "POST",
 	      data: { user: user },
 	      success: function (data) {
-	
 	        ServerActions.receiveCurrentUser(data);
 	      },
 	      error: function (error) {
@@ -32842,6 +32840,9 @@
 	      url: "api/games",
 	      success: function (data) {
 	        ServerActions.receiveBestGames(data);
+	      },
+	      error: function (data) {
+	        debugger;
 	      }
 	    });
 	  },
@@ -33551,13 +33552,14 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
+	var ReactRouter = __webpack_require__(168);
 	var ClientActions = __webpack_require__(252);
 	var CurrentUserState = __webpack_require__(229);
 	var UserStore = __webpack_require__(230);
-	var ReactRouter = __webpack_require__(168);
 	var hashHistory = ReactRouter.hashHistory;
-	var LoginForm = React.createClass({
-	  displayName: 'LoginForm',
+	
+	var SignUpForm = React.createClass({
+	  displayName: 'SignUpForm',
 	
 	
 	  mixins: [CurrentUserState],
@@ -33638,14 +33640,14 @@
 	  render: function () {
 	    return React.createElement(
 	      'div',
-	      { id: 'login-form' },
+	      { id: 'signup-form' },
 	      this.errors(),
 	      this.form()
 	    );
 	  }
 	});
 	
-	module.exports = LoginForm;
+	module.exports = SignUpForm;
 
 /***/ },
 /* 273 */
@@ -33936,7 +33938,7 @@
 	
 	  getInitialState: function () {
 	    return {
-	      bestGames: StatStore.grabBestGames()
+	      bestGames: []
 	    };
 	  },
 	
@@ -34080,7 +34082,6 @@
 	
 	  initializeGame: function () {
 	    var userId = this.state.currentUser.id;
-	    debugger;
 	    ClientActions.createGame(userId);
 	  },
 	
@@ -34101,12 +34102,12 @@
 	        React.createElement(
 	          'h4',
 	          { className: 'display-2' },
-	          'You are about to be dropped off at 5 very special locations'
+	          'You are about to be dropped off at 5 very special places.'
 	        ),
 	        React.createElement(
 	          'h4',
 	          { className: 'display-2' },
-	          'Use the map to guess where we are'
+	          'Use the map to guess your location.'
 	        ),
 	        React.createElement(
 	          'h4',

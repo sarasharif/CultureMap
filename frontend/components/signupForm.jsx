@@ -1,10 +1,11 @@
 var React = require('react');
+var ReactRouter = require('react-router');
 var ClientActions = require('../actions/userClientActions');
 var CurrentUserState = require("../mixins/currentUserState");
 var UserStore = require('../stores/userStore.js');
-var ReactRouter = require('react-router');
 var hashHistory = ReactRouter.hashHistory;
-var LoginForm = React.createClass({
+
+var SignUpForm = React.createClass({
 
   mixins: [CurrentUserState],
 
@@ -73,7 +74,7 @@ var LoginForm = React.createClass({
 
   render: function () {
     return (
-      <div id="login-form">
+      <div id="signup-form">
         {this.errors()}
         {this.form()}
       </div>
@@ -82,4 +83,4 @@ var LoginForm = React.createClass({
 });
 
 
-module.exports = LoginForm;
+module.exports = SignUpForm;

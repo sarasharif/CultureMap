@@ -14,8 +14,7 @@ class Api::GamesController < ApplicationController
     render :show
   end
 
-  #every game that the current user has played
-  #and the best games too
+
   def index
     player_id = params[:playerId].to_i
     @games = Game.where('player_id=?', player_id).where('score>?',0);

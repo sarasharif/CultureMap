@@ -27,10 +27,12 @@ class Game < ActiveRecord::Base
   end
 
   def self.stats(games)
-    stats = {}
+    return [0,0] if games.length == 0
+
     scores = games.map{|game| game.score}
     best = scores.max
-    avg = (best == 0 ? 0 : (scores.inject{|sum, score| sum + score} / (scores.length)))
+    sum = scores.inject{|sum, score| sum + score}
+    avg = sum / scores.length
     stats = [best, avg]
   end
 

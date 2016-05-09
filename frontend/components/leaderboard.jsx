@@ -9,7 +9,7 @@ var leaderboard = React.createClass({
 
   getInitialState: function () {
     return({
-      bestGames: StatStore.grabBestGames()
+      bestGames: []
     });
   },
 

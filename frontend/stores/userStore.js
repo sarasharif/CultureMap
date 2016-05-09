@@ -1,7 +1,8 @@
 var AppDispatcher = require('../dispatcher/dispatcher');
-var Store = require('flux/utils').Store;
+var UserConstants = require('../constants/userConstants');
 
-var UserStore = new Store(AppDispatcher);
+var Store = require('flux/utils').Store;
+var UserStore = window.UserStore = new Store(AppDispatcher);
 
 var _currentUser;
 var _authErrors = [];
@@ -14,20 +15,19 @@ UserStore.errors = function () {
   return _authErrors;
 };
 
-//TODO change actionTypes to use constants file
 UserStore.__onDispatch = function (payload) {
   switch (payload.actionType) {
-    case "LOGIN":
+    case UserConstants.LOGIN:
       _currentUser = payload.user;
       _authErrors = [];
       UserStore.__emitChange();
       break;
-    case "LOGOUT":
+    case UserConstants.LOGOUT:
       _currentUser = null;
       _authErrors = [];
       UserStore.__emitChange();
       break;
-    case "ERROR":
+    case UserConstants.ERROR:
       _authErrors = JSON.parse(payload.errors.responseText).errors;
       UserStore.__emitChange();
       break;
