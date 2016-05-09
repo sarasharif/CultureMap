@@ -28,7 +28,9 @@ UserStore.__onDispatch = function (payload) {
       UserStore.__emitChange();
       break;
     case UserConstants.ERROR:
-      _authErrors = JSON.parse(payload.errors.responseText).errors;
+      if (payload.errors.responseText) {
+        _authErrors = JSON.parse(payload.errors.responseText).errors;
+      }
       UserStore.__emitChange();
       break;
   }
