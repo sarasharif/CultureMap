@@ -32840,9 +32840,6 @@
 	      url: "api/games",
 	      success: function (data) {
 	        ServerActions.receiveBestGames(data);
-	      },
-	      error: function (data) {
-	        debugger;
 	      }
 	    });
 	  },
@@ -33740,7 +33737,7 @@
 	
 	  getInitialState: function () {
 	    return {
-	      stats: []
+	      stats: StatStore.grabStats()
 	    };
 	  },
 	
@@ -33857,7 +33854,7 @@
 	
 	  getInitialState: function () {
 	    return {
-	      games: []
+	      games: StatStore.grabGames()
 	    };
 	  },
 	
@@ -33938,7 +33935,7 @@
 	
 	  getInitialState: function () {
 	    return {
-	      bestGames: []
+	      bestGames: StatStore.grabBestGames()
 	    };
 	  },
 	
@@ -33952,7 +33949,9 @@
 	  },
 	
 	  addBestGames: function () {
-	    this.setState({ bestGames: StatStore.grabBestGames() });
+	    this.setState({
+	      bestGames: StatStore.grabBestGames()
+	    });
 	  },
 	
 	  makeTable: function (tuples) {

@@ -9,7 +9,7 @@ var myStats = React.createClass({
 
   getInitialState: function () {
     return({
-      stats: []
+      stats: StatStore.grabStats()
     });
   },
 

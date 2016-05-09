@@ -38,9 +38,6 @@ var ApiUtil = {
       url: "api/games",
       success: function (data) {
         ServerActions.receiveBestGames(data);
-      },
-      error: function (data) {
-        debugger;
       }
     });
   },

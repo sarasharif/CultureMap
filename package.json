@@ -11,8 +11,7 @@
     "npm": "2.1.x"
   },
   "scripts": {
-    "postinstall": "./node_modules/.bin/webpack",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "heroku-postbuild": "webpack --config webpack.config.prod.js"
   },
   "keywords": [],
   "author": "",

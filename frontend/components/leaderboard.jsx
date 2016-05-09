@@ -9,7 +9,7 @@ var leaderboard = React.createClass({
 
   getInitialState: function () {
     return({
-      bestGames: []
+      bestGames: StatStore.grabBestGames()
     });
   },
 
@@ -23,7 +23,9 @@ var leaderboard = React.createClass({
   },
 
   addBestGames: function () {
-    this.setState({bestGames: StatStore.grabBestGames()});
+    this.setState({
+      bestGames: StatStore.grabBestGames()
+    });
   },
 
   makeTable: function (tuples) {
