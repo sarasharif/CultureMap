@@ -33388,7 +33388,7 @@
 	      React.createElement(
 	        'h4',
 	        null,
-	        'here is a list of all the cool places you just visited'
+	        'Click the links below for more information'
 	      ),
 	      this.guess_list(),
 	      React.createElement('input', { className: 'btn btn-success', type: 'submit', value: 'LET\'S EXPLORE SOME MORE!' })

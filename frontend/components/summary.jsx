@@ -34,7 +34,7 @@ var Summary = React.createClass({
     return (
       <form className='bodycontent' onSubmit={this.handleSubmit}>
         <h3>Your total score was {this.props.score} points</h3>
-        <h4>here is a list of all the cool places you just visited</h4>
+        <h4>Click the links below for more information</h4>
         {this.guess_list()}
         <input className="btn btn-success" type="submit" value="LET'S EXPLORE SOME MORE!"></input>
       </form>
