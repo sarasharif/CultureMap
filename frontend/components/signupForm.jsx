@@ -61,7 +61,7 @@ var SignUpForm = React.createClass({
 
     return (
       <form onSubmit={this.handleSubmit}>
-        <section>
+        <section className="form">
           <input type="text" placeholder="username" onChange={this.handleUsernameChange}></input><br/><br/>
           <input type="password" placeholder="password" onChange={this.handlePasswordChange}></input><br/><br/><br/><br/><br/><br/>
         </section>

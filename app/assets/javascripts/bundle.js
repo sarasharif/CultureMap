@@ -33492,7 +33492,7 @@
 	      { onSubmit: this.handleSubmit },
 	      React.createElement(
 	        'section',
-	        null,
+	        { className: 'form' },
 	        React.createElement('input', {
 	          type: 'text',
 	          placeholder: 'username',
@@ -33621,7 +33621,7 @@
 	      { onSubmit: this.handleSubmit },
 	      React.createElement(
 	        'section',
-	        null,
+	        { className: 'form' },
 	        React.createElement('input', { type: 'text', placeholder: 'username', onChange: this.handleUsernameChange }),
 	        React.createElement('br', null),
 	        React.createElement('br', null),

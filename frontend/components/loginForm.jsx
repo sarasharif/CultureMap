@@ -59,7 +59,7 @@ var LoginForm = React.createClass({
     }
     return (
       <form onSubmit={this.handleSubmit}>
-        <section>
+        <section className="form">
           <input
             type="text"
             placeholder="username"
