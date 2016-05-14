@@ -32735,7 +32735,7 @@
 	        React.createElement(
 	          Link,
 	          { to: '/' },
-	          'cultureMap'
+	          ' cultureMap'
 	        )
 	      ),
 	      React.createElement(
@@ -33508,7 +33508,6 @@
 	        React.createElement('br', null),
 	        React.createElement('br', null),
 	        React.createElement('br', null),
-	        React.createElement('br', null),
 	        React.createElement('br', null)
 	      ),
 	      React.createElement('input', { className: 'btn btn-success', type: 'submit', value: 'LOG IN' })
@@ -33626,7 +33625,6 @@
 	        React.createElement('br', null),
 	        React.createElement('br', null),
 	        React.createElement('input', { type: 'password', placeholder: 'password', onChange: this.handlePasswordChange }),
-	        React.createElement('br', null),
 	        React.createElement('br', null),
 	        React.createElement('br', null),
 	        React.createElement('br', null),
@@ -34127,7 +34125,7 @@
 	          React.createElement(
 	            'h1',
 	            { className: 'display-1' },
-	            'Lets Explore our World Heritage!'
+	            'Let\'s Explore our World Heritage!'
 	          )
 	        ),
 	        React.createElement(

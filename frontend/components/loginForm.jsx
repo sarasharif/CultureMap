@@ -71,7 +71,7 @@ var LoginForm = React.createClass({
             placeholder="password"
             onChange={this.handlePasswordChange}
             >
-          </input><br/><br/><br/><br/><br/><br/>
+          </input><br/><br/><br/><br/><br/>
         </section>
 
         <input className="btn btn-success" type="submit" value="LOG IN"></input>

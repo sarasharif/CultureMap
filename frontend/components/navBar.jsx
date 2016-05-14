@@ -30,7 +30,7 @@ var NavBar = React.createClass({
   render: function () {
     return (
         <div className="nav">
-          <div className="btn btn-info-outline" id="navL"><Link to="/">cultureMap</Link></div>
+          <div className="btn btn-info-outline" id="navL"><Link to="/"> cultureMap</Link></div>
           <div className="btn btn-info-outline" id="navR1">{this.navlink1()}</div>
           <div className="btn btn-info-outline" id="navR2">{this.navlink2()}</div>
         </div>

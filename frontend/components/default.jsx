@@ -50,7 +50,7 @@ var Default = React.createClass({
       return (
         <div>
           <header>
-            <h1 className="display-1">Lets Explore our World Heritage!</h1>
+            <h1 className="display-1">Let's Explore our World Heritage!</h1>
           </header>
           <h4 className='display-3'>
             <a target="_blank" href="http://whc.unesco.org/en/about/">UNESCO World Heritage sites</a> belong to all of us

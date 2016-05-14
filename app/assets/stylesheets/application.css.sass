@@ -37,6 +37,7 @@
 .nav
   position: relative
   height: 10vh
+  min-height: 54px
   display: flex
   background-color: #566D7E
   overflow: hidden
@@ -48,20 +49,32 @@
   position: absolute
   left: 20px
   top: 2vh
+  background: url('logo.png') no-repeat center center fixed
 
 #navR1
   position: absolute
   right: 20px
   top: 2vh
+  background-color: #7E95A6
+  border: transparent
+  box-shadow: 2px 2px 5px rgba(black,.7)
 
 #navR2
   position: absolute
-  right: 100px
+  right: 115px
   top: 2vh
+  background-color: #7E95A6
+  border: transparent
+  box-shadow: 2px 2px 5px rgba(black,.7)
 
 div[id^="nav"] a
   color: white
   font-weight: bold
+
+.btn-success
+  box-shadow: 2px 2px 5px rgba(black,.7)
+  background-color: #0C3668
+  border: transparent
 
 #street-view
   position: relative
@@ -82,6 +95,7 @@ div[id^="nav"] a
 #guess-form
   height: 33vh
   width: 35vw
+  max-width: 235px
   z-index: 3
   position: absolute
   bottom: 0px
@@ -90,10 +104,19 @@ div[id^="nav"] a
 #map-guess
   height: 28vh
   width: 35vw
+  max-width: 235px
   z-index: 3
   position: absolute
   top: 0px
   right: 0px
+
+#guess-submit
+  z-index: 4
+  position: absolute
+  bottom: 0px
+  right: 0px
+  width: 35vw
+  max-width: 235px
 
 #guess-result
   height: 100%
@@ -107,14 +130,6 @@ div[id^="nav"] a
   flex-direction: column
   align-items: center
   overflow: auto
-
-
-#guess-submit
-  z-index: 4
-  position: absolute
-  bottom: 0px
-  right: 0px
-  width: 35vw
 
 #roundNum
   background: rgb(34,34,34)
