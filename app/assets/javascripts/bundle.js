@@ -33312,7 +33312,7 @@
 	      'form',
 	      { id: 'guess-result', onSubmit: this.handleSubmit },
 	      React.createElement(
-	        'h4',
+	        'h3',
 	        { id: 'sitenames' },
 	        this.siteInfo()
 	      ),
@@ -33322,7 +33322,7 @@
 	        this.resultMap()
 	      ),
 	      React.createElement(
-	        'h4',
+	        'h3',
 	        null,
 	        'You just earned ',
 	        GameStore.currentGuess().points,
@@ -33387,7 +33387,7 @@
 	        ' points'
 	      ),
 	      React.createElement(
-	        'h4',
+	        'h3',
 	        null,
 	        'Click the links below for more information'
 	      ),

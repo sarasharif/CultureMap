@@ -46,9 +46,9 @@ var Result = React.createClass({
   render: function () {
     return (
       <form id='guess-result' onSubmit={this.handleSubmit}>
-        <h4 id='sitenames'>{this.siteInfo()}</h4>
+        <h3 id='sitenames'>{this.siteInfo()}</h3>
         <div id='static-map'>{this.resultMap()}</div>
-        <h4>You just earned {GameStore.currentGuess().points} points</h4>
+        <h3>You just earned {GameStore.currentGuess().points} points</h3>
         <input className="btn btn-success" type="submit" value={this.submitTextValue()}></input>
       </form>
     );
