@@ -33380,7 +33380,7 @@
 	      'form',
 	      { className: 'bodycontent', onSubmit: this.handleSubmit },
 	      React.createElement(
-	        'h3',
+	        'h1',
 	        null,
 	        'Your total score was ',
 	        this.props.score,
