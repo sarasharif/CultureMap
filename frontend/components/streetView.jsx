@@ -61,6 +61,7 @@ var StreetView = React.createClass({
     if (typeof GameStore.currentGuess() === "undefined") {
       hashHistory.push("/");
     } else if (this.state.currentGuess.points === 0) {
+      debugger
       return (
         <MapGuess
           guessId={this.state.currentGuess.id}

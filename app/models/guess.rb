@@ -23,8 +23,8 @@ class Guess < ActiveRecord::Base
 
   def update_points!(lat_guess, long_guess)
     distance = self.calculate_distance([lat_guess.to_f, long_guess.to_f],[self.lat_true, self.long_true])
-    points = distance * (-0.2) + 4000
-    self.points = points
+    points = 4000*(2.71828**(distance*(-0.0002)))
+    self.points = [points,2].max
     self.save!
   end
 

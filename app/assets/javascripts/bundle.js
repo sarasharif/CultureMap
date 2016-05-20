@@ -32692,13 +32692,6 @@
 	
 	  mixins: [CurrentUserState],
 	
-	  // initializeGame: function () {
-	  //   debugger
-	  //   var userId = this.state.currentUser.id;
-	  //   ClientActions.createGame(userId);
-	  //   // hashHistory.push('/play');
-	  // },
-	
 	  navlink1: function () {
 	    if (this.props.currentUser) {
 	      return React.createElement(
@@ -32727,22 +32720,6 @@
 	        Link,
 	        { to: '/signup' },
 	        'SIGNUP'
-	      );
-	    }
-	  },
-	
-	  navlink3: function () {
-	    if (this.props.currentUser) {
-	      return React.createElement(
-	        Link,
-	        { onClick: this.initializeGame, to: '/play' },
-	        'NEW GAME'
-	      );
-	    } else {
-	      return React.createElement(
-	        Link,
-	        { to: '/signup' },
-	        'DEMO ACCOUNT'
 	      );
 	    }
 	  },
@@ -32777,7 +32754,6 @@
 	    );
 	  }
 	});
-	// <div className="btn btn-info-outline" id="navR3">{this.navlink3()}</div>
 	
 	module.exports = NavBar;
 
@@ -33106,6 +33082,7 @@
 	    if (typeof GameStore.currentGuess() === "undefined") {
 	      hashHistory.push("/");
 	    } else if (this.state.currentGuess.points === 0) {
+	      debugger;
 	      return React.createElement(MapGuess, {
 	        guessId: this.state.currentGuess.id
 	      });
@@ -33358,7 +33335,7 @@
 	        null,
 	        'You just earned ',
 	        GameStore.currentGuess().points,
-	        ' points'
+	        ' out of 4000 points'
 	      ),
 	      React.createElement('input', { className: 'btn btn-success', type: 'submit', value: this.submitTextValue() })
 	    );
@@ -33410,7 +33387,7 @@
 	  render: function () {
 	    return React.createElement(
 	      'form',
-	      { className: 'bodycontent', onSubmit: this.handleSubmit },
+	      { className: 'bodycontent summary', onSubmit: this.handleSubmit },
 	      React.createElement(
 	        'h1',
 	        null,
