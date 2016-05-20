@@ -28,8 +28,6 @@
 //   background-repeat: no-repeat
 //   text-align: center
 
-
-
 .gamediv
   position: relative
   height: 88vh
@@ -39,42 +37,63 @@
   height: 10vh
   min-height: 54px
   display: flex
-  background-color: #566D7E
+  background-color: rgb(34,34,34)
   overflow: hidden
-  box-shadow: 5px 5px 5px #999
-  -moz-box-shadow: 5px 5px 5px #999
-  -webkit-box-shadow: 5px 5px 5px #999
+  // box-shadow: 5px 5px 5px #999
+  // -moz-box-shadow: 5px 5px 5px #999
+  // -webkit-box-shadow: 5px 5px 5px #999
 
 #navL
   position: absolute
   left: 20px
   top: 2vh
-  background: url('logo.png') no-repeat center center fixed
+  // background: url('logo.png') no-repeat center center fixed
+#navL *
+  font-family: 'Satisfy', cursive
+  font-size: 20px
 
 #navR1
   position: absolute
   right: 20px
   top: 2vh
-  background-color: #7E95A6
-  border: transparent
-  box-shadow: 2px 2px 5px rgba(black,.7)
+  border: 2px solid white
+  width: 85px
 
 #navR2
   position: absolute
   right: 115px
   top: 2vh
-  background-color: #7E95A6
-  border: transparent
-  box-shadow: 2px 2px 5px rgba(black,.7)
+  border: 2px solid white
+  width: 85px
+  overflow: auto
+
+#navR3
+  position: absolute
+  right: 210px
+  top: 2vh
+  border: 2px solid white
+  width: 150px
+  overflow: hidden
 
 div[id^="nav"] a
   color: white
   font-weight: bold
 
 .btn-success
-  box-shadow: 2px 2px 5px rgba(black,.7)
+  // box-shadow: 2px 2px 5px rgba(black,.7)
   background-color: #0C3668
   border: transparent
+
+.green-button
+  background-color: rgba(black,.3)
+  border: 10px solid white
+  color: white
+  padding: 15px 40px
+  font-weight: bold
+  border-radius: 10px
+  position: relative
+  bottom: 5%
+  font-size: 30px
 
 #street-view
   position: relative
@@ -93,30 +112,35 @@ div[id^="nav"] a
   z-index: 10
 
 #guess-form
-  height: 33vh
-  width: 35vw
-  max-width: 235px
+  // background-color: rgba(black,.3)
+  height: 40vh
+  width: 40vw
+  max-width: 300px
   z-index: 3
   position: absolute
   bottom: 0px
   right: 0px
-
+  margin: 10px 10px
+  text-shadow: 1px 1px 2px #000
+  
 #map-guess
-  height: 28vh
-  width: 35vw
-  max-width: 235px
+  height: 33vh
+  width: 100%
+  max-width: 300px
   z-index: 3
-  position: absolute
-  top: 0px
-  right: 0px
+  // position: absolute
+  // top: 0px
+  // right: 0px
+  box-shadow: 5px 5px 5px black
 
 #guess-submit
   z-index: 4
   position: absolute
   bottom: 0px
   right: 0px
-  width: 35vw
-  max-width: 235px
+  width: 100%
+  max-width: 300px
+  box-shadow: 5px 5px 5px black
 
 #guess-result
   height: 100%
@@ -174,7 +198,7 @@ h1
   // font-weight: bold
   margin-top: 50px
   margin-bottom: 30px
-  font-size: 80px
+  font-size: 50px
 
 h4
   font-size: 30px

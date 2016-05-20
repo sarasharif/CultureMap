@@ -64,16 +64,16 @@ var Default = React.createClass({
 
   greenButton: function () {
     if ( this.state.currentUser ) {
-      return (<button className="btn btn-success" onClick={this.initializeGame}>LETS PLAY NOW!</button>);
+      return (<button className="btn btn-success green-button" onClick={this.initializeGame}>LETS PLAY NOW!</button>);
     } else {
-      return (<button className="btn btn-success" type="submit" onClick={this.handleGuestLogin}>GUEST DEMO</button>);
+      return (<button className="btn btn-success green-button" type="submit" onClick={this.handleGuestLogin}>GUEST DEMO</button>);
     }
   },
 
   render: function () {
     return (
       <div id="splashimage">
-        {this.whiteText()} <br/><br/><br/>
+        {this.whiteText()} <br/><br/><br/><br/><br/><br/><br/><br/><br/>
         {this.greenButton()}
       </div>
     );

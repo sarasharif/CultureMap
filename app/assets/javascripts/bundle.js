@@ -32682,12 +32682,22 @@
 	var ReactRouter = __webpack_require__(168);
 	var UserClientActions = __webpack_require__(253);
 	var ClientActions = __webpack_require__(258);
+	var CurrentUserState = __webpack_require__(229);
 	var hashHistory = ReactRouter.hashHistory;
 	var Link = ReactRouter.Link;
 	
 	var NavBar = React.createClass({
 	  displayName: 'NavBar',
 	
+	
+	  mixins: [CurrentUserState],
+	
+	  // initializeGame: function () {
+	  //   debugger
+	  //   var userId = this.state.currentUser.id;
+	  //   ClientActions.createGame(userId);
+	  //   // hashHistory.push('/play');
+	  // },
 	
 	  navlink1: function () {
 	    if (this.props.currentUser) {
@@ -32717,6 +32727,22 @@
 	        Link,
 	        { to: '/signup' },
 	        'SIGNUP'
+	      );
+	    }
+	  },
+	
+	  navlink3: function () {
+	    if (this.props.currentUser) {
+	      return React.createElement(
+	        Link,
+	        { onClick: this.initializeGame, to: '/play' },
+	        'NEW GAME'
+	      );
+	    } else {
+	      return React.createElement(
+	        Link,
+	        { to: '/signup' },
+	        'DEMO ACCOUNT'
 	      );
 	    }
 	  },
@@ -32751,6 +32777,7 @@
 	    );
 	  }
 	});
+	// <div className="btn btn-info-outline" id="navR3">{this.navlink3()}</div>
 	
 	module.exports = NavBar;
 
@@ -33236,6 +33263,11 @@
 	    return React.createElement(
 	      'form',
 	      { id: 'guess-form', onSubmit: this.makeGuess },
+	      React.createElement(
+	        'h4',
+	        null,
+	        'make guess here'
+	      ),
 	      React.createElement('div', { id: 'map-guess' }),
 	      React.createElement('input', { className: 'btn btn-success', id: 'guess-submit', type: 'submit', value: 'SUBMIT YOUR GUESS' })
 	    );
@@ -34151,13 +34183,13 @@
 	    if (this.state.currentUser) {
 	      return React.createElement(
 	        'button',
-	        { className: 'btn btn-success', onClick: this.initializeGame },
+	        { className: 'btn btn-success green-button', onClick: this.initializeGame },
 	        'LETS PLAY NOW!'
 	      );
 	    } else {
 	      return React.createElement(
 	        'button',
-	        { className: 'btn btn-success', type: 'submit', onClick: this.handleGuestLogin },
+	        { className: 'btn btn-success green-button', type: 'submit', onClick: this.handleGuestLogin },
 	        'GUEST DEMO'
 	      );
 	    }
@@ -34169,6 +34201,12 @@
 	      { id: 'splashimage' },
 	      this.whiteText(),
 	      ' ',
+	      React.createElement('br', null),
+	      React.createElement('br', null),
+	      React.createElement('br', null),
+	      React.createElement('br', null),
+	      React.createElement('br', null),
+	      React.createElement('br', null),
 	      React.createElement('br', null),
 	      React.createElement('br', null),
 	      React.createElement('br', null),
