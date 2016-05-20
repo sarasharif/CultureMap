@@ -34,7 +34,7 @@ var Profile = React.createClass({
 
   render: function () {
     return (
-      <div>
+      <div id="splashimage2">
         {this.headerButtons()} <br/><br/><br/>
         <MyStats contentType={this.state.contentType} />
         <MyGames contentType={this.state.contentType} />

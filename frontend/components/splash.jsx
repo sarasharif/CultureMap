@@ -13,8 +13,7 @@ var Splash = React.createClass({
 
   render: function () {
     return (
-      <div>
-        <div></div>
+      <div id="splashimage">
         {this.props.children}
       </div>
     );

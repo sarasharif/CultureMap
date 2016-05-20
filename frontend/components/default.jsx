@@ -72,8 +72,8 @@ var Default = React.createClass({
 
   render: function () {
     return (
-      <div id="splashimage">
-        {this.whiteText()} <br/><br/><br/><br/><br/><br/><br/><br/><br/>
+      <div>
+        {this.whiteText()} <br/><br/><br/><br/>
         {this.greenButton()}
       </div>
     );

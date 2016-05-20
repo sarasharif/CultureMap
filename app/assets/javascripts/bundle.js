@@ -32761,7 +32761,7 @@
 	        React.createElement(
 	          Link,
 	          { to: '/' },
-	          ' cultureMap'
+	          'cultureMap'
 	        )
 	      ),
 	      React.createElement(
@@ -33737,7 +33737,7 @@
 	  render: function () {
 	    return React.createElement(
 	      'div',
-	      null,
+	      { id: 'splashimage2' },
 	      this.headerButtons(),
 	      ' ',
 	      React.createElement('br', null),
@@ -34058,8 +34058,7 @@
 	  render: function () {
 	    return React.createElement(
 	      'div',
-	      null,
-	      React.createElement('div', null),
+	      { id: 'splashimage' },
 	      this.props.children
 	    );
 	  }
@@ -34198,14 +34197,9 @@
 	  render: function () {
 	    return React.createElement(
 	      'div',
-	      { id: 'splashimage' },
+	      null,
 	      this.whiteText(),
 	      ' ',
-	      React.createElement('br', null),
-	      React.createElement('br', null),
-	      React.createElement('br', null),
-	      React.createElement('br', null),
-	      React.createElement('br', null),
 	      React.createElement('br', null),
 	      React.createElement('br', null),
 	      React.createElement('br', null),
