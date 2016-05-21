@@ -31,8 +31,12 @@ var StreetView = React.createClass({
   },
 
   componentWillUnmount: function() {
-    this.siteListener.remove();
-    this.sessionListener.remove();
+    if (typeof GameStore.currentGuess() === "undefined") {
+      hashHistory.push("/");
+    } else {
+      this.siteListener.remove();
+      this.sessionListener.remove();
+    }
   },
 
   pushToLogin: function () {
@@ -61,7 +65,6 @@ var StreetView = React.createClass({
     if (typeof GameStore.currentGuess() === "undefined") {
       hashHistory.push("/");
     } else if (this.state.currentGuess.points === 0) {
-      debugger
       return (
         <MapGuess
           guessId={this.state.currentGuess.id}

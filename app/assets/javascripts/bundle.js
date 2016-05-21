@@ -32724,8 +32724,50 @@
 	    }
 	  },
 	
+	  navlink3: function () {
+	    if (this.props.currentUser) {
+	      return React.createElement(
+	        Link,
+	        { to: '/play', onClick: this.initializeGame },
+	        'NEW GAME'
+	      );
+	    } else {
+	      return React.createElement(
+	        Link,
+	        { to: '/', onClick: this.handleGuestLogin },
+	        'DEMO ACCOUNT'
+	      );
+	    }
+	  },
+	
 	  logout: function (event) {
 	    UserClientActions.logout();
+	    hashHistory.push("/login");
+	  },
+	
+	  handleGuestLogin: function (event) {
+	    event.preventDefault();
+	    UserClientActions.login({
+	      username: "Guest",
+	      password: "asdfasdf"
+	    });
+	  },
+	
+	  initializeGame: function () {
+	    var userId = this.state.currentUser.id;
+	    ClientActions.createGame(userId);
+	  },
+	
+	  componentDidMount: function () {
+	    this.listener = GameStore.addListener(this.pushToPlay);
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.listener.remove();
+	  },
+	
+	  pushToPlay: function () {
+	    hashHistory.push('/play');
 	  },
 	
 	  render: function () {
@@ -32750,6 +32792,11 @@
 	        'div',
 	        { className: 'btn btn-info-outline', id: 'navR2' },
 	        this.navlink2()
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'btn btn-info-outline', id: 'navR3' },
+	        this.navlink3()
 	      )
 	    );
 	  }
@@ -32924,10 +32971,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	
 	var StreetView = __webpack_require__(264);
 	var Summary = __webpack_require__(268);
-	
 	var GameStore = __webpack_require__(265);
 	
 	var Game = React.createClass({
@@ -33052,8 +33097,12 @@
 	  },
 	
 	  componentWillUnmount: function () {
-	    this.siteListener.remove();
-	    this.sessionListener.remove();
+	    if (typeof GameStore.currentGuess() === "undefined") {
+	      hashHistory.push("/");
+	    } else {
+	      this.siteListener.remove();
+	      this.sessionListener.remove();
+	    }
 	  },
 	
 	  pushToLogin: function () {
@@ -33082,7 +33131,6 @@
 	    if (typeof GameStore.currentGuess() === "undefined") {
 	      hashHistory.push("/");
 	    } else if (this.state.currentGuess.points === 0) {
-	      debugger;
 	      return React.createElement(MapGuess, {
 	        guessId: this.state.currentGuess.id
 	      });
@@ -34035,8 +34083,16 @@
 	  render: function () {
 	    return React.createElement(
 	      'div',
-	      { id: 'splashimage' },
-	      this.props.children
+	      null,
+	      React.createElement(
+	        'div',
+	        { id: 'splashimage' },
+	        this.props.children
+	      ),
+	      React.createElement('div', { className: 'second-pic' }),
+	      React.createElement('div', { className: 'third-pic' }),
+	      React.createElement('div', { className: 'fourth-pic' }),
+	      React.createElement('div', { className: 'contact' })
 	    );
 	  }
 	});
@@ -34132,13 +34188,13 @@
 	          null,
 	          React.createElement(
 	            'h1',
-	            { className: 'display-1' },
+	            { className: 'display-1 splash1header' },
 	            'Let\'s Explore our World Heritage!'
 	          )
 	        ),
 	        React.createElement(
 	          'h4',
-	          { className: 'display-3' },
+	          { className: 'display-3 splash1text' },
 	          React.createElement(
 	            'a',
 	            { target: '_blank', href: 'http://whc.unesco.org/en/about/' },
@@ -34148,7 +34204,7 @@
 	        ),
 	        React.createElement(
 	          'h4',
-	          { className: 'display-3' },
+	          { className: 'display-3 splash1text' },
 	          'Let\'s discover them together!'
 	        )
 	      );
@@ -34163,11 +34219,7 @@
 	        'LETS PLAY NOW!'
 	      );
 	    } else {
-	      return React.createElement(
-	        'button',
-	        { className: 'btn btn-success green-button', type: 'submit', onClick: this.handleGuestLogin },
-	        'GUEST DEMO'
-	      );
+	      return;
 	    }
 	  },
 	

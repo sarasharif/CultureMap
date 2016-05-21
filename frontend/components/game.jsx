@@ -1,9 +1,8 @@
 var React = require('react');
-
 var StreetView = require('./streetView');
 var Summary = require('./summary');
-
 var GameStore = require('../stores/gameStore');
+
 
 var Game = React.createClass({
 

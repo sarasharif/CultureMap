@@ -13,8 +13,14 @@ var Splash = React.createClass({
 
   render: function () {
     return (
-      <div id="splashimage">
-        {this.props.children}
+      <div>
+        <div id="splashimage">
+          {this.props.children}
+        </div>
+        <div className="second-pic"></div>
+        <div className="third-pic"></div>
+        <div className="fourth-pic"></div>
+        <div className="contact"></div>
       </div>
     );
   }
