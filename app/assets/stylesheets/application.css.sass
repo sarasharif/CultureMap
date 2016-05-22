@@ -210,6 +210,7 @@ h1, h2, h3, h4, h5, div > a
   font-family: 'Lato', sans-serif
   color: white
   margin: 0
+  z-index: 15
 
 li > a
   color: #566D7E
@@ -226,9 +227,11 @@ h4
 
 .splash1header
   font-size: 80px
+  z-index: 100
 
 .splash1text
   font-size: 40px
+  z-index: 100
 
 #sitenames
   padding-top: 8%
@@ -266,8 +269,8 @@ section.form
   width: 100vw
   height: 100vh
   position: absolute
-  top: 100vh
-  background-image: image-url('paris.jpg')
+  top: 10vh
+  background-image: image-url('arc.jpg')
   background-repeat: no-repeat
   background-size: cover
   text-align: center
@@ -276,8 +279,8 @@ section.form
   width: 100vw
   height: 100vh
   position: absolute
-  top: 200vh
-  background-image: image-url('castle.jpg')
+  top: 100vh
+  background-image: image-url('temple.jpg')
   background-repeat: no-repeat
   background-size: cover
   text-align: center
@@ -286,15 +289,22 @@ section.form
   width: 100vw
   height: 100vh
   position: absolute
-  top: 300vh
-  background-image: image-url('bluecity.jpg')
+  top: 200vh
+  background-image: image-url('arc.jpg')
   background-repeat: no-repeat
   background-size: cover
   text-align: center
+
+.less-far-contact
+  width: 100vw
+  height: 40vh
+  background-color: rgb(34,34,34)
+  position: absolute
+  top: 100vh
 
 .contact
   width: 100vw
   height: 40vh
   background-color: rgb(34,34,34)
   position: absolute
-  top: 400vh
+  top: 300vh

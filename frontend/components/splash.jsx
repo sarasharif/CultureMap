@@ -11,16 +11,30 @@ var Splash = React.createClass({
 
   mixins: [CurrentUserState],
 
+  content: function () {
+    if ( this.state.currentUser ) {
+      return (
+        <div>
+          <div className="second-pic">
+            {this.props.children}
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <div id="splashimage">
+            {this.props.children}
+          </div>
+        </div>
+      );
+    }
+  },
+
   render: function () {
     return (
       <div>
-        <div id="splashimage">
-          {this.props.children}
-        </div>
-        <div className="second-pic"></div>
-        <div className="third-pic"></div>
-        <div className="fourth-pic"></div>
-        <div className="contact"></div>
+        {this.content()}
       </div>
     );
   }

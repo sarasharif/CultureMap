@@ -25,7 +25,8 @@ var Summary = React.createClass({
     );
   },
 
-  handleSubmit: function () {
+  handleSubmit: function (e) {
+    e.preventDefault();
     ClientActions.cleanHouse();
     hashHistory.push('/');
   },

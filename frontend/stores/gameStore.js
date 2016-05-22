@@ -20,6 +20,7 @@ GameStore.grabAllGuesses = function () {
 };
 
 GameStore.currentRoundNum = function () {
+  if (_score === 0) {_roundNum = 1;}
   return _roundNum;
 };
 

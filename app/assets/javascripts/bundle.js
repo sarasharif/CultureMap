@@ -32982,8 +32982,8 @@
 	  getInitialState: function () {
 	    return {
 	      gameId: GameStore.grabGameId(),
-	      roundNum: GameStore.currentRoundNum(),
-	      score: GameStore.grabScore()
+	      roundNum: 1,
+	      score: 0
 	    };
 	  },
 	
@@ -33187,6 +33187,9 @@
 	};
 	
 	GameStore.currentRoundNum = function () {
+	  if (_score === 0) {
+	    _roundNum = 1;
+	  }
 	  return _roundNum;
 	};
 	
@@ -33427,7 +33430,8 @@
 	    );
 	  },
 	
-	  handleSubmit: function () {
+	  handleSubmit: function (e) {
+	    e.preventDefault();
 	    ClientActions.cleanHouse();
 	    hashHistory.push('/');
 	  },
@@ -34080,19 +34084,35 @@
 	
 	  mixins: [CurrentUserState],
 	
+	  content: function () {
+	    if (this.state.currentUser) {
+	      return React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	          'div',
+	          { className: 'second-pic' },
+	          this.props.children
+	        )
+	      );
+	    } else {
+	      return React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	          'div',
+	          { id: 'splashimage' },
+	          this.props.children
+	        )
+	      );
+	    }
+	  },
+	
 	  render: function () {
 	    return React.createElement(
 	      'div',
 	      null,
-	      React.createElement(
-	        'div',
-	        { id: 'splashimage' },
-	        this.props.children
-	      ),
-	      React.createElement('div', { className: 'second-pic' }),
-	      React.createElement('div', { className: 'third-pic' }),
-	      React.createElement('div', { className: 'fourth-pic' }),
-	      React.createElement('div', { className: 'contact' })
+	      this.content()
 	    );
 	  }
 	});

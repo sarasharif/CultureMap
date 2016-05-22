@@ -9,8 +9,8 @@ var Game = React.createClass({
   getInitialState: function () {
     return {
       gameId: GameStore.grabGameId(),
-      roundNum: GameStore.currentRoundNum(),
-      score: GameStore.grabScore()
+      roundNum: 1,
+      score: 0
     };
   },
 
