@@ -33297,7 +33297,7 @@
 	        'make guess here'
 	      ),
 	      React.createElement('div', { id: 'map-guess' }),
-	      React.createElement('input', { className: 'btn btn-success', id: 'guess-submit', type: 'submit', value: 'SUBMIT YOUR GUESS' })
+	      React.createElement('input', { className: 'btn btn-success', id: 'guess-submit', type: 'submit', value: 'SUBMIT GUESS' })
 	    );
 	  }
 	
@@ -33330,7 +33330,7 @@
 	    var markers = 'markers=size:mid%7Ccolor:red%7C' + guess_pos + '%7C' + true_pos;
 	    var path = 'path=color:0xff0000ff|weight:5|' + guess_pos + '|' + true_pos;
 	    var stuff = 'AIzaSyD0uYEJt5myjVIWmTJICUK6vOP-nndsXw8';
-	    var url = 'https://maps.googleapis.com/maps/api/staticmap?size=260x260&maptype=roadmap\&' + markers + '&' + path + '&key=' + stuff;
+	    var url = 'https://maps.googleapis.com/maps/api/staticmap?size=360x260&maptype=roadmap\&' + markers + '&' + path + '&key=' + stuff;
 	
 	    return React.createElement(
 	      'div',
@@ -33355,12 +33355,12 @@
 	      'div',
 	      null,
 	      React.createElement(
-	        'h3',
+	        'h2',
 	        null,
 	        result.title_en
 	      ),
 	      React.createElement(
-	        'h5',
+	        'h3',
 	        null,
 	        result.title_fr
 	      )
@@ -33372,7 +33372,7 @@
 	      'form',
 	      { id: 'guess-result', onSubmit: this.handleSubmit },
 	      React.createElement(
-	        'h3',
+	        'h2',
 	        { id: 'sitenames' },
 	        this.siteInfo()
 	      ),
@@ -33382,7 +33382,7 @@
 	        this.resultMap()
 	      ),
 	      React.createElement(
-	        'h3',
+	        'h2',
 	        null,
 	        'You just earned ',
 	        GameStore.currentGuess().points,
@@ -33413,12 +33413,12 @@
 	    var guesses = GameStore.grabAllGuesses();
 	    return React.createElement(
 	      'ul',
-	      { className: 'list-group' },
+	      { className: 'summary-group' },
 	      [1, 2, 3, 4, 5].map(function (round) {
 	        var url = "http://whc.unesco.org/en/list/" + guesses[round].site_no;
 	        return React.createElement(
 	          'li',
-	          { className: 'list-group-item' },
+	          { className: 'summary-group-item' },
 	          React.createElement(
 	            'a',
 	            { target: '_blank', href: url },
@@ -33453,7 +33453,7 @@
 	        'Click the links below for more information'
 	      ),
 	      this.guess_list(),
-	      React.createElement('input', { className: 'btn btn-success', type: 'submit', value: 'LET\'S EXPLORE SOME MORE!' })
+	      React.createElement('input', { className: 'btn btn-success summary-submit', type: 'submit', value: 'LET\'S EXPLORE SOME MORE!' })
 	    );
 	  }
 	});

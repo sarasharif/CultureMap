@@ -18,7 +18,7 @@ var Result = React.createClass({
     var markers = 'markers=size:mid%7Ccolor:red%7C' + guess_pos + '%7C' + true_pos;
     var path = 'path=color:0xff0000ff|weight:5|' + guess_pos + '|' + true_pos;
     var stuff = 'AIzaSyD0uYEJt5myjVIWmTJICUK6vOP-nndsXw8';
-    var url = 'https://maps.googleapis.com/maps/api/staticmap?size=260x260&maptype=roadmap\&' + markers + '&' + path + '&key=' + stuff;
+    var url = 'https://maps.googleapis.com/maps/api/staticmap?size=360x260&maptype=roadmap\&' + markers + '&' + path + '&key=' + stuff;
 
     return (<div><img
       src={url}
@@ -37,8 +37,8 @@ var Result = React.createClass({
     var result = GameStore.currentGuess();
     return (
       <div>
-        <h3>{result.title_en}</h3>
-        <h5>{result.title_fr}</h5>
+        <h2>{result.title_en}</h2>
+        <h3>{result.title_fr}</h3>
       </div>
     );
   },
@@ -46,9 +46,9 @@ var Result = React.createClass({
   render: function () {
     return (
       <form id='guess-result' onSubmit={this.handleSubmit}>
-        <h3 id='sitenames'>{this.siteInfo()}</h3>
+        <h2 id='sitenames'>{this.siteInfo()}</h2>
         <div id='static-map'>{this.resultMap()}</div>
-        <h3>You just earned {GameStore.currentGuess().points} out of 4000 points</h3>
+        <h2>You just earned {GameStore.currentGuess().points} out of 4000 points</h2>
         <input className="btn btn-success" type="submit" value={this.submitTextValue()}></input>
       </form>
     );

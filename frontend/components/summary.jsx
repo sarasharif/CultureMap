@@ -9,12 +9,12 @@ var Summary = React.createClass({
   guess_list: function () {
     var guesses = GameStore.grabAllGuesses();
     return (
-      <ul className="list-group">
+      <ul className="summary-group">
         {
           [1,2,3,4,5].map(function (round) {
             var url = "http://whc.unesco.org/en/list/" + guesses[round].site_no;
             return (
-              <li className="list-group-item">
+              <li className="summary-group-item">
                 <a target="_blank" href={url}> {guesses[round].title_en}
                 </a>
               </li>
@@ -37,7 +37,7 @@ var Summary = React.createClass({
         <h1>Your total score was {this.props.score} points</h1>
         <h3>Click the links below for more information</h3>
         {this.guess_list()}
-        <input className="btn btn-success" type="submit" value="LET'S EXPLORE SOME MORE!"></input>
+        <input className="btn btn-success summary-submit" type="submit" value="LET'S EXPLORE SOME MORE!"></input>
       </form>
    );
   }
