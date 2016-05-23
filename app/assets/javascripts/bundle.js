@@ -33450,7 +33450,11 @@
 	      React.createElement(
 	        'h3',
 	        null,
-	        'Click the links below for more information'
+	        React.createElement(
+	          'b',
+	          null,
+	          'Click the links below for more information'
+	        )
 	      ),
 	      this.guess_list(),
 	      React.createElement('input', { className: 'btn btn-success summary-submit', type: 'submit', value: 'LET\'S EXPLORE SOME MORE!' })
