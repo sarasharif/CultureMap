@@ -25,7 +25,7 @@
   position: absolute
   top: 10vh
   left: 0px
-  height: 100vh
+  height: 90vh
   width: 100vw
   background-image: image-url('ny.jpg')
   background-repeat: no-repeat
@@ -67,7 +67,7 @@
   // background-repeat: no-repeat
   // background-size: cover
   height: 6vh
-  width: 85px
+  width: 150px
 
 #navL *
   font-family: 'Satisfy', cursive
@@ -100,6 +100,16 @@ div[id^="nav"] a
   color: white
   font-weight: bold
 
+div[id^="navR"]:hover
+  background: white
+
+div[id^="navR"]:hover a
+  color: black
+  text-decoration: none
+
+div[id^="navL"]:hover a
+  text-decoration: none
+
 .btn-success
   // box-shadow: 2px 2px 5px rgba(black,.7)
   // background-color: #0C3668
@@ -116,7 +126,7 @@ div[id^="nav"] a
   color: white
   padding: 15px 40px
   font-weight: bold
-  border-radius: 10px
+  border-radius: 4px
   position: relative
   bottom: 5%
   font-size: 30px
@@ -224,7 +234,7 @@ h1, h2, h3, h4, h5, div > a
   z-index: 15
 
 li > a
-  color: black
+  color: darkcyan
   font-weight: bold
 
 h1
@@ -254,17 +264,16 @@ input
   width: 50vw
   display: -webkit-flex
   display: flex
-  border-radius: 0px !important
   flex-direction: column
   padding: 0px
 
 .summary-group-item
+  align-self: center
   width: 100%
   list-style-type: none
-  background-color: gray
-  opacity: .8
-  color: black
-  border-radius: 2px
+  background-color: white
+  opacity: .7
+  border-radius: 1px
   margin: 5px
   padding: 5px
   font-size: 20px
@@ -296,7 +305,7 @@ section.form
 
 .second-pic
   width: 100vw
-  height: 100vh
+  height: 90vh
   position: absolute
   top: 10vh
   background-image: image-url('arc.jpg')
