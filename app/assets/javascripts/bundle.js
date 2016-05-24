@@ -34083,7 +34083,7 @@
 	        React.createElement(
 	          'h1',
 	          { className: 'profile-header' },
-	          'best of the best'
+	          'the best of the best'
 	        ),
 	        this.makeTable(bestGamesData)
 	      );

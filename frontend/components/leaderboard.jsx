@@ -54,7 +54,7 @@ var leaderboard = React.createClass({
 
       return (
         <div className='bodycontent'>
-          <h1 className="profile-header">best of the best</h1>
+          <h1 className="profile-header">the best of the best</h1>
           {this.makeTable(bestGamesData)}
         </div>
       );
