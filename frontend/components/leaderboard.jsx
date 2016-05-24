@@ -30,10 +30,16 @@ var leaderboard = React.createClass({
 
   makeTable: function (tuples) {
     return (
-      <ul className="list-group">
+      <ul className="list-group leaderboard-group">
         {
-          tuples.reverse().slice(0,10).map(function (tuple, idx) {
-              return (<li className="list-group-item">#{idx+1} {tuple[0]} - {tuple[1]} points</li>);
+          tuples.reverse().slice(0,5).map(function (tuple, idx) {
+            return (
+              <li className="list-group-item leaderboard-item">
+                <div className="leaderboard-place">#{idx+1}</div>
+                <div className="leaderboard-name">{tuple[0]}</div>
+                <div className="leaderboard-score">{tuple[1]} points</div>
+              </li>
+            );
           })
         }
       </ul>
@@ -48,7 +54,7 @@ var leaderboard = React.createClass({
 
       return (
         <div className='bodycontent'>
-          <h1>leaderboard</h1>
+          <h1 className="profile-header">best of the best</h1>
           {this.makeTable(bestGamesData)}
         </div>
       );

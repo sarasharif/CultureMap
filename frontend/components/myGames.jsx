@@ -28,10 +28,10 @@ var myGames = React.createClass({
 
   makeTable: function (tuples) {
     return (
-      <ul className="list-group">
+      <ul className="list-group leaderboard-group">
         {
           tuples.reverse().map(function (tuple) {
-            return (<li className="list-group-item">{tuple[0]} - {tuple[1]} points</li>);
+            return (<li className="list-group-item leaderboard-item"><div>{tuple[0]}</div><div>{tuple[1]} points</div></li>);
           })
         }
       </ul>
@@ -41,13 +41,13 @@ var myGames = React.createClass({
   bodyContent: function () {
     if (this.props.contentType ===  "myGames") {
 
-      var gamesData = this.state.games.slice(0,10).map( function(game) {
+      var gamesData = this.state.games.slice(-5,-1).map( function(game) {
         return [game.created_at.slice(5,7) + "/" + game.created_at.slice(8,10), game.score];
       });
 
       return (
         <div className="bodycontent">
-          <h1>games</h1>
+          <h1 className="profile-header">my latest scores</h1>
           {this.makeTable(gamesData)}
         </div>
       );
@@ -55,7 +55,6 @@ var myGames = React.createClass({
       return <div></div>;
     }
   },
-
 
   render: function () {
     return(

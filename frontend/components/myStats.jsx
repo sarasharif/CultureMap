@@ -30,10 +30,10 @@ var myStats = React.createClass({
     if (this.props.contentType ===  "myStats") {
       return (
         <div className="bodycontent">
-          <h1>statistics</h1>
-            <ul className="list-group">
-              <li className="list-group-item">best: {this.state.stats[0]} points</li>
-              <li className="list-group-item">average: {this.state.stats[1]} points</li>
+          <h1 className="profile-header">statistics</h1>
+            <ul className="list-group leaderboard-group">
+              <li className="list-group-item leaderboard-item"><div>my best score</div><div>{this.state.stats[0]} points</div></li>
+              <li className="list-group-item leaderboard-item"><div>my average</div><div>{this.state.stats[1]} points</div></li>
             </ul>
         </div>
       );
