@@ -65,12 +65,15 @@ var StreetView = React.createClass({
     if (typeof GameStore.currentGuess() === "undefined") {
       hashHistory.push("/");
     } else if (this.state.currentGuess.points === 0) {
+
+      console.log("this.state.currentguess.points === 0");
       return (
         <MapGuess
           guessId={this.state.currentGuess.id}
           />
       );
     } else {
+      console.log("this.state.currentguess.points != 0... roundnum:" + this.props.roundNum);
       return (
         <Result roundNum={this.props.roundNum}/>
       );

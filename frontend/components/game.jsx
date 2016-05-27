@@ -9,8 +9,8 @@ var Game = React.createClass({
   getInitialState: function () {
     return {
       gameId: GameStore.grabGameId(),
-      roundNum: 1,
-      score: 0
+      roundNum: GameStore.currentRoundNum(),
+      score: GameStore.grabScore()
     };
   },
 
@@ -36,6 +36,9 @@ var Game = React.createClass({
         <Summary score={this.state.score} roundNum={this.state.roundNum}/>
       );
     } else {
+      console.log("from game render. here's gameId & roundNum")
+      console.log(this.state.gameId);
+      console.log(this.state.roundNum);
       return (
         <div className="gamediv">
           <div className="game-details">

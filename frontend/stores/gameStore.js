@@ -12,6 +12,7 @@ GameStore.currentGuess = function () {
   if (_roundNum === 6) {
     return {points: _score};
   }
+  console.log("gamestore says _roundnum is " + _roundNum);
   return _guesses[_roundNum];
 };
 
@@ -58,6 +59,7 @@ GameStore.__onDispatch = function(payload) {
       break;
     case GameConstants.CLEAN_HOUSE:
       cleanHouse();
+      console.log("cleaning house now")
       GameStore.__emitChange();
       break;
     case UserConstants.LOGOUT:

@@ -32982,8 +32982,8 @@
 	  getInitialState: function () {
 	    return {
 	      gameId: GameStore.grabGameId(),
-	      roundNum: 1,
-	      score: 0
+	      roundNum: GameStore.currentRoundNum(),
+	      score: GameStore.grabScore()
 	    };
 	  },
 	
@@ -33007,6 +33007,9 @@
 	    if (this.state.roundNum === 6) {
 	      return React.createElement(Summary, { score: this.state.score, roundNum: this.state.roundNum });
 	    } else {
+	      console.log("from game render. here's gameId & roundNum");
+	      console.log(this.state.gameId);
+	      console.log(this.state.roundNum);
 	      return React.createElement(
 	        'div',
 	        { className: 'gamediv' },
@@ -33131,10 +33134,13 @@
 	    if (typeof GameStore.currentGuess() === "undefined") {
 	      hashHistory.push("/");
 	    } else if (this.state.currentGuess.points === 0) {
+	
+	      console.log("this.state.currentguess.points === 0");
 	      return React.createElement(MapGuess, {
 	        guessId: this.state.currentGuess.id
 	      });
 	    } else {
+	      console.log("this.state.currentguess.points != 0... roundnum:" + this.props.roundNum);
 	      return React.createElement(Result, { roundNum: this.props.roundNum });
 	    }
 	  },
@@ -33179,6 +33185,7 @@
 	  if (_roundNum === 6) {
 	    return { points: _score };
 	  }
+	  console.log("gamestore says _roundnum is " + _roundNum);
 	  return _guesses[_roundNum];
 	};
 	
@@ -33227,6 +33234,7 @@
 	      break;
 	    case GameConstants.CLEAN_HOUSE:
 	      cleanHouse();
+	      console.log("cleaning house now");
 	      GameStore.__emitChange();
 	      break;
 	    case UserConstants.LOGOUT:
