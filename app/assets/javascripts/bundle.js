@@ -35497,7 +35497,7 @@
 	            React.createElement(
 	              'div',
 	              null,
-	              this.state.stats[0],
+	              this.state.stats.best,
 	              ' points'
 	            )
 	          ),
@@ -35507,12 +35507,12 @@
 	            React.createElement(
 	              'div',
 	              null,
-	              'my average'
+	              'my average score'
 	            ),
 	            React.createElement(
 	              'div',
 	              null,
-	              this.state.stats[1],
+	              this.state.stats.avg,
 	              ' points'
 	            )
 	          )
@@ -35606,23 +35606,23 @@
 	    this.setState({ games: StatStore.grabGames() });
 	  },
 	
-	  makeTable: function (tuples) {
+	  gameList: function (games) {
 	    return React.createElement(
 	      'ul',
 	      { className: 'list-group leaderboard-group' },
-	      tuples.reverse().map(function (tuple) {
+	      games.map(function (game) {
 	        return React.createElement(
 	          'li',
 	          { className: 'list-group-item leaderboard-item' },
 	          React.createElement(
 	            'div',
 	            null,
-	            tuple[0]
+	            game.created_at.slice(5, 7) + "/" + game.created_at.slice(8, 10)
 	          ),
 	          React.createElement(
 	            'div',
 	            null,
-	            tuple[1],
+	            game.score,
 	            ' points'
 	          )
 	        );
@@ -35632,11 +35632,6 @@
 	
 	  bodyContent: function () {
 	    if (this.props.contentType === "myGames") {
-	
-	      var gamesData = this.state.games.slice(-5, -1).map(function (game) {
-	        return [game.created_at.slice(5, 7) + "/" + game.created_at.slice(8, 10), game.score];
-	      });
-	
 	      return React.createElement(
 	        'div',
 	        { className: 'bodycontent' },
@@ -35645,7 +35640,7 @@
 	          { className: 'profile-header' },
 	          'my latest scores'
 	        ),
-	        this.makeTable(gamesData)
+	        this.gameList(this.state.games)
 	      );
 	    } else {
 	      return React.createElement('div', null);
@@ -35696,11 +35691,11 @@
 	    });
 	  },
 	
-	  makeTable: function (tuples) {
+	  gameList: function (games) {
 	    return React.createElement(
 	      'ul',
 	      { className: 'list-group leaderboard-group' },
-	      tuples.reverse().slice(0, 5).map(function (tuple, idx) {
+	      games.map(function (game, idx) {
 	        return React.createElement(
 	          'li',
 	          { className: 'list-group-item leaderboard-item' },
@@ -35713,12 +35708,12 @@
 	          React.createElement(
 	            'div',
 	            { className: 'leaderboard-name' },
-	            tuple[0]
+	            game.name
 	          ),
 	          React.createElement(
 	            'div',
 	            { className: 'leaderboard-score' },
-	            tuple[1],
+	            game.score,
 	            ' points'
 	          )
 	        );
@@ -35728,10 +35723,6 @@
 	
 	  bodyContent: function () {
 	    if (this.props.contentType === "leaderboard") {
-	      var bestGamesData = this.state.bestGames.map(function (game) {
-	        return [game[0], game[1]];
-	      });
-	
 	      return React.createElement(
 	        'div',
 	        { className: 'bodycontent' },
@@ -35740,7 +35731,7 @@
 	          { className: 'profile-header' },
 	          'the best of the best'
 	        ),
-	        this.makeTable(bestGamesData)
+	        this.gameList(this.state.bestGames)
 	      );
 	    } else {
 	      return React.createElement('div', null);

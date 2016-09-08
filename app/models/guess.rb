@@ -9,16 +9,8 @@ class Guess < ActiveRecord::Base
     foreign_key: :site_id,
     primary_key: :id_no
 
-  def self.return_5_guesses(site_ids)
-    guesses = []
-    5.times {|i| guesses.push(
-      Guess.new(
-        site_id: site_ids[i][0],
-        lat_true: site_ids[i][1],
-        long_true: site_ids[i][2]
-      )
-    )}
-    return guesses
+  def self.return_5_guesses(sites)
+    sites.map{ |site| Guess.new(site) }
   end
 
   def update_points!(lat_guess, long_guess)
@@ -44,7 +36,5 @@ class Guess < ActiveRecord::Base
 
     return 0.001 * rm * c
   end
-
-
 
 end

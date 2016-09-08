@@ -21,22 +21,21 @@ class Game < ActiveRecord::Base
   end
 
   def update_score!
-    self.score = self.guesses.map{|guess| guess.points}.inject{|score, points| score + points}
+    self.score = self.guesses.map{ |guess| guess.points }.inject{ |score, points| score + points }
     self.save!
   end
 
   def self.stats(games)
-    return [0,0] if games.length == 0
-
-    scores = games.map{|game| game.score}
+    return {best: 0, avg: 0} if games.length == 0
+    scores = games.map{ |game| game.score}
     best = scores.max
-    sum = scores.inject{|sum, score| sum + score}
+    sum = scores.inject{ |sum, score| sum + score}
     avg = sum / scores.length
-    stats = [best, avg]
+    return {best: best, avg: avg}
   end
 
   def self.leaderboard_sort(games)
-    games.sort_by{ |game| game.score}.map{|game| [game.player.username, game.score]}
+    games.sort_by{ |game| game.score }.map{ |game| {name: game.player.username, score: game.score} }
   end
 
 end

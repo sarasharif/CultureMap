@@ -32,8 +32,14 @@ var myStats = React.createClass({
         <div className="bodycontent">
           <h1 className="profile-header">statistics</h1>
             <ul className="list-group leaderboard-group">
-              <li className="list-group-item leaderboard-item"><div>my best score</div><div>{this.state.stats[0]} points</div></li>
-              <li className="list-group-item leaderboard-item"><div>my average</div><div>{this.state.stats[1]} points</div></li>
+              <li className="list-group-item leaderboard-item">
+                <div>my best score</div>
+                <div>{this.state.stats.best} points</div>
+              </li>
+              <li className="list-group-item leaderboard-item">
+                <div>my average score</div>
+                <div>{this.state.stats.avg} points</div>
+              </li>
             </ul>
         </div>
       );

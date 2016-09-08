@@ -4,7 +4,13 @@ class UnescoSite < ActiveRecord::Base
   has_many :guesses
 
   def self.return_5_site_ids
-    self.order("RANDOM()").first(5).map {|site| [site.id_no, site.lat, site.long] }
+    self.order("RANDOM()").first(5).map do |site|
+      {
+        site_id: site.id_no,
+        lat_true: site.lat,
+        long_true: site.long
+      }
+    end
   end
 
 end
