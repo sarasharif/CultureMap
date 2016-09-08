@@ -49,9 +49,7 @@ var Default = React.createClass({
     } else {
       return (
         <div>
-          <header>
-            <h1 className="display-1 splash1header">Let's Explore our World Heritage!</h1>
-          </header>
+          <header><h1 className="display-1">Let's Explore Our World Heritage!</h1></header>
           <h4 className='display-3 splash1text' >
             <a target="_blank" href="http://whc.unesco.org/en/about/">UNESCO World Heritage sites</a> belong to all of us
           </h4>
@@ -64,7 +62,8 @@ var Default = React.createClass({
 
   greenButton: function () {
     if ( this.state.currentUser ) {
-      return (<button className="btn btn-success green-button" onClick={this.initializeGame}>LETS PLAY NOW!</button>);
+      return ( <button className="btn btn-success green-button"
+                        onClick={this.initializeGame}> LETS PLAY NOW! </button> );
     } else {
       return;
     }
@@ -73,7 +72,8 @@ var Default = React.createClass({
   render: function () {
     return (
       <div>
-        {this.whiteText()} <br/><br/><br/><br/>
+        {this.whiteText()}
+        <br/><br/><br/><br/>
         {this.greenButton()}
       </div>
     );

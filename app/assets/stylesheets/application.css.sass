@@ -23,8 +23,7 @@
 
 #splashimage
   position: absolute
-  top: 10vh
-  left: 0px
+  bottom: 0px
   height: 90vh
   width: 100vw
   background-image: image-url('ny.jpg')
@@ -42,10 +41,11 @@
   background-repeat: repeat
   text-align: center
 
-
-.gamediv
-  position: relative
+#game, #body
+  // position: fixed
+  // bottom: 0px
   height: 88vh
+  width: 100vw
 
 .nav
   position: relative
@@ -54,60 +54,45 @@
   min-height: 54px
   display: flex
   background-color: rgb(34,34,34)
-  overflow: hidden
-  // box-shadow: 5px 5px 5px #999
-  // -moz-box-shadow: 5px 5px 5px #999
-  // -webkit-box-shadow: 5px 5px 5px #999
+  justify-content: flex-start
+  z-index: 10
 
 #navL
-  position: absolute
-  left: 20px
-  top: 2vh
-  // background-image: image-url('logo.png')
-  // background-repeat: no-repeat
-  // background-size: cover
-  height: 6vh
-  width: 150px
+  align-self: center
+  padding-left: 20px
 
 #navL *
   font-family: 'Satisfy', cursive
   font-size: 20px
 
-#navR1
-  position: absolute
-  right: 20px
-  top: 2vh
-  border: 2px solid white
-  width: 85px
+#navR
+  align-self: center
+  position: relative
+  flex-grow: 8
+  display: flex
+  justify-content: flex-end
+  padding-right: 20px
 
-#navR2
-  position: absolute
-  right: 115px
-  top: 2vh
+#navR > *
+  align-self: center
   border: 2px solid white
-  width: 85px
-  overflow: auto
-
-#navR3
-  position: absolute
-  right: 210px
-  top: 2vh
-  border: 2px solid white
-  width: 150px
-  overflow: hidden
+  margin-left: 10px
+  // padding-left: 10px
 
 div[id^="nav"] a
   color: white
   font-weight: bold
 
-div[id^="navR"]:hover
+#navR > *:hover
   background: white
+  cursor: pointer
 
-div[id^="navR"]:hover a
+#navR > *:hover a
   color: black
   text-decoration: none
 
-div[id^="navL"]:hover a
+#navL:hover a
+  cursor: pointer
   text-decoration: none
 
 .btn-success
@@ -149,20 +134,19 @@ div[id^="navL"]:hover a
 
 #guess-form
   background-color: rgba(black,.3)
-  height: 43vh
+  height: 40vh
   width: 40vw
-  max-width: 300px
+  max-width: 400px
   z-index: 3
   position: absolute
   bottom: 0px
   right: 0px
-  margin: 10px 10px
   text-shadow: 1px 1px 2px #000
 
 #map-guess
   height: 30vh
   width: 100%
-  max-width: 300px
+  max-width: 400px
   z-index: 3
   position: relative
   top: 0px
@@ -176,7 +160,7 @@ div[id^="navL"]:hover a
   bottom: 0px
   // right: 0px
   width: 100%
-  max-width: 300px
+  // max-width: 400px
   // box-shadow: 5px 5px 5px black
   background-color: rgba(34,34,34,.8)
   border: 3px solid white
@@ -200,9 +184,6 @@ div[id^="navL"]:hover a
 #roundNum
   background: rgb(34,34,34)
   padding: 4px
-  position: absolute
-  top: 70px
-  right: 0px
   z-index: 2
   color: #B3B3B3!important
   border-radius: 2px
@@ -210,9 +191,6 @@ div[id^="navL"]:hover a
 #score
   background: rgb(34,34,34)
   padding: 4px
-  position: absolute
-  top: 10px
-  right: 0px
   z-index: 2
   color: #B3B3B3!important
   border-radius: 2px
@@ -222,10 +200,14 @@ div[id^="navL"]:hover a
   display: flex
   -webkit-justify-content: center
   justify-content: center
+  position: absolute
+  top: 10vh
+  right: 20px
+  flex-direction: column
+  justify-content: space-around
 
 .game-details > *
-  margin-left: 20px
-  margin-right: 20px
+  margin-top: 10px
 
 h1, h2, h3, h4, h5, div > a
   font-family: 'Lato', sans-serif
@@ -252,10 +234,6 @@ h1.profile-header
 h4
   font-size: 30px
   font-weight: bold
-
-.splash1header
-  font-size: 80px
-  z-index: 100
 
 .splash1text
   font-size: 40px
@@ -319,40 +297,6 @@ section.form
   background-size: cover
   text-align: center
 
-.third-pic
-  width: 100vw
-  height: 100vh
-  position: absolute
-  top: 100vh
-  background-image: image-url('temple.jpg')
-  background-repeat: no-repeat
-  background-size: cover
-  text-align: center
-
-.fourth-pic
-  width: 100vw
-  height: 100vh
-  position: absolute
-  top: 200vh
-  background-image: image-url('arc.jpg')
-  background-repeat: no-repeat
-  background-size: cover
-  text-align: center
-
-.less-far-contact
-  width: 100vw
-  height: 40vh
-  background-color: rgb(34,34,34)
-  position: absolute
-  top: 100vh
-
-.contact
-  width: 100vw
-  height: 40vh
-  background-color: rgb(34,34,34)
-  position: absolute
-  top: 300vh
-
 .leaderboard-group
   width: 40vw
   min-width: 400px
@@ -400,7 +344,6 @@ section.form
   display: flex
   flex-direction: column
   border-radius: 3px
-  // justify-content: space-around
 
 .profile-button-group
   position: relative

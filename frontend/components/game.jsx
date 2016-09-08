@@ -36,11 +36,8 @@ var Game = React.createClass({
         <Summary score={this.state.score} roundNum={this.state.roundNum}/>
       );
     } else {
-      console.log("from game render. here's gameId & roundNum")
-      console.log(this.state.gameId);
-      console.log(this.state.roundNum);
       return (
-        <div className="gamediv">
+        <div id="game">
           <div className="game-details">
             <div id='roundNum'>
               <div>ROUND</div>
@@ -52,9 +49,8 @@ var Game = React.createClass({
               <h3>{this.state.score}</h3>
             </div>
           </div>
-          <StreetView
-            gameId={this.state.gameId}
-            roundNum={this.state.roundNum} />
+          <StreetView gameId={this.state.gameId}
+                      roundNum={this.state.roundNum} />
         </div>
       );
     }

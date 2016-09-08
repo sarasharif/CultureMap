@@ -15,8 +15,7 @@ var Summary = React.createClass({
             var url = "http://whc.unesco.org/en/list/" + guesses[round].site_no;
             return (
               <li className="summary-group-item">
-                <a target="_blank" href={url}> {guesses[round].title_en}
-                </a>
+                <a target="_blank" href={url}> {guesses[round].title_en} </a>
               </li>
             );
           })

@@ -64,11 +64,9 @@ var leaderboard = React.createClass({
   },
 
   render: function () {
-
     return(
       this.bodyContent()
     );
-
   }
 
 });

@@ -12,11 +12,9 @@ var mapOptions = {
 var MapGuess = React.createClass({
 
   getInitialState: function() {
-    // var id = this.props.id;
     return {
       lat_guess: 0,
       long_guess: 0,
-      // id: id
     };
   },
 
@@ -43,16 +41,13 @@ var MapGuess = React.createClass({
 
   render: function () {
     return (
-        <form id='guess-form' onSubmit={this.makeGuess}>
-          <h4>make guess here</h4>
-          <div id='map-guess'></div>
-          <input className='btn btn-success' id='guess-submit' type="submit" value="SUBMIT GUESS"></input>
-        </form>
-
+      <form id='guess-form' onSubmit={this.makeGuess}>
+        <h4>drag pin to guess location</h4>
+        <div id='map-guess'></div>
+        <input className='btn btn-success' id='guess-submit' type="submit" value="SUBMIT GUESS"></input>
+      </form>
     );
   }
-
 });
-
 
 module.exports = MapGuess;

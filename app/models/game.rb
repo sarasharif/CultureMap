@@ -11,7 +11,6 @@ class Game < ActiveRecord::Base
 
   attr_reader :site_id_nos
 
-
   def self.receive_5_site_ids
     UnescoSite.return_5_site_ids
   end

@@ -12,7 +12,6 @@ GameStore.currentGuess = function () {
   if (_roundNum === 6) {
     return {points: _score};
   }
-  console.log("gamestore says _roundnum is " + _roundNum);
   return _guesses[_roundNum];
 };
 
@@ -44,9 +43,10 @@ GameStore.__onDispatch = function(payload) {
 
   switch (payload.actionType) {
     case GameConstants.PACKAGE_RECEIVED:
+      console.log(_roundNum);
       var game = payload.data.game;
-        _gameId = game.id;
-        _score = game.score;
+          _gameId = game.id;
+          _score = game.score;
       var guesses = payload.data.guesses;
         for (var i = 0; i < guesses.length; i++) {
           _guesses[guesses[i].round_num] = guesses[i];
@@ -59,7 +59,6 @@ GameStore.__onDispatch = function(payload) {
       break;
     case GameConstants.CLEAN_HOUSE:
       cleanHouse();
-      console.log("cleaning house now")
       GameStore.__emitChange();
       break;
     case UserConstants.LOGOUT:

@@ -6,9 +6,6 @@ class Api::UnescoSitesController < ApplicationController
 
   end
 
-  def index
-  end
-
   def random_show
     @unesco_site = UsescoSite.generate_random_site
     render json: @unesco_site

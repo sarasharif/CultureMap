@@ -14,26 +14,22 @@ var Splash = React.createClass({
   content: function () {
     if ( this.state.currentUser ) {
       return (
-        <div>
           <div className="second-pic">
             {this.props.children}
           </div>
-        </div>
       );
     } else {
       return (
-        <div>
           <div id="splashimage">
             {this.props.children}
           </div>
-        </div>
       );
     }
   },
 
   render: function () {
     return (
-      <div>
+      <div id="body">
         {this.content()}
       </div>
     );

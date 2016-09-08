@@ -1,8 +1,5 @@
-
 module.exports = {
-
   PACKAGE_RECEIVED: "PACKAGE_RECEIVED",
   NEXT_ROUND: "NEXT_ROUND",
   CLEAN_HOUSE: "CLEAN_HOUSE"
-
 };

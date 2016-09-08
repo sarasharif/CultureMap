@@ -29,12 +29,4 @@ class Api::GamesController < ApplicationController
     render :show
   end
 
-
-  # No ability to delete games
-  #
-  # private
-  #
-  # def game_params
-  #   params.require(:game).permit(:player_id)
-  # end
 end

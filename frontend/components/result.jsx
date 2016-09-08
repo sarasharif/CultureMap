@@ -20,9 +20,9 @@ var Result = React.createClass({
     var stuff = 'AIzaSyD0uYEJt5myjVIWmTJICUK6vOP-nndsXw8';
     var url = 'https://maps.googleapis.com/maps/api/staticmap?size=360x260&maptype=roadmap\&' + markers + '&' + path + '&key=' + stuff;
 
-    return (<div><img
-      src={url}
-    ></img></div>);
+    return (
+      <img src={url}></img>
+    );
   },
 
   submitTextValue: function () {
