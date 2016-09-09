@@ -36,10 +36,18 @@ var Default = React.createClass({
     ClientActions.createGame(userId);
   },
 
-  whiteText: function () {
+  handleGuestLogin: function (event) {
+    event.preventDefault();
+    UserClientActions.login({
+      username: "Guest",
+      password: "asdfasdf"
+    });
+  },
+
+  introText: function () {
     if ( this.state.currentUser ) {
       return (
-        <div>
+        <div className="intro-text">
           <header><h1 className="display-1">Ready to see the world?</h1></header>
           <h4 className='display-2'>You are about to be dropped off at 5 very special places.</h4>
           <h4 className='display-2'>Use the map to guess your location.</h4>
@@ -48,33 +56,32 @@ var Default = React.createClass({
       );
     } else {
       return (
-        <div>
+        <div className="intro-text">
           <header><h1 className="display-1">Let's Explore Our World Heritage!</h1></header>
-          <h4 className='display-3 splash1text' >
+          <h4 className='display-3 splash1text'>
             <a target="_blank" href="http://whc.unesco.org/en/about/">UNESCO World Heritage sites</a> belong to all of us
           </h4>
           <h4 className='display-3 splash1text'>Let's discover them together!</h4>
-
         </div>
       );
     }
   },
 
-  greenButton: function () {
+  goButton: function () {
     if ( this.state.currentUser ) {
-      return ( <button className="btn btn-success green-button"
+      return ( <button className="btn btn-success go-button"
                         onClick={this.initializeGame}> LETS PLAY NOW! </button> );
     } else {
-      return;
+      return ( <button className="btn btn-success go-button"
+                        onClick={this.handleGuestLogin}> DEMO!!!! </button> );
     }
   },
 
   render: function () {
     return (
       <div>
-        {this.whiteText()}
-        <br/><br/><br/><br/>
-        {this.greenButton()}
+        {this.introText()}
+        {this.goButton()}
       </div>
     );
   }

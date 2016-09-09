@@ -11,12 +11,8 @@ class Game < ActiveRecord::Base
 
   attr_reader :site_id_nos
 
-  def self.receive_5_site_ids
-    UnescoSite.return_5_site_ids
-  end
-
   def create_5_rounds
-    site_ids = Game.receive_5_site_ids
+    site_ids = UnescoSite.five_random_sites
     Guess.return_5_guesses(site_ids)
   end
 
@@ -28,14 +24,12 @@ class Game < ActiveRecord::Base
   def self.stats(games)
     return {best: 0, avg: 0} if games.length == 0
     scores = games.map{ |game| game.score}
-    best = scores.max
-    sum = scores.inject{ |sum, score| sum + score}
-    avg = sum / scores.length
-    return {best: best, avg: avg}
+    sum = scores.inject{ |sum, score| sum + score }
+    { best: scores.max, avg: sum / scores.length }
   end
 
   def self.leaderboard_sort(games)
-    games.sort_by{ |game| game.score }.map{ |game| {name: game.player.username, score: game.score} }
+    games.sort_by{ |game| game.score }.map{ |game| { name: game.player.username, score: game.score} }
   end
 
 end

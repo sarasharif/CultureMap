@@ -29,16 +29,14 @@ var myGames = React.createClass({
   gameList: function (games) {
     return (
       <ul className="list-group leaderboard-group">
-        {
-          games.map(function (game) {
-            return (
-              <li className="list-group-item leaderboard-item">
-                <div>{game.created_at.slice(5,7) + "/" + game.created_at.slice(8,10)}</div>
-                <div>{game.score} points</div>
-              </li>);
-          })
-        }
-      </ul>
+        { games.map(function (game) {
+          return (
+            <li className="list-group-item leaderboard-item">
+              <div>{game.created_at.slice(5,7) + "/" + game.created_at.slice(8,10)}</div>
+              <div>{game.score} points</div>
+            </li>);
+          })}
+      </ul> 
     );
   },
 
@@ -59,7 +57,6 @@ var myGames = React.createClass({
     return(
       this.bodyContent()
     );
-
   }
 
 });

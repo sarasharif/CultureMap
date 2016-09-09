@@ -41,9 +41,8 @@ var Game = React.createClass({
           <div className="game-details">
             <div id='roundNum'>
               <div>ROUND</div>
-              <h3>{this.state.roundNum}/5</h3>
+              <h3>{this.state.roundNum} of 5</h3>
             </div>
-
             <div id='score'>
               <div>SCORE</div>
               <h3>{this.state.score}</h3>

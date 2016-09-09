@@ -9,6 +9,7 @@ var Link = ReactRouter.Link;
 var NavBar = React.createClass({
 
   mixins: [CurrentUserState],
+  
   navlink1: function () {
     if (this.props.currentUser) {
       return (<Link to="/play" onClick={this.initializeGame}>NEW GAME</Link>);
@@ -68,7 +69,6 @@ var NavBar = React.createClass({
         <div className="nav">
           <div className="btn btn-info-outline" id="navL"><Link to="/">cultureMap</Link></div>
           <div id="navR">
-            <div className="btn btn-info-outline" id="navR1">{this.navlink1()}</div>
             <div className="btn btn-info-outline" id="navR2">{this.navlink2()}</div>
             <div className="btn btn-info-outline" id="navR3">{this.navlink3()}</div>
           </div>
@@ -76,6 +76,5 @@ var NavBar = React.createClass({
     );
   }
 });
-
 
 module.exports = NavBar;

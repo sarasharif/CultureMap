@@ -15,7 +15,6 @@ var Login = require('./components/login');
 var Signup = require('./components/signup');
 var Profile = require('./components/profile');
 var Splash = require('./components/splash');
-var Categories = require('./components/categories');
 var Default = require('./components/default');
 
 var Router = (

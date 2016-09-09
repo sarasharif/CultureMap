@@ -24,7 +24,7 @@
 #splashimage
   position: absolute
   bottom: 0px
-  height: 90vh
+  height: 94vh
   width: 100vw
   background-image: image-url('ny.jpg')
   background-repeat: no-repeat
@@ -32,24 +32,26 @@
   text-align: center
 
 #splashimage2
-  position: fixed
-  top: 10vh
-  left: 0px
-  height: 100vh
+  position: absolute
+  bottom: 0px
+  height: 94vh
   width: 100vw
-  background-image: image-url('brickwall.png')
-  background-repeat: repeat
+  background-image: linear-gradient(to right, white 15%, white 20%), url('pic2.jpg')
+  background-blend-mode: saturation
+  background-repeat: no-repeat
+  background-size: cover
   text-align: center
 
-#game, #body
-  // position: fixed
-  // bottom: 0px
-  height: 88vh
+#game
+  position: fixed
+  bottom: 1vh
+  height: 92vh
   width: 100vw
+  overflow: hidden
 
 .nav
   position: relative
-  height: 10vh
+  height: 6vh
   width: 100vw
   min-height: 54px
   display: flex
@@ -71,13 +73,12 @@
   flex-grow: 8
   display: flex
   justify-content: flex-end
-  padding-right: 20px
+  padding-right: 10px
 
 #navR > *
   align-self: center
   border: 2px solid white
   margin-left: 10px
-  // padding-left: 10px
 
 div[id^="nav"] a
   color: white
@@ -105,16 +106,22 @@ div[id^="nav"] a
   font-weight: bold
   // border: transparent
 
-.green-button
+.intro-text
+  margin-top: 15vh
+
+.go-button
   background-color: rgba(black,.3)
   border: 10px solid white
   color: white
   padding: 15px 40px
   font-weight: bold
   border-radius: 4px
-  position: relative
-  bottom: 5%
+  position: fixed
+  bottom: 50vh
+  left: 40vw
+  width: 20vw
   font-size: 30px
+
 
 #street-view
   position: relative
@@ -124,7 +131,7 @@ div[id^="nav"] a
   margin: 5px
 
 #hide_google_logo
-  height: 10vh
+  height: 11vh
   width: 10vw
   background-color: transparent
   position: absolute
@@ -150,7 +157,6 @@ div[id^="nav"] a
   z-index: 3
   position: relative
   top: 0px
-  // right: 0px
   box-shadow: 5px 5px 5px black
 
 #guess-submit
@@ -158,10 +164,7 @@ div[id^="nav"] a
   box-shadow: 5px 5px 5px black
   position: relative
   bottom: 0px
-  // right: 0px
   width: 100%
-  // max-width: 400px
-  // box-shadow: 5px 5px 5px black
   background-color: rgba(34,34,34,.8)
   border: 3px solid white
   color: white
@@ -201,7 +204,7 @@ div[id^="nav"] a
   -webkit-justify-content: center
   justify-content: center
   position: absolute
-  top: 10vh
+  top: 6vh
   right: 20px
   flex-direction: column
   justify-content: space-around
@@ -221,12 +224,10 @@ li > a
 
 h1
   font-family: 'Pacifico', cursive
-  padding-top: 50px
   margin-bottom: 30px
   font-size: 50px
 
 h1.profile-header
-  padding-top: 0px
   color: darkgray
   box-shadow: 3px
   margin-bottom: 2px
@@ -276,7 +277,7 @@ a
 
 .summary
   position: fixed
-  top: 10vh
+  top: 6vh
   left: 0px
   height: 100vh
   width: 100vw
@@ -289,9 +290,9 @@ section.form
 
 .second-pic
   width: 100vw
-  height: 90vh
+  height: 94vh
   position: absolute
-  top: 10vh
+  top: 6vh
   background-image: image-url('arc.jpg')
   background-repeat: no-repeat
   background-size: cover
@@ -354,6 +355,7 @@ section.form
   justify-content: space-around
   align-self: center
   margin: auto
+  margin-bottom: 20px
   border-radius: 2px
 
 .profile-item

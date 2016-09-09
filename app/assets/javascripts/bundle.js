@@ -61,7 +61,6 @@
 	var Signup = __webpack_require__(287);
 	var Profile = __webpack_require__(289);
 	var Splash = __webpack_require__(294);
-	var Categories = __webpack_require__(295);
 	var Default = __webpack_require__(296);
 	
 	var Router = React.createElement(
@@ -34359,6 +34358,7 @@
 	
 	
 	  mixins: [CurrentUserState],
+	
 	  navlink1: function () {
 	    if (this.props.currentUser) {
 	      return React.createElement(
@@ -34453,11 +34453,6 @@
 	      React.createElement(
 	        'div',
 	        { id: 'navR' },
-	        React.createElement(
-	          'div',
-	          { className: 'btn btn-info-outline', id: 'navR1' },
-	          this.navlink1()
-	        ),
 	        React.createElement(
 	          'div',
 	          { className: 'btn btn-info-outline', id: 'navR2' },
@@ -34692,7 +34687,7 @@
 	              'h3',
 	              null,
 	              this.state.roundNum,
-	              '/5'
+	              ' of 5'
 	            )
 	          ),
 	          React.createElement(
@@ -35129,33 +35124,13 @@
 
 	var React = __webpack_require__(1);
 	var ReactRouter = __webpack_require__(182);
-	var CurrentUserState = __webpack_require__(245);
-	var LoginForm = __webpack_require__(286);
-	
-	var Register = React.createClass({
-	  displayName: 'Register',
-	
-	
-	  render: function () {
-	    return React.createElement(LoginForm, null);
-	  }
-	});
-	
-	module.exports = Register;
-
-/***/ },
-/* 286 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var ReactRouter = __webpack_require__(182);
 	var ClientActions = __webpack_require__(269);
 	var CurrentUserState = __webpack_require__(245);
 	var UserStore = __webpack_require__(246);
 	var hashHistory = ReactRouter.hashHistory;
 	
-	var LoginForm = React.createClass({
-	  displayName: 'LoginForm',
+	var Login = React.createClass({
+	  displayName: 'Login',
 	
 	
 	  mixins: [CurrentUserState],
@@ -35248,30 +35223,11 @@
 	  }
 	});
 	
-	module.exports = LoginForm;
+	module.exports = Login;
 
 /***/ },
+/* 286 */,
 /* 287 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var ReactRouter = __webpack_require__(182);
-	var CurrentUserState = __webpack_require__(245);
-	var SignupForm = __webpack_require__(288);
-	
-	var Register = React.createClass({
-	  displayName: 'Register',
-	
-	
-	  render: function () {
-	    return React.createElement(SignupForm, null);
-	  }
-	});
-	
-	module.exports = Register;
-
-/***/ },
-/* 288 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -35281,8 +35237,8 @@
 	var UserStore = __webpack_require__(246);
 	var hashHistory = ReactRouter.hashHistory;
 	
-	var SignUpForm = React.createClass({
-	  displayName: 'SignUpForm',
+	var SignUp = React.createClass({
+	  displayName: 'SignUp',
 	
 	
 	  mixins: [CurrentUserState],
@@ -35369,9 +35325,10 @@
 	  }
 	});
 	
-	module.exports = SignUpForm;
+	module.exports = SignUp;
 
 /***/ },
+/* 288 */,
 /* 289 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -35428,7 +35385,6 @@
 	      'div',
 	      { id: 'splashimage2' },
 	      this.headerButtons(),
-	      React.createElement('br', null),
 	      React.createElement(MyStats, { contentType: this.state.contentType }),
 	      React.createElement(MyGames, { contentType: this.state.contentType }),
 	      React.createElement(Leaderboard, { contentType: this.state.contentType })
@@ -35755,7 +35711,6 @@
 	var ClientActions = __webpack_require__(269);
 	var CurrentUserState = __webpack_require__(245);
 	var Link = ReactRouter.Link;
-	
 	var NavBar = __webpack_require__(273);
 	
 	var Splash = React.createClass({
@@ -35792,12 +35747,7 @@
 	module.exports = Splash;
 
 /***/ },
-/* 295 */
-/***/ function(module, exports) {
-
-
-
-/***/ },
+/* 295 */,
 /* 296 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -35841,11 +35791,19 @@
 	    ClientActions.createGame(userId);
 	  },
 	
-	  whiteText: function () {
+	  handleGuestLogin: function (event) {
+	    event.preventDefault();
+	    UserClientActions.login({
+	      username: "Guest",
+	      password: "asdfasdf"
+	    });
+	  },
+	
+	  introText: function () {
 	    if (this.state.currentUser) {
 	      return React.createElement(
 	        'div',
-	        null,
+	        { className: 'intro-text' },
 	        React.createElement(
 	          'header',
 	          null,
@@ -35874,7 +35832,7 @@
 	    } else {
 	      return React.createElement(
 	        'div',
-	        null,
+	        { className: 'intro-text' },
 	        React.createElement(
 	          'header',
 	          null,
@@ -35903,16 +35861,21 @@
 	    }
 	  },
 	
-	  greenButton: function () {
+	  goButton: function () {
 	    if (this.state.currentUser) {
 	      return React.createElement(
 	        'button',
-	        { className: 'btn btn-success green-button',
+	        { className: 'btn btn-success go-button',
 	          onClick: this.initializeGame },
 	        ' LETS PLAY NOW! '
 	      );
 	    } else {
-	      return;
+	      return React.createElement(
+	        'button',
+	        { className: 'btn btn-success go-button',
+	          onClick: this.handleGuestLogin },
+	        ' DEMO!!!! '
+	      );
 	    }
 	  },
 	
@@ -35920,12 +35883,8 @@
 	    return React.createElement(
 	      'div',
 	      null,
-	      this.whiteText(),
-	      React.createElement('br', null),
-	      React.createElement('br', null),
-	      React.createElement('br', null),
-	      React.createElement('br', null),
-	      this.greenButton()
+	      this.introText(),
+	      this.goButton()
 	    );
 	  }
 	
