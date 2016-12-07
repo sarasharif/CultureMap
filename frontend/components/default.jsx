@@ -73,13 +73,13 @@ var Default = React.createClass({
                         onClick={this.initializeGame}> LETS PLAY NOW! </button> );
     } else {
       return ( <button className="btn btn-success go-button"
-                        onClick={this.handleGuestLogin}> DEMO!!!! </button> );
+                        onClick={this.handleGuestLogin}>Sign in as Guest</button> );
     }
   },
 
   render: function () {
     return (
-      <div>
+      <div className = "splash-wrapper">
         {this.introText()}
         {this.goButton()}
       </div>

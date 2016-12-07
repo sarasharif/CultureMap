@@ -35871,7 +35871,7 @@
 	        'button',
 	        { className: 'btn btn-success go-button',
 	          onClick: this.handleGuestLogin },
-	        ' DEMO!!!! '
+	        'Sign in as Guest'
 	      );
 	    }
 	  },
@@ -35879,7 +35879,7 @@
 	  render: function () {
 	    return React.createElement(
 	      'div',
-	      null,
+	      { className: 'splash-wrapper' },
 	      this.introText(),
 	      this.goButton()
 	    );
