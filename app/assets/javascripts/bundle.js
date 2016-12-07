@@ -58,10 +58,10 @@
 	var App = __webpack_require__(272);
 	var Game = __webpack_require__(279);
 	var Login = __webpack_require__(285);
-	var Signup = __webpack_require__(287);
-	var Profile = __webpack_require__(289);
-	var Splash = __webpack_require__(294);
-	var Default = __webpack_require__(296);
+	var Signup = __webpack_require__(286);
+	var Profile = __webpack_require__(287);
+	var Splash = __webpack_require__(292);
+	var Default = __webpack_require__(293);
 	
 	var Router = React.createElement(
 	  Router,
@@ -35226,8 +35226,7 @@
 	module.exports = Login;
 
 /***/ },
-/* 286 */,
-/* 287 */
+/* 286 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -35328,15 +35327,14 @@
 	module.exports = SignUp;
 
 /***/ },
-/* 288 */,
-/* 289 */
+/* 287 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	
-	var MyStats = __webpack_require__(290);
-	var MyGames = __webpack_require__(292);
-	var Leaderboard = __webpack_require__(293);
+	var MyStats = __webpack_require__(288);
+	var MyGames = __webpack_require__(290);
+	var Leaderboard = __webpack_require__(291);
 	
 	var Profile = React.createClass({
 	  displayName: 'Profile',
@@ -35396,11 +35394,11 @@
 	module.exports = Profile;
 
 /***/ },
-/* 290 */
+/* 288 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var StatStore = __webpack_require__(291);
+	var StatStore = __webpack_require__(289);
 	var ClientActions = __webpack_require__(274);
 	var CurrentUserState = __webpack_require__(245);
 	
@@ -35488,7 +35486,7 @@
 	module.exports = myStats;
 
 /***/ },
-/* 291 */
+/* 289 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Store = __webpack_require__(252).Store;
@@ -35529,11 +35527,11 @@
 	module.exports = StatStore;
 
 /***/ },
-/* 292 */
+/* 290 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var StatStore = __webpack_require__(291);
+	var StatStore = __webpack_require__(289);
 	var ClientActions = __webpack_require__(274);
 	var CurrentUserState = __webpack_require__(245);
 	
@@ -35612,11 +35610,11 @@
 	module.exports = myGames;
 
 /***/ },
-/* 293 */
+/* 291 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var StatStore = __webpack_require__(291);
+	var StatStore = __webpack_require__(289);
 	var ClientActions = __webpack_require__(274);
 	var CurrentUserState = __webpack_require__(245);
 	
@@ -35703,7 +35701,7 @@
 	module.exports = leaderboard;
 
 /***/ },
-/* 294 */
+/* 292 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -35747,8 +35745,7 @@
 	module.exports = Splash;
 
 /***/ },
-/* 295 */,
-/* 296 */
+/* 293 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
